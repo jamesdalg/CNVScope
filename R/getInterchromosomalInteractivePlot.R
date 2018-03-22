@@ -14,6 +14,7 @@
 #'chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
 #'chrom.pairs<-expand.grid(1:length(chromosomes),1:length(chromosomes))
 #' getInterchromosomalInteractivePlot()
+#' @export
 getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
 {
   #if(rownames(whole_matrix)==colnames(whole_matrix))

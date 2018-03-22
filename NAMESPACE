@@ -3,6 +3,7 @@
 export(calcCNVKernelProbDist)
 export(getAsymmetricBlockIndices)
 export(getBlockAverageMatrixFromBreakpoints)
+export(getInterchromosomalInteractivePlot)
 export(underscored_pos_to_GRanges)
 import(ComplexHeatmap)
 import(GenomicRanges)
