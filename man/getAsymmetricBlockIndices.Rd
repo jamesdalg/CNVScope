@@ -34,6 +34,46 @@ breakpoints_row A vector of breakpoints for the rows on the transposed genomic m
 \description{
 This function segments a matrix, including asymmetric matrices using multiple imputation (MI) techniques and a segmentation algorithm to generate breakpoints for column and row.
 }
+\examples{
+submatrix_tiny #from chr17 vs chr 6, 5x10.
+tiny_test<-getAsymmetricBlockIndices(submatrix_tiny)
+submatrix_wide<-submatrix[1:5,]
+# > dim(submatrix_wide)
+# [1]   5 856
+submatrix_narrow<-submatrix[.1:5]
+wide_test<-getAsymmetricBlockIndices(submatrix_wide,distrib = "G",model = "Dplus",nb_change_max = 1e4)
+narrow_test<-getAsymmetricBlockIndices(submatrix_narrow,distrib="P",model="D")
+random_wide<-matrix(runif(n = 400*200),ncol=400,nrow=200)
+random_narrow<-matrix(runif(n = 400*200),ncol=200,nrow=400)
+random_wide_test_avg<-getAsymmetricBlockIndices(random_wide,distrib = "G",model = "Dplus",nb_change_max = 1e4)
+random_narrow_test_avg<-getAsymmetricBlockIndices(random_narrow,distrib = "G",model = "Dplus",nb_change_max = 1e4)
+random_wide_test_copy<-getAsymmetricBlockIndices(random_wide,distrib = "G",model = "Dplus",nb_change_max = 1e4,MI_strategy = "copy")
+random_narrow_test_copy<-getAsymmetricBlockIndices(random_narrow,distrib = "G",model = "Dplus",nb_change_max = 1e4,MI_strategy = "copy")
+genomicmatrix=random_narrow
+nb_change_max=100
+model = "D"
+distrib = "G"
+MI_strategy="copy"
+#question-- does it pick different breakpoints if transposed first? Answer: yes, at least in Dplus model.
+rm(genomicmatrix)
+rm(model)
+rm(distrib)
+rm(MI_strategy)
+random_wide_test_copy<-getAsymmetricBlockIndices(genomicmatrix = random_wide,distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy")
+random_narrow_test_copy<-getAsymmetricBlockIndices(random_narrow,distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy")
+random_wide_test_copy_t<-getAsymmetricBlockIndices(genomicmatrix = t(random_wide),distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy")
+random_narrow_test_copy_t<-getAsymmetricBlockIndices(genomicmatrix = t(random_narrow),distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy")
+length(intersect(random_wide_test_copy$breakpoints_col,random_wide_test_copy_t$breakpoints_row))/length(unique(c(random_wide_test_copy$breakpoints_col,random_wide_test_copy_t$breakpoints_row)))
+random_wide_test_copy_with_transpose<-getAsymmetricBlockIndices(genomicmatrix = random_wide,distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
+random_narrow_test_copy_with_transpose<-getAsymmetricBlockIndices(genomicmatrix = random_narrow,distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
+#passes tests
+random_narrow_test_copy_with_transpose<-getAsymmetricBlockIndices(genomicmatrix = random_narrow,distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
+conserved_breakpoints_col<-intersect(random_narrow_test_copy_with_transpose$breakpoints_col,random_narrow_test_copy_with_transpose$t_breakpoints_row)
+conserved_breakpoints_row<-intersect(random_narrow_test_copy_with_transpose$breakpoints_row,random_narrow_test_copy_with_transpose$t_breakpoints_col)
+random_wide_test_copy_with_transpose<-getAsymmetricBlockIndices(genomicmatrix = random_wide,distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
+conserved_breakpoints_col<-intersect(random_wide_test_copy_with_transpose$breakpoints_col,random_wide_test_copy_with_transpose$t_breakpoints_row)
+conserved_breakpoints_row<-intersect(random_wide_test_copy_with_transpose$breakpoints_row,random_wide_test_copy_with_transpose$t_breakpoints_col)
+}
 \keyword{CNV}
 \keyword{Hi-C}
 \keyword{HiCseg}

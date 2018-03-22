@@ -15,9 +15,7 @@
 #' @return breakpoints_row A vector of breakpoints for the rows.
 #' @return breakpoints_col A vector of breakpoints for the columns on the transposed genomic matrix.
 #' @return breakpoints_row A vector of breakpoints for the rows on the transposed genomic matrix.
-#' @return 
-#' @return 
-#' @xamples 
+#' @examples 
 #' submatrix_tiny #from chr17 vs chr 6, 5x10.
 #' tiny_test<-getAsymmetricBlockIndices(submatrix_tiny)
 #' submatrix_wide<-submatrix[1:5,]
