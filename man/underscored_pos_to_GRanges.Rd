@@ -5,10 +5,12 @@
 \title{Convert coordinates in underscored format to a GRanges object.}
 \usage{
 underscored_pos_to_GRanges(underscored_positions = NULL,
-  extended_data = NULL)
+  extended_data = NULL, zeroToOneBased = T)
 }
 \arguments{
 \item{underscored_positions}{A vector of positions of the form c("chr1_0_5000","chr1_7500_10000","chr1_10000_15000")}
+
+\item{zeroToOneBased}{Convert a set of underscored positions that begin with zero to GRanges where the lowest positional value on a chromosome is 1.}
 }
 \value{
 A GRanges object
