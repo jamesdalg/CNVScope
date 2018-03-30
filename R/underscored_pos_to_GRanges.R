@@ -9,14 +9,14 @@
 #' @examples
 #' HiCNV::underscored_pos_to_GRanges(c("chr1_0_5000","chr1_7500_10000","chr1_10000_15000"))
 #' @export
-underscored_pos_to_GRanges<-function(underscored_positions=NULL,extended_data=NULL,zeroToOneBased=T)
+underscored_pos_to_GRanges<-function(underscored_positions=NULL,extended_data=NULL,zeroToOneBasedStart=T,zeroToOneBasedEnd=F)
 {
   GRanges(seqnames = as.character(plyr::ldply(sapply(underscored_positions,
                                                       function(x) strsplit(as.character(x),"_",fixed=T)
 ),rbind)["1"][,1]),IRanges(start = 
                              as.numeric(as.character(plyr::ldply(sapply(underscored_positions,
                                                                         function(x) strsplit(as.character(x),"_",fixed=T)
-                             ),rbind)["2"][,1])) +   as.integer(zeroToOneBased),end = as.numeric(as.character(plyr::ldply(sapply(underscored_positions,
+                             ),rbind)["2"][,1])) +   as.numeric(zeroToOneBasedStart) ,end = as.numeric(as.character(plyr::ldply(sapply(underscored_positions,
                                                                                                   function(x) strsplit(as.character(x),"_",fixed=T)
-                             ),rbind)["3"][,1]))),... = extended_data) +   as.integer(zeroToOneBased)
+                             ),rbind)["3"][,1])) +   as.numeric(zeroToOneBasedEnd)),... = extended_data)
 }
