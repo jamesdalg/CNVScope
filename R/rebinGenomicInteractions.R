@@ -18,10 +18,10 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
     rownames_mat<-rownames(whole_genome_matrix)
     colnames_mat<-rownames(whole_genome_matrix)
   }
-  output<-foreach(i=1:length(gint),.inorder = T,.combine="rbind",.errorhandling = "pass") %dopar% #length(breakpoint_gint_full)length(breakpoint_gint_full)
+  output<-foreach(i=1:length(gint),.inorder = T,.combine="rbind",.errorhandling = "pass",.export = ls()) %dopar% #length(breakpoint_gint_full)length(breakpoint_gint_full)
   {
     #current_int_df<-as.data.table(gint[i]) #
-    current_int_df<-as.data.frame(cbind(as.data.frame(anchorOne(breakpoint_gint_full)[i]),as.data.frame(anchorTwo(breakpoint_gint_full)[i]),as.data.frame(mcols(breakpoint_gint_full[i]))))
+    current_int_df<-as.data.frame(cbind(as.data.frame(anchorOne(gint)[i]),as.data.frame(anchorTwo(gint)[i]),as.data.frame(mcols(gint[i]))))
     print(paste0(i/length(gint)*100,"%"))
     row_bin_index<-findOverlaps(rownames_gr,anchorOne(gint[i]))@from
     col_bin_index<-findOverlaps(colnames_gr,anchorTwo(gint[i]))@from
