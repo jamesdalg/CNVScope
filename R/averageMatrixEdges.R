@@ -10,6 +10,14 @@
 #' @export
 averageMatrixEdges<-function(unchangedmatrix,nedges=1,dimension=c("row","column"))
 {
+  #dimension<-gsub("col","column",dimension)
+  if(!(length(intersect(dimension,"row"))==1 | length(intersect(dimension,"column"))==1 )) { 
+    errormsg<-paste0("Invalid dimension specification:\'",dimension,"\' Valid options are \'column\' and \'row\'")
+    #if(length)
+    print(paste0(dimension))
+    print(errormsg)
+    stop()
+    return(errormsg)}
   if("row" %in% dimension)
   {
     #dim(unchangedmatrix[(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix),])

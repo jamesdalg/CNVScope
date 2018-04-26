@@ -4,7 +4,8 @@
 \alias{getAnnotationMatrix}
 \title{Get the genes in the genomic ranges indicated by the row and column labels.}
 \usage{
-getAnnotationMatrix(genomic_matrix, prot_only = T, sequential = F)
+getAnnotationMatrix(genomic_matrix, prot_only = T, sequential = F,
+  flip_row_col = F)
 }
 \arguments{
 \item{genomic_matrix}{A matrix with row and column names of the format chr1_100_200 (chr,start,end)}

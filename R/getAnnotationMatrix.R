@@ -9,7 +9,7 @@
 #' @param sequential Turn off parallelism with DoMC?
 #' @return concatenated_gene_matrix A matrix with row and column genes
 #' @export
-getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F)
+getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_col=F)
 {
   if(!exists("grch37")){
   grch37 = biomaRt::useMart(biomart="ENSEMBL_MART_ENSEMBL", host="grch37.ensembl.org", path="/biomart/martservice", dataset="hsapiens_gene_ensembl")
@@ -67,8 +67,16 @@ getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F)
       outputstring
     }
   }
+  if(!flip_row_col)
+{
   col_gene_strings_matrix_genomic_matrix_alt<-matrix(rep((unlist(col_gene_strings_genomic_matrix)),nrow(genomic_matrix)),ncol=ncol(genomic_matrix),nrow=nrow(genomic_matrix),byrow = T)
   row_gene_strings_matrix_genomic_matrix<-matrix(rep(unlist(row_gene_strings_genomic_matrix),ncol(genomic_matrix)),ncol=ncol(genomic_matrix),nrow=nrow(genomic_matrix)) #essential
+  }  
+  if(flip_row_col)
+  {
+    row_gene_strings_matrix_genomic_matrix<-matrix(rep((unlist(col_gene_strings_genomic_matrix)),nrow(genomic_matrix)),ncol=ncol(genomic_matrix),nrow=nrow(genomic_matrix),byrow = T)
+    col_gene_strings_matrix_genomic_matrix_alt<-matrix(rep(unlist(row_gene_strings_genomic_matrix),ncol(genomic_matrix)),ncol=ncol(genomic_matrix),nrow=nrow(genomic_matrix)) #essential
+  }
   concatenated_gene_matrix<-matrix(
     paste0("row_genes:",row_gene_strings_matrix_genomic_matrix ,"\ncol genes:",col_gene_strings_matrix_genomic_matrix_alt,"\noriginal value:",as.matrix(genomic_matrix))
     ,ncol=ncol(col_gene_strings_matrix_genomic_matrix_alt),
