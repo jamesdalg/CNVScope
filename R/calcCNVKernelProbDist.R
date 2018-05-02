@@ -15,35 +15,78 @@
 #' ComplexHeatmap::Heatmap(mat_prob_dist$zscore_matrix,cluster_columns = F,cluster_rows = F,show_column_names = F,show_row_names = F,column_title = "z scores") + 
 #' ComplexHeatmap::Heatmap(mat_prob_dist$percentile_matrix,cluster_columns = F,cluster_rows = F,show_column_names = F,show_row_names = F,column_title = "percentile scores") + 
 #' ComplexHeatmap::Heatmap(mat_prob_dist$original_matrix,cluster_columns = F,cluster_rows = F,show_column_names = F,show_row_names = F,column_title = "original data")
-calcCNVKernelProbDist<-function(submatrix=NULL,win=5)
+calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T)
 {
+  submatrix<-as.matrix(submatrix)
   #win<-5
+  library(spatialfil)
   k = list(matrix=matrix(1/(win^2),nrow=win,ncol=win),kernel='custom')
   class(k)='convKern'
+  if(debug) {win_start <- proc.time()}
   submatrix_win_avg = spatialfil::applyFilter(submatrix,k)
+  if(debug){
+    print("win avg complete")
+    print(proc.time() - win_start)
+  }
+  if(debug){diag_avg_start<-proc.time()}
   diag_avg_matrix<-matrix(0,ncol=ncol(submatrix),nrow=nrow(submatrix))
+  if(debug){
+    print("diag avg complete")
+    print(proc.time() - diag_avg_start)
+  }
+  if(debug){diag_sd_start<-proc.time()}
   diag_sd_matrix<-matrix(0,ncol=ncol(submatrix),nrow=nrow(submatrix))
-  for (y in c(nrow(submatrix),1)) 
+  if(debug){
+    print("diag sd complete")
+    print(proc.time() - diag_sd_start)
+  }
+  if(!parallel){registerDoSEQ()}
+  if(parallel){registerDoMC()}
+  #if(parallel){registerDoMC()}
+  coladjustments2<-foreach(y=c(nrow(submatrix),1),.combine="rbind") %do%
   {
-    coladjustments<-foreach::foreach(x=1:ncol(submatrix),.export=c("y","submatrix","diag_avg_matrix","diag_sd_matrix"),.combine="rbind" ) %do%
+    coladjustments<-foreach::foreach(x=1:ncol(submatrix),.export=ls(),.combine="rbind" ,.inorder=T) %dopar% #c("y","submatrix","diag_avg_matrix","diag_sd_matrix")
     {
+      if(debug){loop_start<-proc.time()}
+      #browser()
       off_diag_for_point<-submatrix[row(submatrix)==col(submatrix)-(y-x)]
       diag_avg<-mean(off_diag_for_point)
       diag_sd<-sd(off_diag_for_point)
-      diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(y-x)]<-diag_avg
-      diag_sd_matrix[row(diag_sd_matrix)==col(diag_sd_matrix)-(y-x)]<-diag_sd
+      #diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(y-x)]<-diag_avg
+      #diag_sd_matrix[row(diag_sd_matrix)==col(diag_sd_matrix)-(y-x)]<-diag_sd
       #if(x==319){Heatmap(diag_sd_matrix,cluster_columns = F,cluster_rows=F,show_row_names = F,show_column_names = F)}
       diff<-(y-x)
-      debuginfo<-c(diff,y,x)
-      names(debuginfo)<-c("diff","y","x")
-      debuginfo
+      output<-c(diff,y,x,diag_avg,diag_sd)
+      #names(output)<-c("diff","y","x")
+      
+      if(debug){
+        print(paste0(x/ncol(submatrix)*100,"% complete"))
+        print(proc.time()-loop_start)
+      }
+      #print((unlist(ls())))
+      #sapply(ls(),function (x) x==Inf)
+      output
     }
+    colnames(coladjustments)<-c("diff","x","y","diag_avg","diag_sd")
+    coladjustments
   }
+  for(i in 1:nrow(coladjustments2))
+  {
+    diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(coladjustments2[i,"y"]-coladjustments2[i,"x"])]<-coladjustments2[i,"diag_avg"]
+    print(diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(coladjustments2[i,"y"]-coladjustments2[i,"x"])])
+    diag_sd_matrix[row(diag_sd_matrix)==col(diag_sd_matrix)-(coladjustments2[i,"y"]-coladjustments2[i,"x"])]<-coladjustments2[i,"diag_sd"]
+  }
+  diag_avg_matrix<-t(diag_avg_matrix)
+  diag_sd_matrix<-t(diag_sd_matrix)
+  # coladjustments2l<-apply(coladjustments2,1,function (x) list(x))
+  # lapply(coladjustments2l,FUN=function(i) {diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(unlist(i)["y"]-unlist(i)["x"])]<-unlist(i)["diag_avg"];
+  # diag_sd_matrix[row(diag_sd_matrix)==col(diag_sd_matrix)-(unlist(i)["y"]-unlist(i)["x"])]<-unlist(i)["diag_avg"];})
+  
   zscore_matrix<-(submatrix_win_avg-diag_avg_matrix)/(diag_sd_matrix)
   zscore_matrix[1,ncol(zscore_matrix)]<-0
   zscore_matrix[ncol(zscore_matrix),1]<-0
   percentile_matrix<-pnorm((submatrix_win_avg-diag_avg_matrix)/diag_sd_matrix)
-  output_list<-list(zscore_matrix,percentile_matrix,submatrix)
-  names(output_list)<-c("zscore_matrix","percentile_matrix","original_matrix")
+  output_list<-list(zscore_matrix,percentile_matrix,submatrix,coladjustments2,diag_avg_matrix,diag_sd_matrix)
+  names(output_list)<-c("zscore_matrix","percentile_matrix","original_matrix","coladjustments2","diag_avg_matrix","diag_sd_matrix")
   return(output_list)
 }
