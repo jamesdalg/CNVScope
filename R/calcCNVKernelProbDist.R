@@ -4,7 +4,7 @@
 #' @param submatrix A matrix of CNV data in an intrachromosomal region (e.g. chr1 vs chr1 or chr5 vs chr5)
 #' @param win a window size for the matrix that calculates the windowed average using the kernel function
 #' @keywords CNV kernel probability distribution concordance fast
-#' @import ComplexHeatmap foreach doMC spatialfil 
+#' @import ComplexHeatmap foreach doMC spatialfil Matrix
 #' @export
 #' @examples
 #' set.seed(303)
@@ -15,11 +15,11 @@
 #' ComplexHeatmap::Heatmap(mat_prob_dist$zscore_matrix,cluster_columns = F,cluster_rows = F,show_column_names = F,show_row_names = F,column_title = "z scores") + 
 #' ComplexHeatmap::Heatmap(mat_prob_dist$percentile_matrix,cluster_columns = F,cluster_rows = F,show_column_names = F,show_row_names = F,column_title = "percentile scores") + 
 #' ComplexHeatmap::Heatmap(mat_prob_dist$original_matrix,cluster_columns = F,cluster_rows = F,show_column_names = F,show_row_names = F,column_title = "original data")
-calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T)
+calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores=1)
 {
   submatrix<-as.matrix(submatrix)
   #win<-5
-  library(spatialfil)
+  #library(spatialfil)
   k = list(matrix=matrix(1/(win^2),nrow=win,ncol=win),kernel='custom')
   class(k)='convKern'
   if(debug) {win_start <- proc.time()}
@@ -70,12 +70,48 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T)
     colnames(coladjustments)<-c("diff","x","y","diag_avg","diag_sd")
     coladjustments
   }
-  for(i in 1:nrow(coladjustments2))
+  diag_sd_vec<-coladjustments2[,"diag_sd"]
+  diag_sd_vec[is.na(diag_sd_vec)]<-0
+  coladjustments2[,"diag_sd"]<-diag_sd_vec
+  if(parallel==T)
   {
-    diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(coladjustments2[i,"y"]-coladjustments2[i,"x"])]<-coladjustments2[i,"diag_avg"]
-    print(diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(coladjustments2[i,"y"]-coladjustments2[i,"x"])])
-    diag_sd_matrix[row(diag_sd_matrix)==col(diag_sd_matrix)-(coladjustments2[i,"y"]-coladjustments2[i,"x"])]<-coladjustments2[i,"diag_sd"]
+    bands_mcmapply<-mcmapply(FUN=function(x,y,diag_avg)
+    {
+      rep(diag_avg,length(diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(y-x)]))
+    },x=coladjustments2[,"x"],y=coladjustments2[,"y"],diag_avg=coladjustments2[,"diag_avg"],mc.cores=mcmcores
+    )
+    bands<-bands_mcmapply[c(1:(length(bands_mcmapply)/2),(length(bands_mcmapply)/2+2):length(bands_mcmapply))]
+    #bands_unique<-unique(bands)
+  } else {
+    bands_mapply<-mapply(FUN=function(x,y,diag_avg)
+    {
+      rep(diag_avg,length(diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(y-x)]))
+    },x=coladjustments2[,"x"],y=coladjustments2[,"y"],diag_avg=coladjustments2[,"diag_avg"]
+    )
+    bands<-bands_mcmapply[c(1:(length(bands_mapply)/2),(length(bands_mapply)/2+2):length(bands_mapply))]
+    
+    #bands_unique<-unique(bands)
   }
+  diag_avg_matrix<-Matrix::bandSparse(n=nrow(submatrix),m=ncol(submatrix),bands_unique,k=c(-(nrow(submatrix)-1):(ncol(submatrix)-1)),symmetric = F,giveCsparse = T) #this case will work for symmetric matrices, untested on asymmetric.
+  if(parallel==T)
+  {
+    bands_mcmapply<-mcmapply(FUN=function(x,y,diag_sd)
+    {
+      rep(diag_sd,length(diag_sd_matrix[row(diag_sd_matrix)==col(diag_sd_matrix)-(y-x)]))
+    },x=coladjustments2[,"x"],y=coladjustments2[,"y"],diag_sd=coladjustments2[,"diag_sd"],mc.cores=mcmcores
+    )
+    bands<-bands_mcmapply[c(1:(length(bands_mcmapply)/2),(length(bands_mcmapply)/2+2):length(bands_mcmapply))]
+    #bands_unique<-unique(bands)
+  } else {
+    bands_mapply<-mapply(FUN=function(x,y,diag_sd)
+    {
+      rep(diag_sd,length(diag_sd_matrix[row(diag_sd_matrix)==col(diag_sd_matrix)-(y-x)]))
+    },x=coladjustments2[,"x"],y=coladjustments2[,"y"],diag_sd=coladjustments2[,"diag_sd"]
+    )
+    bands<-bands_mcmapply[c(1:(length(bands_mapply)/2),(length(bands_mapply)/2+2):length(bands_mapply))]
+    #bands_unique<-unique(bands)
+  }
+  diag_sd_matrix<-Matrix::bandSparse(n=nrow(submatrix),m=ncol(submatrix),bands_unique,k=c(-(nrow(submatrix)-1):(ncol(submatrix)-1)),symmetric = F,giveCsparse = T) #this case will work for symmetric matrices, untested on asymmetric.
   diag_avg_matrix<-t(diag_avg_matrix)
   diag_sd_matrix<-t(diag_sd_matrix)
   # coladjustments2l<-apply(coladjustments2,1,function (x) list(x))
@@ -90,3 +126,64 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T)
   names(output_list)<-c("zscore_matrix","percentile_matrix","original_matrix","coladjustments2","diag_avg_matrix","diag_sd_matrix")
   return(output_list)
 }
+#new code to replace the loops at the end.
+#plyr::dply
+# bands<-apply(coladjustments2,1,FUN=function(x)
+# {
+#   #diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(coladjustments2[i,"y"]-coladjustments2[i,"x"])]<-coladjustments2[i,"diag_avg"]
+#   band<-rep(x["diag_avg"],length(diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(x["y"]-x["x"])]))
+#   #band<-diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(coladjustments2[i,"y"]-coladjustments2[i,"x"])]
+#   #return(band)
+# }
+#   )
+# bands_mapply<-mapply(FUN=function(x,y,diag_avg)
+# {
+#   rep(diag_avg,length(diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(y-x)]))
+# },x=coladjustments2[,"x"],y=coladjustments2[,"y"],diag_avg=coladjustments2[,"diag_avg"]
+#   )
+#if(Sys.info()['sysname']=="Windows"){cores<-detectCores()} else {groupdir<-"/data/CCRBioinfo/"}
+# #BEGIN NEW CODE
+# diag_sd_vec<-coladjustments2[,"diag_sd"]
+# diag_sd_vec[is.na(diag_sd_vec)]<-0
+# coladjustments2[,"diag_sd"]<-diag_sd_vec
+# if(parallel==T)
+# {
+#   bands_mcmapply<-mcmapply(FUN=function(x,y,diag_avg)
+#   {
+#     rep(diag_avg,length(diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(y-x)]))
+#   },x=coladjustments2[,"x"],y=coladjustments2[,"y"],diag_avg=coladjustments2[,"diag_avg"],mc.cores=mcmcores
+#   )
+#   bands<-bands_mcmapply[c(1:(length(bands_mcmapply)/2),(length(bands_mcmapply)/2+2):length(bands_mcmapply))]
+#   #bands_unique<-unique(bands)
+# } else {
+#   bands_mapply<-mapply(FUN=function(x,y,diag_avg)
+#   {
+#     rep(diag_avg,length(diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(y-x)]))
+#   },x=coladjustments2[,"x"],y=coladjustments2[,"y"],diag_avg=coladjustments2[,"diag_avg"]
+#   )
+#   bands<-bands_mcmapply[c(1:(length(bands_mapply)/2),(length(bands_mapply)/2+2):length(bands_mapply))]
+#   
+#   #bands_unique<-unique(bands)
+# }
+# diag_avg_matrix<-Matrix::bandSparse(n=nrow(submatrix),m=ncol(submatrix),bands_unique,k=c(-(nrow(submatrix)-1):(ncol(submatrix)-1)),symmetric = F,giveCsparse = T) #this case will work for symmetric matrices, untested on asymmetric.
+# if(parallel==T)
+# {
+#   bands_mcmapply<-mcmapply(FUN=function(x,y,diag_sd)
+#   {
+#     rep(diag_sd,length(diag_sd_matrix[row(diag_sd_matrix)==col(diag_sd_matrix)-(y-x)]))
+#   },x=coladjustments2[,"x"],y=coladjustments2[,"y"],diag_sd=coladjustments2[,"diag_sd"],mc.cores=mcmcores
+#   )
+#   bands<-bands_mcmapply[c(1:(length(bands_mcmapply)/2),(length(bands_mcmapply)/2+2):length(bands_mcmapply))]
+#   #bands_unique<-unique(bands)
+# } else {
+#   bands_mapply<-mapply(FUN=function(x,y,diag_sd)
+#   {
+#     rep(diag_sd,length(diag_sd_matrix[row(diag_sd_matrix)==col(diag_sd_matrix)-(y-x)]))
+#   },x=coladjustments2[,"x"],y=coladjustments2[,"y"],diag_sd=coladjustments2[,"diag_sd"]
+#   )
+#   bands<-bands_mcmapply[c(1:(length(bands_mapply)/2),(length(bands_mapply)/2+2):length(bands_mapply))]
+#   #bands_unique<-unique(bands)
+# }
+# diag_sd_matrix<-Matrix::bandSparse(n=nrow(submatrix),m=ncol(submatrix),bands_unique,k=c(-(nrow(submatrix)-1):(ncol(submatrix)-1)),symmetric = F,giveCsparse = T) #this case will work for symmetric matrices, untested on asymmetric.
+# #END NEW CODE
+#diag_sd_matrix==diag_sd_matrix_test
