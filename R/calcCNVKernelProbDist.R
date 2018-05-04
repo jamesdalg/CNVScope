@@ -92,7 +92,7 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores
     
     #bands_unique<-unique(bands)
   }
-  diag_avg_matrix<-Matrix::bandSparse(n=nrow(submatrix),m=ncol(submatrix),bands_unique,k=c(-(nrow(submatrix)-1):(ncol(submatrix)-1)),symmetric = F,giveCsparse = T) #this case will work for symmetric matrices, untested on asymmetric.
+  diag_avg_matrix<-as.matrix(Matrix::bandSparse(n=nrow(submatrix),m=ncol(submatrix),bands,k=c(-(nrow(submatrix)-1):(ncol(submatrix)-1)),symmetric = F,giveCsparse = T)) #this case will work for symmetric matrices, untested on asymmetric.
   if(parallel==T)
   {
     bands_mcmapply<-mcmapply(FUN=function(x,y,diag_sd)
@@ -111,13 +111,13 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores
     bands<-bands_mcmapply[c(1:(length(bands_mapply)/2),(length(bands_mapply)/2+2):length(bands_mapply))]
     #bands_unique<-unique(bands)
   }
-  diag_sd_matrix<-Matrix::bandSparse(n=nrow(submatrix),m=ncol(submatrix),bands_unique,k=c(-(nrow(submatrix)-1):(ncol(submatrix)-1)),symmetric = F,giveCsparse = T) #this case will work for symmetric matrices, untested on asymmetric.
+  #browser()
+  diag_sd_matrix<-as.matrix(Matrix::bandSparse(n=nrow(submatrix),m=ncol(submatrix),bands,k=c(-(nrow(submatrix)-1):(ncol(submatrix)-1)),symmetric = F,giveCsparse = T)) #this case will work for symmetric matrices, untested on asymmetric.
   diag_avg_matrix<-t(diag_avg_matrix)
   diag_sd_matrix<-t(diag_sd_matrix)
   # coladjustments2l<-apply(coladjustments2,1,function (x) list(x))
   # lapply(coladjustments2l,FUN=function(i) {diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(unlist(i)["y"]-unlist(i)["x"])]<-unlist(i)["diag_avg"];
   # diag_sd_matrix[row(diag_sd_matrix)==col(diag_sd_matrix)-(unlist(i)["y"]-unlist(i)["x"])]<-unlist(i)["diag_avg"];})
-  
   zscore_matrix<-(submatrix_win_avg-diag_avg_matrix)/(diag_sd_matrix)
   zscore_matrix[1,ncol(zscore_matrix)]<-0
   zscore_matrix[ncol(zscore_matrix),1]<-0
@@ -126,6 +126,7 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores
   names(output_list)<-c("zscore_matrix","percentile_matrix","original_matrix","coladjustments2","diag_avg_matrix","diag_sd_matrix")
   return(output_list)
 }
+
 #new code to replace the loops at the end.
 #plyr::dply
 # bands<-apply(coladjustments2,1,FUN=function(x)
