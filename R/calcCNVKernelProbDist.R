@@ -43,7 +43,7 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores
   if(!parallel){registerDoSEQ()}
   if(parallel){registerDoMC()}
   #if(parallel){registerDoMC()}
-  coladjustments2<-foreach(y=c(nrow(submatrix),1),.combine="rbind") %do%
+  coladjustments2<-foreach(y=c(nrow(submatrix),1),.combine="rbind") %dopar%
   {
     coladjustments<-foreach::foreach(x=1:ncol(submatrix),.export=ls(),.combine="rbind" ,.inorder=T) %dopar% #c("y","submatrix","diag_avg_matrix","diag_sd_matrix")
     {

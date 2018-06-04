@@ -9,7 +9,7 @@
 #' @param extra_data_matrix A matrix with additional variables about each point, one position per row with as many variables as remaining columns.
 #' @return ggplotmatrix a matrix with values sufficient to create a ggplot2 heatmap with geom_tile() or with ggiraph's geom_tile_interactive()
 #' @export
-writeAsymmetricMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,filename,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,multipass=T,desired_range_start=50,desired_range_end=300)
+writeAsymmetricMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,filename,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,multipass=T,desired_range_start=50,desired_range_end=300,saveToDisk=T,outputOriginalValuesInSeparateField=F,max_cap=NULL,rescale=T)
 {
   if(!is.null(extra_data_matrix))
   {  
@@ -144,12 +144,17 @@ if(debug){    print(paste0("col factors:",downsample_factor_col))
   concatenated_gene_matrix.m$Var1<-rownames(submatrix_downsample)[concatenated_gene_matrix.m$Var1]
   concatenated_gene_matrix.m$Var2<-colnames(submatrix_downsample)[concatenated_gene_matrix.m$Var2]
   if(transpose){
-    ggplotmatrix<-t(submatrix_downsample) %>% as.matrix() %>%  signedRescale() %>%
-      melt() %>% dplyr::bind_cols(concatenated_gene_matrix.m)
+    if(rescale==T){ggplotmatrix<-t(submatrix_downsample) %>% as.matrix() %>%  signedRescale() %>%
+      melt() %>% dplyr::bind_cols(concatenated_gene_matrix.m)}
+    if(rescale==F)
+    {ggplotmatrix<-t(submatrix_downsample) %>% as.matrix() %>%
+      melt() %>% dplyr::bind_cols(concatenated_gene_matrix.m)}
     
   } else {
-    ggplotmatrix<-submatrix_downsample %>% as.matrix() %>%  signedRescale() %>%
-      melt() %>% dplyr::bind_cols(concatenated_gene_matrix.m)
+    if(rescale==T){    ggplotmatrix<-submatrix_downsample %>% as.matrix() %>%  signedRescale() %>%
+      melt() %>% dplyr::bind_cols(concatenated_gene_matrix.m)}
+    if(rescale==F){    ggplotmatrix<-submatrix_downsample %>% as.matrix() %>%  
+      melt() %>% dplyr::bind_cols(concatenated_gene_matrix.m)}
   }
   if(!is.null(extra_data_matrix))
   {
@@ -159,12 +164,12 @@ if(debug){    print(paste0("col factors:",downsample_factor_col))
     row_merged_ggplotmatrix<-merge(ggplotmatrix,extra_data_df,by.x="Var1",by.y="pos",suffixes=c("","row")) #var1 row Var2 Column, y x.
     row_col_merged_ggplotmatrix<-merge(row_merged_ggplotmatrix,extra_data_df,by.x="Var2",by.y="pos",suffixes=c("","col"))
     print(head(row_col_merged_ggplotmatrix,n=1))
-    if(transpose){save("row_col_merged_ggplotmatrix",file=paste0(chromosomes[chrom1],chromosomes[chrom2],"melted_with_external_data_transposed",".RData"))} else {save("row_col_merged_ggplotmatrix",file=paste0(chromosomes[chrom1],chromosomes[chrom2],"melted_with_external_data",".RData"))}
+    if(transpose){if(saveToDisk){save("row_col_merged_ggplotmatrix",file=paste0(chromosomes[chrom1],chromosomes[chrom2],"melted_with_external_data_transposed",".RData"))}} else {if(saveToDisk){save("row_col_merged_ggplotmatrix",file=paste0(chromosomes[chrom1],chromosomes[chrom2],"melted_with_external_data",".RData"))}}
     
     
   } else {
     #write.csv(ggplotmatrix,paste0(chromosomes[chrom1],chromosomes[chrom2],"melted",".csv"),row.names = F)
-    save("ggplotmatrix",file=paste0(chromosomes[chrom1],chromosomes[chrom2],"melted",".RData"))
+    if(saveToDisk){save("ggplotmatrix",file=paste0(chromosomes[chrom1],chromosomes[chrom2],"melted",".RData"))}
     #rm("ggplotmatrix")
   }
   return(ggplotmatrix)

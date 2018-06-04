@@ -11,7 +11,7 @@
 #' @import foreach doMC GenomicFeatures data.table
 #' @export
 #' @examples
-rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_gr=NULL,colnames_gr=NULL,rownames_mat=NULL,colnames_mat=NULL)
+rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_gr=NULL,colnames_gr=NULL,rownames_mat=NULL,colnames_mat=NULL,method="nearest")
 {
   if(is.null(gint)){return("No GenomicInteractions to rebin!")}
   if(!is.null(whole_genome_matrix)){
@@ -23,9 +23,18 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
     #current_int_df<-as.data.table(gint[i]) #
     current_int_df<-as.data.frame(cbind(as.data.frame(anchorOne(gint)[i]),as.data.frame(anchorTwo(gint)[i]),as.data.frame(mcols(gint[i]))))
     print(paste0(i/length(gint)*100,"%"))
+    if(method=="overlap")
+    {
     row_bin_index<-findOverlaps(rownames_gr,anchorOne(gint[i]))@from
-    col_bin_index<-findOverlaps(colnames_gr,anchorTwo(gint[i]))@from
-    if(length(row_bin_index)==0 | length(col_bin_index)==0) {return(NULL)}
+    col_bin_index<-findOverlaps(colnames_gr,anchorTwo(gint[i]))@from} 
+    if(method=="nearest")
+    {
+      row_bin_index<-nearest(anchorOne(gint[i]),rownames_gr)
+      col_bin_index<-nearest(anchorTwo(gint[i]),colnames_gr)
+    }
+    
+    if(length(row_bin_index)==0 | length(col_bin_index)==0) {
+      print(paste0("no match pair for row",i));return(NULL)}
     col_bin_label<-colnames_mat[col_bin_index]
     row_bin_label<-rownames_mat[row_bin_index]
     outputline<-c(row_bin_index,col_bin_index,row_bin_label,col_bin_label,sapply(current_int_df,as.character))
@@ -34,7 +43,10 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
     names(outputline)<-outputnames
     outputline
   }
+  if(class(output)=="character" & is.null(nrow(output))){output_df<-as.data.frame(t(output))
+  #colnames(output_df)<-c("row_bin_index","col_bin_index","row_bin_label","col_bin_label",as.character(names(gint)))
+  } else {
   output_df<-as.data.frame(matrix(as.character(output),nrow=nrow(output)))
-  colnames(output_df)<-c("row_bin_index","col_bin_index","row_bin_label","col_bin_label",as.character(colnames(as.data.frame(gint[1]))))
+  colnames(output_df)<-c("row_bin_index","col_bin_index","row_bin_label","col_bin_label",as.character(colnames(as.data.frame(gint[1]))))}
   return(output_df)
 }
