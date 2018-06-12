@@ -1,13 +1,13 @@
 Package: HiCNV
 Type: Package
 Title: A highly useful package for dealing with CNV relation data.
-Version: 0.9.0
-Date: 2018-5-4
+Version: 0.9.2
+Date: 2018-6-11
 Author: James Dalgeish <james.dalgleish@nih.gov>, Yonghong Wang <wangyong@mail.nih.gov>
 Maintainer: James Dalgeish <james.dalgleish@nih.gov>, Yonghong Wang <wangyong@mail.nih.gov>
 BugReports: https://github.com/jamesdalg/HiCNV/issues/
-Depends: spatialfil,ComplexHeatmap,foreach,doMC,GenomicRanges,GenomicFeatures,plyr,readr,data.table,doMC,foreach
-Imports: spatialfil,ComplexHeatmap,foreach,doMC,GenomicRanges,GenomicFeatures,plyr,readr,data.table,doMC,foreach
+Depends: spatialfil,ComplexHeatmap,foreach,doMC,GenomicRanges,GenomicFeatures,plyr,readr,data.table,doMC,foreach,rslurm
+Imports: spatialfil,ComplexHeatmap,foreach,doMC,GenomicRanges,GenomicFeatures,plyr,readr,data.table,doMC,foreach,rslurm
 Suggests:
 VignetteBuilder: knitr
 URL: https://github.com/jamesdalg/HiCNV/

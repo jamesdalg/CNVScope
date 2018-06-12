@@ -6,8 +6,9 @@
 #' @import GenomicFeatures
 #' @export
 #' @examples
-GRanges_to_underscored_pos<-function(input_gr)
+GRanges_to_underscored_pos<-function(input_gr,minusOneToEnd=T)
 {
-  output_char<-paste0(seqnames(input_gr),"_",input_gr@ranges@start,"_",input_gr@ranges@start+input_gr@ranges@width)
+  if(minusOneToEnd){adjustment<-1} else {adjustment=0}
+  output_char<-paste0(seqnames(input_gr),"_",input_gr@ranges@start,"_",input_gr@ranges@start+input_gr@ranges@width-adjustment)
   return(output_char)
 }
