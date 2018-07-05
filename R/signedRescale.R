@@ -6,11 +6,11 @@
 #' @param matrix A matrix to be transformed
 #' @return transformedmatrix A transformed matrix.
 #' @export
-signedRescale<-function(matrix,global_max=NULL,global_min=NULL,global_sigma=NULL,global_mu=NULL,max_cap=NULL,method="minmax",tan_transform=F,global_sigma_pos=NULL,global_sigma_neg=NULL)
+signedRescale<-function(matrix,global_max=NULL,global_min=NULL,global_sigma=NULL,global_mu=NULL,max_cap=NULL,method="minmax",tan_transform=F,global_sigma_pos=NULL,global_sigma_neg=NULL,asymptotic_max=T)
 {
   #matrix<-as.matrix(matrix)
   transformedmatrix<-as.matrix(matrix)
-  transformedmatrix[transformedmatrix==0]<-0.5+.Machine$double.eps
+  transformedmatrix[transformedmatrix==0]<-(0.5+1e9*.Machine$double.eps)
   if(!is.null(max_cap)){transformedmatrix[transformedmatrix>max_cap]<-max_cap}
   if(is.null(global_max)){global_max<-max(transformedmatrix[transformedmatrix>0])}
   if(is.null(global_min)){global_min<-min(transformedmatrix[transformedmatrix<0])}
@@ -19,13 +19,13 @@ signedRescale<-function(matrix,global_max=NULL,global_min=NULL,global_sigma=NULL
   if(is.null(global_sigma)){global_sigma<-sd(transformedmatrix)}
   if(is.null(global_mu)){global_mu<-mean(transformedmatrix)}
   
-
-#if(tan_transform){transformedmatrix<-atan(transformedmatrix)/pi*2}
+  
+  #if(tan_transform){transformedmatrix<-atan(transformedmatrix)/pi*2}
   if(method=="minmax"){
-transformedmatrix[transformedmatrix>0]<-((transformedmatrix[transformedmatrix>0]/(global_max*2))+0.5)
-  transformedmatrix[matrix<0]<-((transformedmatrix[transformedmatrix<0]/(global_min*2)))
-  transformedmatrix[transformedmatrix<0.5 & transformedmatrix>0]<-abs(0.5-transformedmatrix[transformedmatrix<0.5 & transformedmatrix>0])
-  transformedmatrix[transformedmatrix==0]<-0.5-.Machine$double.eps
+    transformedmatrix[transformedmatrix>0]<-((transformedmatrix[transformedmatrix>0]/(global_max*2))+0.5)
+    transformedmatrix[matrix<0]<-((transformedmatrix[transformedmatrix<0]/(global_min*2)))
+    transformedmatrix[transformedmatrix<0.5 & transformedmatrix>0]<-abs(0.5-transformedmatrix[transformedmatrix<0.5 & transformedmatrix>0])
+    transformedmatrix[transformedmatrix==0]<-(0.5-1e9*.Machine$double.eps)
   }
   if(method=="tan"){transformedmatrix<-atan(transformedmatrix)/pi*2}
   if(method=="sd")
@@ -33,7 +33,12 @@ transformedmatrix[transformedmatrix>0]<-((transformedmatrix[transformedmatrix>0]
     transformedmatrix[transformedmatrix>0]<-((transformedmatrix[transformedmatrix>0]/(global_max*2))+0.5)
     transformedmatrix[matrix<0]<-((transformedmatrix[transformedmatrix<0]/(global_min*2)))
     transformedmatrix[transformedmatrix<0.5 & transformedmatrix>0]<-abs(0.5-transformedmatrix[transformedmatrix<0.5 & transformedmatrix>0])
-    transformedmatrix[transformedmatrix==0]<-0.5-.Machine$double.eps
+    transformedmatrix[transformedmatrix==0]<-(0.5-1e9*.Machine$double.eps)
+  }
+  if(asymptotic_max)
+  {
+    #browser()
+    transformedmatrix[transformedmatrix==1]<-(1-1e9*.Machine$double.eps)
   }
   return(transformedmatrix)
 }
