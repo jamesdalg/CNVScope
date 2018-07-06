@@ -5,6 +5,14 @@
 #' @import
 #' @param matrix A matrix to be transformed
 #' @return transformedmatrix A transformed matrix.
+#' @examples mat<-matrix(c(5,10,15,20,35,40,45,300,50),byrow=T,nrow=3)
+#' rescaled_mat<-signedRescale(mat)
+#' mat
+#' rescaled_mat
+#' mat<-matrix(c(5,10,15,20,0,40,-45,300,-50),byrow=T,nrow=3)
+#' rescaled_mat<-signedRescale(mat)
+#' mat
+#' rescaled_mat
 #' @export
 signedRescale<-function(matrix,global_max=NULL,global_min=NULL,global_sigma=NULL,global_mu=NULL,max_cap=NULL,method="minmax",tan_transform=F,global_sigma_pos=NULL,global_sigma_neg=NULL,asymptotic_max=T)
 {
@@ -22,10 +30,11 @@ signedRescale<-function(matrix,global_max=NULL,global_min=NULL,global_sigma=NULL
   
   #if(tan_transform){transformedmatrix<-atan(transformedmatrix)/pi*2}
   if(method=="minmax"){
-    transformedmatrix[transformedmatrix>0]<-((transformedmatrix[transformedmatrix>0]/(global_max*2))+0.5)
-    transformedmatrix[matrix<0]<-((transformedmatrix[transformedmatrix<0]/(global_min*2)))
-    transformedmatrix[transformedmatrix<0.5 & transformedmatrix>0]<-abs(0.5-transformedmatrix[transformedmatrix<0.5 & transformedmatrix>0])
-    transformedmatrix[transformedmatrix==0]<-(0.5-1e9*.Machine$double.eps)
+    #browser()
+    transformedmatrix[transformedmatrix>0 & transformedmatrix!=(0.5+1e9*.Machine$double.eps)]<-((transformedmatrix[transformedmatrix>0 & transformedmatrix!=(0.5+1e9*.Machine$double.eps)]/(global_max*2))+0.5) #divide by global max * 2, store into transformed matrix.
+    transformedmatrix[matrix<0]<-((transformedmatrix[transformedmatrix<0]/(global_min*2))) #divide by global minimum * 2, store into transformed matrix.
+    transformedmatrix[transformedmatrix<=0.5 & transformedmatrix>0]<-abs(0.5-transformedmatrix[transformedmatrix<=0.5 & transformedmatrix>0]) #(0,0.5), negative numbers in original matrix.
+    #transformedmatrix[transformedmatrix==0]<-(0.5-1e9*.Machine$double.eps)
   }
   if(method=="tan"){transformedmatrix<-atan(transformedmatrix)/pi*2}
   if(method=="sd")
