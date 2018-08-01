@@ -35,6 +35,7 @@ breakpoints_row A vector of breakpoints for the rows on the transposed genomic m
 This function segments a matrix, including asymmetric matrices using multiple imputation (MI) techniques and a segmentation algorithm to generate breakpoints for column and row.
 }
 \examples{
+\dontrun{
 submatrix_tiny #from chr17 vs chr 6, 5x10.
 tiny_test<-getAsymmetricBlockIndices(submatrix_tiny)
 submatrix_wide<-submatrix[1:5,]
@@ -73,6 +74,7 @@ conserved_breakpoints_row<-intersect(random_narrow_test_copy_with_transpose$brea
 random_wide_test_copy_with_transpose<-getAsymmetricBlockIndices(genomicmatrix = random_wide,distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
 conserved_breakpoints_col<-intersect(random_wide_test_copy_with_transpose$breakpoints_col,random_wide_test_copy_with_transpose$t_breakpoints_row)
 conserved_breakpoints_row<-intersect(random_wide_test_copy_with_transpose$breakpoints_row,random_wide_test_copy_with_transpose$t_breakpoints_col)
+}
 }
 \keyword{CNV}
 \keyword{Hi-C}

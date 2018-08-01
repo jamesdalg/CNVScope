@@ -2,17 +2,15 @@
 #'
 #' Performs a signed rescale on the data, shrinking the negative and positive ranges into the [0,1] space, such that negative is always less than 0.5 and positive is always greater.
 #' @keywords signed rescale positive negative matrix
-#' @import
 #' @param matrix A matrix to be transformed
 #' @return transformedmatrix A transformed matrix.
-#' @examples mat<-matrix(c(5,10,15,20,35,40,45,300,50),byrow=T,nrow=3)
+#' @examples 
+#' \dontrun{
+#' mat<-matrix(c(5,10,15,20,0,40,-45,300,-50),byrow=TRUE,nrow=3)
 #' rescaled_mat<-signedRescale(mat)
 #' mat
 #' rescaled_mat
-#' mat<-matrix(c(5,10,15,20,0,40,-45,300,-50),byrow=T,nrow=3)
-#' rescaled_mat<-signedRescale(mat)
-#' mat
-#' rescaled_mat
+#' }
 #' @export
 signedRescale<-function(matrix,global_max=NULL,global_min=NULL,global_sigma=NULL,global_mu=NULL,max_cap=NULL,method="minmax",tan_transform=F,global_sigma_pos=NULL,global_sigma_neg=NULL,asymptotic_max=T)
 {

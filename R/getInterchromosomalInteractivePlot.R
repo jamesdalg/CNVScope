@@ -6,6 +6,7 @@
 #' @param whole_matrix the large, whole genomic matrix from which the submatrix is taken
 #' @return An HTML widget.
 #' @examples
+#' \dontrun{
 #' all_conc<-data.table::fread(paste0(groupdir,"dalgleishjl/hicnv/all_concondace_neg_log10_pvalue_seg.txt"),data.table = F)
 #'rownames(all_conc)<-all_conc$pos
 #'all_conc_cleaned<-all_conc[,5:ncol(all_conc)]
@@ -14,6 +15,7 @@
 #'chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
 #'chrom.pairs<-expand.grid(1:length(chromosomes),1:length(chromosomes))
 #' getInterchromosomalInteractivePlot()
+#' }
 #' @export
 getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
 {

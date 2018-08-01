@@ -9,11 +9,11 @@
 #' @return The output matrix, or if using slurm, the slurm job object (which should be saved as an rds file and reloaded when creating the output matrix).
 #' 
 #' @examples
+#'\dontrun{
 #' #small example
 #' #bin_data<-matrix(runif(5*5),ncol=5)
 #' #full_matrix<-calcVecLMs(bin_data)
-#' #real data example
-#' #sample_aggregated_segvals<-readRDS("../NBLTCGA_merged_df_aggregated_by_bin_fixed_comparisonv4.rds")
+#'}
 #' @export
 #' 
 #' 

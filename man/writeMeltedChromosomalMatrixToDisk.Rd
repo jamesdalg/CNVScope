@@ -27,6 +27,6 @@ Writes an RData file with a ggplot2 object within.
 \keyword{genomic}
 \keyword{ggiraph}
 \keyword{ggplot2}
-\keyword{heatmap}
+\keyword{heatmaply}
 \keyword{matrix}
 \keyword{plotly}

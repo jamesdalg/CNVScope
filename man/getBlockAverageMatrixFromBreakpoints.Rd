@@ -36,29 +36,44 @@ blockaverages_matrix_label_avg a matrix of the block averages, with indexes base
 This function produces several matrix outputs of averages and areas of matrix blocks, given a pair of vectors for breakpoints.
 }
 \examples{
+\dontrun{
 set.seed(303)
-mat<-matrix(data=runif(n = 25),nrow=5,ncol=5,dimnames = list(c("chr1_0_5000","chr1_5000_10000","chr1_10000_15000","chr1_15000_20000","chr1_20000_25000"),c("chr1_0_5000","chr1_5000_10000","chr1_10000_15000","chr1_15000_20000","chr1_20000_25000")))
+mat<-matrix(data=runif(n = 25),nrow=5,ncol=5,dimnames = list(c("chr1_0_5000",
+"chr1_5000_10000","chr1_10000_15000","chr1_15000_20000","chr1_20000_25000"),
+c("chr1_0_5000","chr1_5000_10000","chr1_10000_15000","chr1_15000_20000","chr1_20000_25000")))
 breakpoints_col<-c(1,2,4,5)
 breakpoints_row<-c(1,2,4,5)
-HiCNV::getBlockAverageMatrixFromBreakpoints(whole_matrix=mat,breakpoints_col=breakpoints_col,breakpoints_row=breakpoints_row)
-mat<-matrix(data=round(runif(min = 0,max=100,n = 25)),nrow=5,ncol=5,dimnames = list(c("chr1_0_5000","chr1_5000_10000","chr1_10000_15000","chr1_15000_20000","chr1_20000_25000"),c("chr2_0_50000","chr2_50000_100000","chr2_100000_150000","chr2_150000_200000","chr2_200000_250000")))
+HiCNV::getBlockAverageMatrixFromBreakpoints(whole_matrix=mat,breakpoints_col=breakpoints_col,
+breakpoints_row=breakpoints_row)
+mat<-matrix(data=round(runif(min = 0,max=100,n = 25)),nrow=5,ncol=5,
+dimnames = list(c("chr1_0_5000","chr1_5000_10000","chr1_10000_15000","chr1_15000_20000",
+"chr1_20000_25000"),c("chr2_0_50000","chr2_50000_100000",
+"chr2_100000_150000","chr2_150000_200000","chr2_200000_250000")))
 breakpoints_col<-c(1,2,4,5)
 breakpoints_row<-c(1,2,4,5)
-avg_results<-getBlockAverageMatrixFromBreakpoints(whole_matrix=mat,breakpoints_col=breakpoints_col,breakpoints_row=breakpoints_row)
+avg_results<-getBlockAverageMatrixFromBreakpoints(whole_matrix=mat,
+breakpoints_col=breakpoints_col,breakpoints_row=breakpoints_row)
 avg_results$blockaverages_reformatted_by_label
 avg_results$blockaverages_reformatted_by_index
 whole_matrix=mat
-mat<-matrix(data=round(runif(min = 0,max=100,n = 25)),nrow=5,ncol=5,dimnames = list(c("chr1_0_5000","chr1_5000_10000","chr1_10000_15000","chr1_15000_20000","chr1_20000_25000"),c("chr2_0_50000","chr2_50000_100000","chr2_100000_150000","chr2_150000_200000","chr2_200000_250000")))
+mat<-matrix(data=round(runif(min = 0,max=100,n = 25)),nrow=5,ncol=5,
+dimnames = list(c("chr1_0_5000","chr1_5000_10000","chr1_10000_15000",
+"chr1_15000_20000","chr1_20000_25000"),c("chr2_0_50000",
+"chr2_50000_100000","chr2_100000_150000",
+"chr2_150000_200000","chr2_200000_250000")))
 breakpoints_col<-c(1,2,4,5)
 breakpoints_row<-c(1,2,4,5)
-avg_results<-getBlockAverageMatrixFromBreakpoints(whole_matrix=mat,breakpoints_col=breakpoints_col,breakpoints_row=breakpoints_row)
+avg_results<-getBlockAverageMatrixFromBreakpoints(whole_matrix=mat,
+breakpoints_col=breakpoints_col,breakpoints_row=breakpoints_row)
 avg_results$blockaverages_reformatted_by_label
 avg_results$blockaverages_reformatted_by_index
 whole_matrix=mat
 if(Sys.info()['sysname']=="Windows"){groupdir<-"W:/"} else {groupdir<-"/data/CCRBioinfo/"}
-all_conc<-data.table::fread(paste0(gropudir,"dalgleishjl/hicnv/concondance_tumor_log10_pvalue_seg_segdiff01.txt"),data.table = F)
+all_conc<-data.table::fread(paste0(gropudir,
+"dalgleishjl/hicnv/concondance_tumor_log10_pvalue_seg_segdiff01.txt"),data.table = F)
 
-#all_conc<-data.table::fread(paste0(groupdir,"dalgleishjl/hicnv/all_concondace_neg_log10_pvalue_seg.txt"),data.table = F)
+#all_conc<-data.table::fread(paste0(groupdir,
+"dalgleishjl/hicnv/all_concondace_neg_log10_pvalue_seg.txt"),data.table = F)
 #all_conc<-data.table::fread("all_conc.csv",data.table = F)
 rownames(all_conc)<-all_conc$pos
 all_conc_cleaned<-all_conc[,5:ncol(all_conc)]
@@ -67,13 +82,17 @@ all_conc_cleaned_common_coords<-all_conc_cleaned[common_coords,common_coords]
 chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
 chrom1<-17 #for testing
 chrom2<-6 #for testing
-submatrix<-all_conc_cleaned_common_coords[grep(chromosomes[chrom1],rownames(all_conc_cleaned_common_coords)),grep(chromosomes[chrom2],colnames(all_conc_cleaned_common_coords))]
+submatrix<-all_conc_cleaned_common_coords[grep(chromosomes[chrom1],
+rownames(all_conc_cleaned_common_coords)),grep(chromosomes[chrom2],
+colnames(all_conc_cleaned_common_coords))]
 breakpoints_row_jointseg<-jointseg::jointSeg(submatrix,K=50)$bestBkp
 breakpoints_col_jointseg<-jointseg::jointSeg(t(submatrix),K=50)$bestBkp
 
-submatrix_avg_results<-getBlockAverageMatrixFromBreakpoints(whole_matrix=submatrix,breakpoints_col=breakpoints_col_jointseg,breakpoints_row=breakpoints_row_jointseg)
+submatrix_avg_results<-getBlockAverageMatrixFromBreakpoints(whole_matrix=submatrix,
+breakpoints_col=breakpoints_col_jointseg,breakpoints_row=breakpoints_row_jointseg)
 mean(as.numeric(as.character(unlist(submatrix[1:3,1:34]))))
 mean(as.numeric(as.character(unlist(submatrix[3:12,1:34]))))
+}
 }
 \keyword{CNV}
 \keyword{concordance}

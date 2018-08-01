@@ -19,7 +19,9 @@ A GRanges object
 This function creates a new GRanges object from a character vector of coordinates in the form "chr1_0_5000" and creates a GRanges object from them.
 }
 \examples{
-HiCNV::underscored_pos_to_GRanges(c("chr1_0_5000","chr1_7500_10000","chr1_10000_15000"))
+\dontrun{
+underscored_pos_to_GRanges(c("chr1_0_5000","chr1_7500_10000","chr1_10000_15000"))
+}
 }
 \keyword{CNV}
 \keyword{GRanges}

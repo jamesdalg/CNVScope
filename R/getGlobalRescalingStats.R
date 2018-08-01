@@ -2,7 +2,7 @@
 #'
 #' calculates several statistics from a large matrix that can then be applied to smaller submatrices without needing to load the entire matrix into memmory
 #' @keywords rescale color stats
-#' @import 
+#' @import stats
 #' @param whole_matrix the whole matrix to get stats for.
 #' @param saveToDisk Save the statistics to disk as an RDS file in the local directory?
 #' @param output_fn the name of the output file.
@@ -11,7 +11,6 @@
 #'  est_max_cap (global_mu+global_sigma_pos*2), as well as the number of rows and columns of the matrix.
 #' 
 #' @examples
-#' 
 #' @export
 getGlobalRescalingStats<-function(whole_matrix,saveToDisk=F,output_fn=NULL)
 {

@@ -4,7 +4,7 @@
 \alias{GRanges_to_underscored_pos}
 \title{Convert GRanges object to underscord positions.}
 \usage{
-GRanges_to_underscored_pos(input_gr)
+GRanges_to_underscored_pos(input_gr, minusOneToEnd = T)
 }
 \arguments{
 \item{input_gr}{A GenomicRanges object}

@@ -16,6 +16,7 @@
 #' @return breakpoints_col A vector of breakpoints for the columns on the transposed genomic matrix.
 #' @return breakpoints_row A vector of breakpoints for the rows on the transposed genomic matrix.
 #' @examples 
+#' \dontrun{
 #' submatrix_tiny #from chr17 vs chr 6, 5x10.
 #' tiny_test<-getAsymmetricBlockIndices(submatrix_tiny)
 #' submatrix_wide<-submatrix[1:5,]
@@ -54,6 +55,7 @@
 #' random_wide_test_copy_with_transpose<-getAsymmetricBlockIndices(genomicmatrix = random_wide,distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
 #' conserved_breakpoints_col<-intersect(random_wide_test_copy_with_transpose$breakpoints_col,random_wide_test_copy_with_transpose$t_breakpoints_row)
 #' conserved_breakpoints_row<-intersect(random_wide_test_copy_with_transpose$breakpoints_row,random_wide_test_copy_with_transpose$t_breakpoints_col)
+#' }
 #' @export
 getAsymmetricBlockIndices<-function(genomicmatrix=NULL,nb_change_max=100,distrib = "G",model = "D",MI_strategy="average",transpose=T)
 {

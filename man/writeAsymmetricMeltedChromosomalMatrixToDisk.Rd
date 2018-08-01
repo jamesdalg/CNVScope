@@ -7,7 +7,8 @@
 writeAsymmetricMeltedChromosomalMatrixToDisk(whole_genome_matrix, chrom1,
   chrom2, filename, extra_data_matrix = NULL, transpose = F,
   sequential = T, debug = T, multipass = T, desired_range_start = 50,
-  desired_range_end = 300)
+  desired_range_end = 300, saveToDisk = T,
+  outputOriginalValuesInSeparateField = F, max_cap = NULL, rescale = T)
 }
 \arguments{
 \item{whole_genome_matrix}{A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.}

@@ -7,7 +7,9 @@
 #' @param zeroToOneBased Convert a set of underscored positions that begin with zero to GRanges where the lowest positional value on a chromosome is 1.
 #' @return A GRanges object
 #' @examples
-#' HiCNV::underscored_pos_to_GRanges(c("chr1_0_5000","chr1_7500_10000","chr1_10000_15000"))
+#' \dontrun{
+#' underscored_pos_to_GRanges(c("chr1_0_5000","chr1_7500_10000","chr1_10000_15000"))
+#' }
 #' @export
 underscored_pos_to_GRanges<-function(underscored_positions=NULL,extended_data=NULL,zeroToOneBasedStart=T,zeroToOneBasedEnd=F)
 {
