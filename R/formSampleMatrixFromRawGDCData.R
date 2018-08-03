@@ -2,7 +2,7 @@
 #'
 #' Reads a GDC segmetnation files, adds sample information, and forms a data matrix of samples and bins of a specified size.
 #' @keywords segmentation GDC 
-#' @import reshape2 dplyr
+#' @import reshape2 dplyr data.table BSgenome.Hsapiens.UCSC.hg19 doMC
 #' @param file GDC file to be read
 #' @param format file format, TCGA or TARGET.
 #' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
