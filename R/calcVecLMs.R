@@ -7,7 +7,6 @@
 #' @param use_slurm Paralleize over a number of slurm HPC jobs? If false, the program will simply run locally.
 #' @param slurmjob the slurm job object produced by rslurm::slurm_apply(), after running the function initially.
 #' @return The output matrix, or if using slurm, the slurm job object (which should be saved as an rds file and reloaded when creating the output matrix).
-#' 
 #' @examples
 #'\dontrun{
 #' #small example
@@ -15,13 +14,6 @@
 #' #full_matrix<-calcVecLMs(bin_data)
 #'}
 #' @export
-#' 
-#' 
-generateSignedNegLogPvalMat<-function(x,y)
-{
-  lmsum<-summary(lm(unlist(bin_data_df[,y])~unlist(bin_data_df[,x])));
-  return(-log(lmsum$coefficients[2,4])*sign(lmsum$coefficients[2,1]))
-  }  
 calcVecLMs<-function(bin_data,use_slurm=F,job_finished=F,slurmjob=NULL,n_nodes=NULL,cpus_on_each_node=1,memory_per_node="2g",walltime="4:00:00",n_cores=1)
 {
   #if(dim(bin_data)[1]<dim(bin_data)[2]){bin_data<-t(bin_data)}
