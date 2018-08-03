@@ -1,3 +1,16 @@
+#' Form sample matrix from GDC low-pass segmentation datafiles.
+#'
+#' Reads a GDC segmetnation files, adds sample information, and forms a data matrix of samples and bins of a specified size.
+#' @keywords segmentation GDC 
+#' @import reshape2 dplyr
+#' @param file GDC file to be read
+#' @param format file format, TCGA or TARGET.
+#' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
+#' @param freadksip the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.
+#' @return sample_aggregated_segvals A dataframe containing the aggregated segmentation values, based on the parameters provided.
+#' @export
+
+
 formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize=1e6,freadskip=14)
 {
   chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
