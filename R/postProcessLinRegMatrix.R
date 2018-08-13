@@ -9,20 +9,25 @@
 #'  Rank correlations capture nonlinear relationships as well as linear. Passed to stats::cor's method parameter.
 #' @return The output matrix, or if using slurm, the slurm job object (which should be saved as an rds file and reloaded when creating the output matrix).
 #' @examples
+#' inputmat<-matrix(runif(15),nrow=3)
+#' colnames(inputmat)<-c("chr2_1_1000","chr2_1001_2000","chr2_2001_3000","chr2_3001_4000","chr2_4001_5000")
+#' rownames(inputmat)<-c("PAFPJK","PAKKAT","PUFFUM")
+#' outputmat<-matrix(runif(15),nrow=3)
+#' outputmat<-cor(inputmat)*matrix(runif(25,-30,500),nrow=5)
+#' diag(outputmat)<-Inf
+#' library(HiCNV)
+#' postProcessLinRegMatrix(input_matrix=t(inputmat),LM_mat=outputmat,cor_type="pearson",inf_replacement_val=300)
 #' @export
 postProcessLinRegMatrix<-function(input_matrix,LM_mat,cor_type="pearson",inf_replacement_val=300)
 {
-  #removing empty columns:
+  #removing empty columns:"
   input_matrix_zeros_removed<-as.data.frame(t(input_matrix))[,colSums(as.data.frame(t(input_matrix)))>0]
   input_matrix_zeros<-as.data.frame(t(input_matrix))[,colSums(as.data.frame(t(input_matrix)))==0]
-  
   #correcting infinites
-  
   LM_mat[is.infinite(unlist(LM_mat))]<-inf_replacement_val
   TCGA_low_pass_matrix<-LM_mat
   input_matrix<-input_matrix_zeros_removed
   #adding column names
-  
   rownames(TCGA_low_pass_matrix)<-colnames(input_matrix)
   colnames(TCGA_low_pass_matrix)<-colnames(input_matrix)
   #removes unnecessary substructure of the matrix/df.
