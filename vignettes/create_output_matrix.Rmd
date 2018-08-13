@@ -15,7 +15,9 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = '~')
 if(Sys.info()['sysname']=="Windows"){groupdir<-"W:/"} else {groupdir<-"/data/CCRBioinfo/"}
 setwd("~")
-nbl_input_matrix<-readRDS("NBLTCGA_merged_df_aggregated_by_bin_fixed_comparisonv4.rds")
+#nbl_input_matrix<-readRDS("NBLTCGA_merged_df_aggregated_by_bin_fixed_comparisonv4.rds")
+nbl_input_matrix<-readRDS("NBL_sample_matched_input_matrix.rds")
+
 #nbl_result_matrix<-readRDS("nbl_result_matrix_full.rds")
 
 ```

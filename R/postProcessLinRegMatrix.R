@@ -21,24 +21,27 @@
 postProcessLinRegMatrix<-function(input_matrix,LM_mat,cor_type="pearson",inf_replacement_val=300)
 {
   #removing empty columns:"
-  input_matrix_zeros_removed<-as.data.frame(t(input_matrix))[,colSums(as.data.frame(t(input_matrix)))>0]
-  input_matrix_zeros<-as.data.frame(t(input_matrix))[,colSums(as.data.frame(t(input_matrix)))==0]
+  #input_matrix_zeros_removed<-as.data.frame(t(input_matrix))[,colSums(as.data.frame(t(input_matrix)))>0]
+  input_matrix_zeros_removed<-as.data.frame(t(input_matrix))[,colSds(as.matrix(t(input_matrix)))!=0] #this will take care of zero bins and invariant bins.
+  #input_matrix_zeros<-as.data.frame(t(input_matrix))[,colSums(as.data.frame(t(input_matrix)))==0]
   #correcting infinites
   LM_mat[is.infinite(unlist(LM_mat))]<-inf_replacement_val
   TCGA_low_pass_matrix<-LM_mat
-  input_matrix<-input_matrix_zeros_removed
+  #input_matrix<-input_matrix_zeros_removed
   #adding column names
-  rownames(TCGA_low_pass_matrix)<-colnames(input_matrix)
-  colnames(TCGA_low_pass_matrix)<-colnames(input_matrix)
+  #this has to take account of the constant columns that are removed in the LM process 
+  #These will not be represented as a linear regression p-value does not exist for two vectors where one is all the same value.
+  rownames(TCGA_low_pass_matrix)<-colnames(input_matrix_zeros_removed)
+  colnames(TCGA_low_pass_matrix)<-colnames(input_matrix_zeros_removed)
   #removes unnecessary substructure of the matrix/df.
   TCGA_low_pass_matrix2<-  matrix(as.numeric(unlist(TCGA_low_pass_matrix)),ncol=ncol(TCGA_low_pass_matrix))
   colnames(TCGA_low_pass_matrix2)<-colnames(TCGA_low_pass_matrix)
   rownames(TCGA_low_pass_matrix2)<-rownames(TCGA_low_pass_matrix)
   #fixing sign
-  input_matrix_mat<-as.matrix(input_matrix)
+  input_matrix_mat<-as.matrix(input_matrix_zeros_removed)
   input_matrix_cor<-cor(as.matrix(input_matrix_mat), use = "pairwise.complete.obs",method=cor_type)
   input_matrix_cor[input_matrix_cor>0]<-1
   input_matrix_cor[input_matrix_cor<0]<- -1
-  TCGA_low_pass_matrix_sign_corrected<-(TCGA_low_pass_matrix2**input_matrix_cor)
+  TCGA_low_pass_matrix_sign_corrected<-(TCGA_low_pass_matrix2*input_matrix_cor)
   return(TCGA_low_pass_matrix_sign_corrected)
 }
