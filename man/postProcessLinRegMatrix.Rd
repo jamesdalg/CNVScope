@@ -21,6 +21,17 @@ The output matrix, or if using slurm, the slurm job object (which should be save
 \description{
 Takes a linear regression matrix and sets infinites to a finite value, and changes the sign to match the sign of the correlation for each value.
 }
+\examples{
+\dontrun{
+inputmat<-matrix(runif(15),nrow=3)
+colnames(inputmat)<-c("chr2_1_1000","chr2_1001_2000","chr2_2001_3000","chr2_3001_4000","chr2_4001_5000")
+rownames(inputmat)<-c("PAFPJK","PAKKAT","PUFFUM")
+outputmat<-matrix(runif(15),nrow=3)
+outputmat<-cor(inputmat)*matrix(runif(25,-30,500),nrow=5)
+diag(outputmat)<-Inf
+postProcessLinRegMatrix(input_matrix=t(inputmat),LM_mat=outputmat,cor_type="pearson",inf_replacement_val=300)
+}
+}
 \keyword{correlation}
 \keyword{linear}
 \keyword{lm}

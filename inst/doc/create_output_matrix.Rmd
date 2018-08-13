@@ -6,7 +6,7 @@ date: "July 25, 2018"
 output: rmarkdown::html_vignette
 vignette: >
  %\VignetteEngine{knitr::rmarkdown}
- %\VignetteIndexEntry{Vignette Title}
+ %\VignetteIndexEntry{Linear Regression/Postprocess}
  %\VignetteEncoding{UTF-8}
 ---
 
@@ -14,6 +14,12 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = '~')
 if(Sys.info()['sysname']=="Windows"){groupdir<-"W:/"} else {groupdir<-"/data/CCRBioinfo/"}
+setwd("~")
+#nbl_input_matrix<-readRDS("NBLTCGA_merged_df_aggregated_by_bin_fixed_comparisonv4.rds")
+nbl_input_matrix<-readRDS("NBL_sample_matched_input_matrix.rds")
+
+#nbl_result_matrix<-readRDS("nbl_result_matrix_full.rds")
+
 ```
 
 From our previous work, we created a small input matrix, with segmented 1Mb regions as our row labels and with sample names from TARGET data as our column labels.
@@ -22,7 +28,6 @@ We can read that in using the following code:
 library(HiCNV)
 ```
 ```{r}
-nbl_input_matrix<-readRDS("NBLTCGA_merged_df_aggregated_by_bin_fixed_comparisonv4.rds")
 nbl_input_matrix[1:5,1:5]
 ```
 calcVecLMs() comes standard in the HiCNV package. It allows calculation of the matrix with parallel processing using mclapply, but larger matrices will require a bit more power, and thus we use slurm_apply, from the rslurm pacakge to distribute the work over multiple cores. Our particular establishment has a limit approximating 1000 jobs, so it's best not to use more than that unless your cluster will support it. Conversely, you should use less if you can't submit that many individual jobs in a job array in your cluster. In this particular example, I've removed rows where there is no segmentation data, across the board using colSums().
@@ -44,12 +49,37 @@ saveRDS(nbl_result_matrix,"nbl_result_matrix_full.rds")
 
 ```
 
-```{r, echo=F}
+```{r, echo=F,include=T}
 nbl_result_matrix<-readRDS("nbl_result_matrix_full.rds")
+nbl_result_matrix_sign_corrected<-readRDS("nbl_result_matrix_sign_corrected.rds")
 ```
 
 
 ```{r}
 nbl_result_matrix[1:5,1:5]
 ```
-You'll notice that there are no signs in this matrix (they're just negative log p-values, which are always positive). We'll have to assign signs by the correlation matrix next, then we will chunk the large matrix into smaller, flattened matrices that the shiny app can handle.
+You'll notice that there are no signs in this matrix (they're just negative log p-values, which are always positive). We'll have to assign signs by the correlation matrix next, then we will chunk the large matrix into smaller, flattened matrices that the shiny app can handle. For lower capacity machines/clusters, an alternative may be using the cor function.
+
+In order to perfrom sign correction,fix the "Inf values" to a viewable value, and restore column and row names, postProcessLinRegMatrix() can be applied, yielding a final full matrix of the entire genome (Chr1->ChrX on both Axes).  300 has been used, although something a bit smaller will reduce saturation issues depending on the disparity between the lowest values in the matrix and 300.
+We'll plot the result below, using complexheatmap and a custom designed function that takes large asymmetric distributions of values and pushes them into the [0,1] colorspace with white at 0.5, corresponding to zero, values between 0 and 0.5 corresponding to negative values, and values from 0.5 to 1 corresponding to positive values (signedRescale).
+
+```{r}
+nbl_result_matrix[1:5,1:5]
+```
+```{r,eval=F}
+nbl_result_matrix_sign_corrected<-postProcessLinRegMatrix(input_matrix = nbl_input_matrix,LM_mat = nbl_result_matrix,cor_type = "pearson",inf_replacement_val = 300)
+```
+```{r}
+nbl_result_matrix_sign_corrected[1:5,1:5]
+ComplexHeatmap::Heatmap(signedRescale(as.matrix(nbl_result_matrix_sign_corrected)),col = circlize::colorRamp2(c(0,0.5,1),c("blue","white","red")),cluster_rows = F,cluster_columns = F,show_heatmap_legend = F,show_column_names = F,show_row_names = F)
+```
+Finally, the whole genome matrix is too big to plot interactively without crashing most browsers using the plotly package. We'll need to break things apart a bit. A final function will write chromosomal pair heatmaps to disk with genes from ensembl (hg19 coordinates) in encoded for each square in the matrix.
+```{r,eval=F}
+if(!dir.exists("nbl_matrix_set")){dir.create("nbl_matrix_set")}
+#setwd("nbl_matrix_set")
+createChromosomalMatrixSet(whole_genome_mat=nbl_result_matrix_sign_corrected,output_dir="nbl_matrix_set",prefix="nbl_")
+```
+```{r}
+setwd("nbl_matrix_set")
+list.files()
+```
