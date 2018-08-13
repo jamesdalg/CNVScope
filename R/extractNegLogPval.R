@@ -3,7 +3,7 @@
 #' Finds the negative log p-value of a matrix, if it exists.
 #' Checks first to see if there is a p-value to return.
 #' @keywords lm linear regression 
-#' @import base
+#' @import stats
 #' @param x a vector that is regressed in the fashion y~x.
 #' @param y a vector that is regressed in the fashion y~x.
 #' @param repval the replacement value if the regression cannot be performed, default 300 (the vectors are identical if this is used).
