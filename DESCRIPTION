@@ -1,7 +1,7 @@
 Package: HiCNV
 Type: Package
 Title: A highly useful package for dealing with CNV relation data
-Version: 1.1.9
+Version: 1.2.0
 Date: 2018-8-13
 Author: James Dalgeish <james.dalgleish@nih.gov>, Yonghong Wang <wangyong@mail.nih.gov>, Sean Davis, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>

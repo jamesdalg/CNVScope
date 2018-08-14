@@ -77,9 +77,11 @@ Finally, the whole genome matrix is too big to plot interactively without crashi
 ```{r,eval=F}
 if(!dir.exists("nbl_matrix_set")){dir.create("nbl_matrix_set")}
 #setwd("nbl_matrix_set")
+doMC::registerDoMC()
 createChromosomalMatrixSet(whole_genome_mat=nbl_result_matrix_sign_corrected,output_dir="nbl_matrix_set",prefix="nbl_")
 ```
 ```{r}
 setwd("nbl_matrix_set")
 list.files()
 ```
+There should be 529 of these particular files upon running the code. If there are not, don't hesitate to run the code again. It can happen on a cluster. It is built to detect when chromosomal matrix is already written to disk.

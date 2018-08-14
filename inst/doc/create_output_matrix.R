@@ -48,6 +48,7 @@ ComplexHeatmap::Heatmap(signedRescale(as.matrix(nbl_result_matrix_sign_corrected
 ## ----eval=F--------------------------------------------------------------
 #  if(!dir.exists("nbl_matrix_set")){dir.create("nbl_matrix_set")}
 #  #setwd("nbl_matrix_set")
+#  doMC::registerDoMC()
 #  createChromosomalMatrixSet(whole_genome_mat=nbl_result_matrix_sign_corrected,output_dir="nbl_matrix_set",prefix="nbl_")
 
 ## ------------------------------------------------------------------------
