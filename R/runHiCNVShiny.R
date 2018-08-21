@@ -45,6 +45,8 @@ if(Sys.info()["nodename"]=="NCI-02105037-L")
   #baseurl<-"file:///W:/dalgleishjl/hicnv/"
   basefn<-"W:/dalgleishjl/hicnv/"
 }
+baseurl<<-baseurl
+basefn<<-basefn
 tryCatch(bin_data<-readRDS((url(paste0(baseurl,"plotly_dashboard_ext/bin_data.rds")))),error = function(e) NULL) 
 tryCatch(bin_data<-readRDS((paste0(basefn,"plotly_dashboard_ext/bin_data.rds"))),error = function(e) NULL) 
 chromosomes<<-paste0("chr",c(seq(1:22),"X"),"_")
