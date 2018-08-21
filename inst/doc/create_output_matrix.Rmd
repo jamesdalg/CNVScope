@@ -33,7 +33,8 @@ nbl_input_matrix[1:5,1:5]
 calcVecLMs() comes standard in the HiCNV package. It allows calculation of the matrix with parallel processing using mclapply, but larger matrices will require a bit more power, and thus we use slurm_apply, from the rslurm pacakge to distribute the work over multiple cores. Our particular establishment has a limit approximating 1000 jobs, so it's best not to use more than that unless your cluster will support it. Conversely, you should use less if you can't submit that many individual jobs in a job array in your cluster. In this particular example, I've removed rows where there is no segmentation data, across the board using colSums().
 ```{r, eval=F}
 library(parallel)
-nbl_slurm_object_test_zero_removed<-calcVecLMs(bin_data = as.data.frame(t(nbl_input_matrix))[,colSums(as.data.frame(t(nbl_input_matrix)))>0],use_slurm = T,n_nodes = 975,memory_per_node = "32g",walltime = "04:00:00",n_cores = 2,cpus_on_each_node = 2,job_finished = F,slurmjob = NULL)
+nbl_slurm_object_test_zero_removed<-calcVecLMs(bin_data =as.data.frame(t(nbl_input_matrix[which(rowSds(as.matrix(nbl_input_matrix))!=0.0),])),use_slurm = T,n_nodes = 975,memory_per_node = "32g",walltime = "04:00:00",cpus_on_each_node = 2,job_finished = F,slurmjob = NULL)
+
 ```
 
 Saving the slurm object is essential as it will be required when you retrieve your results.
@@ -44,7 +45,9 @@ saveRDS(nbl_slurm_object_test_zero_removed,"nbl_slurm_object_test_zero_removed.r
 
 Retrieving the data is as simple as using rslurm::get_slurm_out() on the saved slurm object and coercing it into a matrix with the original number of columns. The slurm object must have been read with readRDS() previously or done in the same session.
 ```{r, eval=F}
-nbl_result_matrix<-matrix(get_slurm_out(nbl_slurm_object_test_zero_removed),ncol=ncol(as.data.frame(t(nbl_input_matrix))[,colSums(as.data.frame(t(nbl_input_matrix)))>0]))
+library(matrixStats)
+nbl_result_matrix<-matrix(as.numeric(unlist( get_slurm_out(nbl_slurm_object_test_zero_removed))),ncol=ncol(as.data.frame(t(nbl_input_matrix[which(rowSds(as.matrix(nbl_input_matrix))!=0.0),])) ) )
+
 saveRDS(nbl_result_matrix,"nbl_result_matrix_full.rds")
 
 ```
