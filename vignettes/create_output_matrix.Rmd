@@ -10,12 +10,13 @@ vignette: >
  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=F}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = '~')
 if(Sys.info()['sysname']=="Windows"){groupdir<-"W:/"} else {groupdir<-"/data/CCRBioinfo/"}
-setwd("~")
+#setwd("~")
 #nbl_input_matrix<-readRDS("NBLTCGA_merged_df_aggregated_by_bin_fixed_comparisonv4.rds")
+#getwd()
 nbl_input_matrix<-readRDS("NBL_sample_matched_input_matrix.rds")
 
 #nbl_result_matrix<-readRDS("nbl_result_matrix_full.rds")
@@ -53,7 +54,9 @@ saveRDS(nbl_result_matrix,"nbl_result_matrix_full.rds")
 ```
 
 ```{r, echo=F,include=T}
+download.file("https://github.com/jamesdalg/CNScope_public_data/blob/master/nbl_result_matrix_full.rds?raw=true","nbl_result_matrix_full.rds")
 nbl_result_matrix<-readRDS("nbl_result_matrix_full.rds")
+download.file("https://github.com/jamesdalg/CNScope_public_data/blob/master/nbl_result_matrix_sign_corrected.rds","nbl_result_matrix_sign_corrected.rds")
 nbl_result_matrix_sign_corrected<-readRDS("nbl_result_matrix_sign_corrected.rds")
 ```
 
@@ -84,7 +87,6 @@ doMC::registerDoMC()
 createChromosomalMatrixSet(whole_genome_mat=nbl_result_matrix_sign_corrected,output_dir="nbl_matrix_set",prefix="nbl_")
 ```
 ```{r}
-setwd("nbl_matrix_set")
-list.files()
+list.files("nbl_matrix_set")
 ```
 There should be 529 of these particular files upon running the code. If there are not, don't hesitate to run the code again. It can happen on a cluster. It is built to detect when chromosomal matrix is already written to disk.

@@ -2,7 +2,7 @@
 #'
 #' Reads a GDC segmetnation file and extract the segmetnation data.
 #' @keywords read file
-#' @import reshape2 dplyr data.table magrittr tidyr GenomicFeatures
+#' @import reshape2 dplyr data.table magrittr GenomicFeatures
 #' @param file GDC file to be read
 #' @param fread_skip The number of metadata lines to be skipped(typically 14)..
 #' @return input_tsv_with_sample_info A data frame containing the sample information extracted from the filename, including sample name & comparison type.

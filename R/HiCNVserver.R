@@ -180,7 +180,7 @@ HiCNVserver<-function(session,input, output) {
     {
       sample_name<-"NBL_output_matrix1e6"
       load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/TCGA_low_pass/NBL/",
-                              paste0(isolate(input$chrom1),isolate(input$chrom2),"melted_downsampled_TGCA_","NBLsample_matched","_unrescaled",".RData")
+                              paste0(isolate(input$chrom1),isolate(input$chrom2),"nbl_sample_matched_unrescaled.RData")
       ))))
       #browser()
       #     ggplotmatrix

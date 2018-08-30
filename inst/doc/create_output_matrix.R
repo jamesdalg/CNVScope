@@ -1,9 +1,10 @@
-## ----setup, include=FALSE------------------------------------------------
+## ----setup, include=F----------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = '~')
 if(Sys.info()['sysname']=="Windows"){groupdir<-"W:/"} else {groupdir<-"/data/CCRBioinfo/"}
-setwd("~")
+#setwd("~")
 #nbl_input_matrix<-readRDS("NBLTCGA_merged_df_aggregated_by_bin_fixed_comparisonv4.rds")
+#getwd()
 nbl_input_matrix<-readRDS("NBL_sample_matched_input_matrix.rds")
 
 #nbl_result_matrix<-readRDS("nbl_result_matrix_full.rds")
@@ -55,6 +56,5 @@ ComplexHeatmap::Heatmap(signedRescale(as.matrix(nbl_result_matrix_sign_corrected
 #  createChromosomalMatrixSet(whole_genome_mat=nbl_result_matrix_sign_corrected,output_dir="nbl_matrix_set",prefix="nbl_")
 
 ## ------------------------------------------------------------------------
-setwd("nbl_matrix_set")
-list.files()
+list.files("nbl_matrix_set")
 

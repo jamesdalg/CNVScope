@@ -134,8 +134,7 @@ nbl_result_matrix&lt;-<span class="kw">matrix</span>(<span class="kw">as.numeric
 <span class="co">#setwd(&quot;nbl_matrix_set&quot;)</span>
 doMC<span class="op">::</span><span class="kw">registerDoMC</span>()
 <span class="kw">createChromosomalMatrixSet</span>(<span class="dt">whole_genome_mat=</span>nbl_result_matrix_sign_corrected,<span class="dt">output_dir=</span><span class="st">&quot;nbl_matrix_set&quot;</span>,<span class="dt">prefix=</span><span class="st">&quot;nbl_&quot;</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setwd</span>(<span class="st">&quot;nbl_matrix_set&quot;</span>)
-<span class="kw">list.files</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list.files</span>(<span class="st">&quot;nbl_matrix_set&quot;</span>)</code></pre></div>
 <pre><code>##   [1] &quot;chr1_chr1_nbl_sample_matched_unrescaled.RData&quot;  
 ##   [2] &quot;chr1_chr10_nbl_sample_matched_unrescaled.RData&quot; 
 ##   [3] &quot;chr1_chr11_nbl_sample_matched_unrescaled.RData&quot; 
