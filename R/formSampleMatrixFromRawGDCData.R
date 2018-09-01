@@ -2,7 +2,7 @@
 #'
 #' Reads a GDC segmetnation files, adds sample information, and forms a data matrix of samples and bins of a specified size.
 #' @keywords segmentation GDC 
-#' @import reshape2 dplyr data.table BSgenome.Hsapiens.UCSC.hg19 doMC
+#' @import reshape2 dplyr data.table BSgenome.Hsapiens.UCSC.hg19 doParallel
 #' @param file GDC file to be read
 #' @param format file format, TCGA or TARGET.
 #' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
@@ -39,7 +39,7 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
   samples<-unique(mcols(TCGA_CNV_data_gr)$....sample)
   options(scipen=999)
   bins_underscored<-GRanges_to_underscored_pos(bins)
-  registerDoMC()
+  registerDoParallel()
   TCGA_CNV_data_gr_all_comparisons<-TCGA_CNV_data_gr
   TCGA_CNV_data_gr_single_comparison<-TCGA_CNV_data_gr[mcols(TCGA_CNV_data_gr)$....comparison=="NormalVsPrimary"]
   TCGA_CNV_data_gr<-TCGA_CNV_data_gr_single_comparison
