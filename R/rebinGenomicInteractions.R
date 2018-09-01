@@ -8,7 +8,7 @@
 #' @param rownames_mat The row names of the whole_genome_matrix in chr_start_end format.
 #' @param colnames_mat The column names of the whole_genome_matrix in chr_start_end format.
 #' @keywords GenomicInteractions bin matrix colnames rownames binning bin
-#' @import foreach doMC GenomicFeatures data.table
+#' @import foreach doParallel GenomicFeatures data.table
 #' @export
 #' @examples
 rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_gr=NULL,colnames_gr=NULL,rownames_mat=NULL,colnames_mat=NULL,method="nearest")
@@ -18,6 +18,7 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
     rownames_mat<-rownames(whole_genome_matrix)
     colnames_mat<-rownames(whole_genome_matrix)
   }
+  registerDoParallel()
   output<-foreach(i=1:length(gint),.inorder = T,.combine="rbind",.errorhandling = "pass",.export = ls()) %dopar% #length(breakpoint_gint_full)length(breakpoint_gint_full)
   {
     #current_int_df<-as.data.table(gint[i]) #

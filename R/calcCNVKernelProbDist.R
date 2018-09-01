@@ -6,7 +6,7 @@
 #' @param submatrix A matrix of CNV data in an intrachromosomal region (e.g. chr1 vs chr1 or chr5 vs chr5)
 #' @param win a window size for the matrix that calculates the windowed average using the kernel function
 #' @keywords CNV kernel probability distribution concordance fast
-#' @import ComplexHeatmap foreach doMC spatialfil Matrix
+#' @import ComplexHeatmap foreach doParallel spatialfil Matrix
 #' @export
 #' @examples
 #' \dontrun{
@@ -51,8 +51,8 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores
     print(proc.time() - diag_sd_start)
   }
   if(!parallel){registerDoSEQ()}
-  if(parallel){registerDoMC()}
-  #if(parallel){registerDoMC()}
+  if(parallel){registerdoParallel()}
+  #if(parallel){registerdoParallel()}
   coladjustments2<-foreach(y=c(nrow(submatrix),1),.combine="rbind") %dopar%
   {
     coladjustments<-foreach::foreach(x=1:ncol(submatrix),

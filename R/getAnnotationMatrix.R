@@ -3,10 +3,10 @@
 #'
 #' Gets the genes in the ranges within each cell of the matrix.
 #' @keywords genomic matrix
-#' @import GenomicRanges biomaRt foreach doMC
+#' @import GenomicRanges biomaRt foreach doParallel
 #' @param genomic_matrix A matrix with row and column names of the format chr1_100_200 (chr,start,end)
 #' @param prot_only Inlcude only the protein coding genes from ensembl?
-#' @param sequential Turn off parallelism with DoMC?
+#' @param sequential Turn off parallelism with doParallel?
 #' @return concatenated_gene_matrix A matrix with row and column genes
 #' @export
 getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_col=F)
@@ -28,7 +28,7 @@ getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_c
                                                ...=ensembl_gene_tx_table_prot)
   rownames_gr_genomic_matrix<-underscored_pos_to_GRanges(rownames(genomic_matrix))
   colnames_gr_genomic_matrix<-underscored_pos_to_GRanges(colnames(genomic_matrix))
-  if(sequential){registerDoSEQ()} else {registerDoMC()}
+  if(sequential){registerDoSEQ()} else {registerDoParallel()}
   if(prot_only)
   {
     print("prot_only")

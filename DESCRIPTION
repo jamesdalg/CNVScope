@@ -1,14 +1,14 @@
 Package: HiCNV
 Type: Package
 Title: A highly useful package for dealing with CNV relation data
-Version: 1.2.5
-Date: 2018-8-30
-Author: James Dalgeish <james.dalgleish@nih.gov>, Yonghong Wang <wangyong@mail.nih.gov>, Jack Zhu, Paul Meltzer
+Version: 1.2.9
+Date: 2018-8-31
+Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
 BugReports: https://github.com/jamesdalg/HiCNV/issues/
 Depends: ggplot2
-Imports: readr,DT,circlize,igraph,arules,visNetwork,reshape2,magrittr,htmltools,htmlwidgets,jointseg,plotly,shinyjs,logging,shiny,RCurl,foreach,GenomicFeatures,GenomicInteractions,HiCseg,IRanges,Matrix,OpenImageR,biomaRt,blockseg,heatmaply,matrixStats,shinythemes,shinycssloaders,spatialfil,ComplexHeatmap,foreach,GenomicRanges,GenomicFeatures,plyr,readr,data.table,foreach,rslurm,dplyr,numbers,rtracklayer,BSgenome.Hsapiens.UCSC.hg19
-Suggests:knitr,doMC
+Imports: readr,DT,circlize,igraph,arules,visNetwork,reshape2,magrittr,htmltools,htmlwidgets,jointseg,plotly,shinyjs,logging,shiny,RCurl,foreach,GenomicFeatures,GenomicInteractions,HiCseg,IRanges,Matrix,OpenImageR,biomaRt,blockseg,heatmaply,matrixStats,shinythemes,shinycssloaders,spatialfil,ComplexHeatmap,foreach,GenomicRanges,GenomicFeatures,plyr,readr,data.table,foreach,rslurm,dplyr,numbers,rtracklayer,BSgenome.Hsapiens.UCSC.hg19,doParallel
+Suggests:knitr, rmarkdown
 VignetteBuilder: knitr
 URL: https://github.com/jamesdalg/HiCNV/
 biocViews: 
