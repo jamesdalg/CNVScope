@@ -6,6 +6,7 @@
 #' @param whole_matrix the large, whole matrix from which blocks are taken
 #' @param breakpoints_col An integer list of column breakpoints, including 1 and the number of columns in the whole matrix.
 #' @param breakpoints_row An integer list of row breakpoints, including 1 and the number of rows in the whole matrix.
+#' @param outputs A list of the following possible outputs (default all): "blockaverages_reformatted_by_index","blockaverages_reformatted_by_label","blockaverages_matrix_idx_area","blockaverages_matrix_idx_avg","blockaverages_matrix_label_avg", or "blockaverages_matrix_label_area" 
 #' @return An output list of the following:
 #' @return blockaverages_reformatted_by_index  a matrix of the block averages and areas, in long format, with indexes used to generate the averages.
 #' @return blockaverages_reformatted_by_label a matrix of the block averages and areas, in long format, with labels of the indexes used to generate the averages.

@@ -5,6 +5,9 @@
 #' and a percentile matrix of these Z-scores
 #' @param submatrix A matrix of CNV data in an intrachromosomal region (e.g. chr1 vs chr1 or chr5 vs chr5)
 #' @param win a window size for the matrix that calculates the windowed average using the kernel function
+#' @param debug extra output for debugging.
+#' @param parallel use parallelization using mcmapply and doParallel?
+#' @param mcmcores The number of cores used for parallelization.
 #' @keywords CNV kernel probability distribution concordance fast
 #' @import ComplexHeatmap foreach doParallel spatialfil Matrix
 #' @export

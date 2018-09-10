@@ -7,6 +7,7 @@
 #' @param colnames_gr A Genomic Ranges object created from the whole genome matrix column names in chr_start_end format. No effect if whole_genome_mattrix is specified.
 #' @param rownames_mat The row names of the whole_genome_matrix in chr_start_end format.
 #' @param colnames_mat The column names of the whole_genome_matrix in chr_start_end format.
+#' @param method Method to rebin with-- can use overlap and nearest methods.Default: nearest.
 #' @keywords GenomicInteractions bin matrix colnames rownames binning bin
 #' @import foreach doParallel GenomicFeatures data.table
 #' @export

@@ -7,6 +7,7 @@
 #' @param LM_mat The linear regression matrix, with rows and columns consisting of bins and the values being the negative log p-value between them.
 #' @param cor_type The correlation type ("pearson" (linear), "spearman" (rank), "kendall"(also rank-based)).
 #'  Rank correlations capture nonlinear relationships as well as linear. Passed to stats::cor's method parameter.
+#' @param inf_replacement_val the value for which infinites are replaced, by default 300.
 #' @return The output matrix, or if using slurm, the slurm job object (which should be saved as an rds file and reloaded when creating the output matrix).
 #' @examples
 #'\dontrun{

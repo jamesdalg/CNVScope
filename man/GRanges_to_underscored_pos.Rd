@@ -8,6 +8,8 @@ GRanges_to_underscored_pos(input_gr, minusOneToEnd = T)
 }
 \arguments{
 \item{input_gr}{A GenomicRanges object}
+
+\item{minusOneToEnd}{Minus one position to end of each Genomic Range?}
 }
 \description{
 This function converts row or column names (or any character vector of the format) into a GenomicRanges object.

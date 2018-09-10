@@ -5,7 +5,7 @@
 #' @import GenomicInteractions reshape2 biomaRt magrittr foreach doParallel
 #' @param whole_genome_mat The matrix containing all of the data, from which the individual matrices will be split.
 #' @param output_dir the folder where the matrices in RData format, will be written.
-#' @param var description
+#' @param prefix filename prefix for individual matrices. Default: "nbl_"
 #' @return The list of files already written to disk, with full filenames and paths.
 #' @examples
 #' @export

@@ -2,6 +2,7 @@
 #'
 #' This function converts row or column names (or any character vector of the format) into a GenomicRanges object.
 #' @param input_gr A GenomicRanges object
+#' @param minusOneToEnd Minus one position to end of each Genomic Range?
 #' @keywords Genomic Ranges position
 #' @import GenomicFeatures
 #' @export

@@ -15,6 +15,8 @@
 #' @export
 
 HiCNVserver<-function(session,input, output) {
+  if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+  
   printLogJs <- function(x, ...) {
     
     logjs(x)

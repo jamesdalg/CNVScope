@@ -17,6 +17,7 @@
 
 
 runHiCNVShiny<-function(baseurl=NULL,basefn=NULL) {
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
   
 head.matrix<-function(mat,n=6L)
 {

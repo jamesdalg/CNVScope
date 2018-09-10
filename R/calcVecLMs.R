@@ -6,6 +6,11 @@
 #' @param bin_data The parent matrix, with columns to have linear regression performed on them.
 #' @param use_slurm Paralleize over a number of slurm HPC jobs? If false, the program will simply run locally.
 #' @param slurmjob the slurm job object produced by rslurm::slurm_apply(), after running the function initially.
+#' @param job_finished Are all the slurm jobs finished and the results need retrieving?
+#' @param n_nodes the number of nodes used in your slurm job.
+#' @param cpus_on_each_node The number of cpus used on each node
+#' @param memory_per_node the amount of ram per node (e.g. "32g" or "2g")
+#' @param walltime Time for job to be completed for SLURM scheduler in hh:mm:ss format. Defaults to 4h.
 #' @return The output matrix, or if using slurm, the slurm job object (which should be saved as an rds file and reloaded when creating the output matrix).
 #' @examples
 #'\dontrun{

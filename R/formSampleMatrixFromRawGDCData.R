@@ -4,10 +4,10 @@
 #' @keywords segmentation GDC 
 #' @import reshape2 dplyr data.table BSgenome.Hsapiens.UCSC.hg19 doParallel
 #' @importFrom tidyr drop_na unite
-#' @param file GDC file to be read
+#' @param tcga_files GDC files to be read
 #' @param format file format, TCGA or TARGET.
 #' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
-#' @param freadksip the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.
+#' @param freadskip the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.
 #' @return sample_aggregated_segvals A dataframe containing the aggregated segmentation values, based on the parameters provided.
 #' @export
 

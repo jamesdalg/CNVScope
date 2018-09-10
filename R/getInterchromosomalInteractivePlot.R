@@ -3,7 +3,9 @@
 #' This function requires a matrix with genomic coordinates in the row and column names, and produces a heatmap with a tooltip
 #' @keywords CNV heatmap HTML widget data.table readr
 #' @import biomaRt GenomicRanges heatmaply
-#' @param whole_matrix the large, whole genomic matrix from which the submatrix is taken
+#' @param whole_matrix the large, whole genomic matrix from which the submatrix is taken (rows)
+#' @param chrom1 The first chromsome used for the map (columns).
+#' @param chrom2 The second chromsome used for a map axis.
 #' @return An HTML widget.
 #' @examples
 #' \dontrun{

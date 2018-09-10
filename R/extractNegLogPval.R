@@ -7,6 +7,7 @@
 #' @param x a vector that is regressed in the fashion y~x.
 #' @param y a vector that is regressed in the fashion y~x.
 #' @param repval the replacement value if the regression cannot be performed, default 300 (the vectors are identical if this is used).
+#' @param lowrepval The low replacement value in the case that a regression p-value is undefined.
 #' @return The negative log p-value or replacement value.
 #' @examples
 #'\dontrun{
