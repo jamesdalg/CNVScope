@@ -4,7 +4,7 @@
 #' @param input_gr A GenomicRanges object
 #' @param minusOneToEnd Minus one position to end of each Genomic Range?
 #' @keywords Genomic Ranges position
-#' @import GenomicFeatures
+#' @importFrom GenomicRanges seqnames GRanges
 #' @export
 #' @examples
 GRanges_to_underscored_pos<-function(input_gr,minusOneToEnd=T)

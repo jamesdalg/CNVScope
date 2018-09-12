@@ -11,7 +11,7 @@
 #' @keywords CNV kernel probability distribution concordance fast
 #' @import doParallel
 #' @importFrom foreach foreach
-#' @importFrom Matrix bandSparse CsparseMatrix
+#' @importFrom Matrix bandSparse sparseMatrix
 #' @importFrom spatialfil applyFilter
 #' @examples
 #' \dontrun{

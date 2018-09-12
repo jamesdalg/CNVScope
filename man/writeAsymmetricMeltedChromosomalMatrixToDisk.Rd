@@ -5,10 +5,9 @@
 \title{Write a matrix, with genes, of a submatrix of a whole genome interaction matrix to disk.}
 \usage{
 writeAsymmetricMeltedChromosomalMatrixToDisk(whole_genome_matrix, chrom1,
-  chrom2, filename, extra_data_matrix = NULL, transpose = F,
-  sequential = T, debug = T, multipass = T, desired_range_start = 50,
-  desired_range_end = 300, saveToDisk = T,
-  outputOriginalValuesInSeparateField = F, max_cap = NULL, rescale = T)
+  chrom2, extra_data_matrix = NULL, transpose = F, sequential = T,
+  debug = T, desired_range_start = 50, desired_range_end = 300,
+  saveToDisk = T, max_cap = NULL, rescale = T)
 }
 \arguments{
 \item{whole_genome_matrix}{A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.}
@@ -18,6 +17,22 @@ writeAsymmetricMeltedChromosomalMatrixToDisk(whole_genome_matrix, chrom1,
 \item{chrom2}{second chromosome of the two which will subset the matrix. (this is done in row-column fasion).}
 
 \item{extra_data_matrix}{A matrix with additional variables about each point, one position per row with as many variables as remaining columns.}
+
+\item{transpose}{transpose the matrix?}
+
+\item{sequential}{disable parallelization with registerDoSEQ()?}
+
+\item{debug}{extra output}
+
+\item{desired_range_start}{start of range for width and height of matrix for downsampling}
+
+\item{saveToDisk}{saves the matrix to disk}
+
+\item{max_cap}{maximum saturation cap, passed to signedRescale}
+
+\item{rescale}{perform signedRescale() on matrix?}
+
+\item{desired_range_start}{end of range for width and height of matrix for downsampling}
 }
 \value{
 ggplotmatrix a matrix with values sufficient to create a ggplot2 heatmap with geom_tile() or with ggiraph's geom_tile_interactive()

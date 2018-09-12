@@ -7,9 +7,17 @@
 #' @param chrom1 first chromosome of the two which will subset the matrix. (this is done in row-column fasion).
 #' @param chrom2 second chromosome of the two which will subset the matrix. (this is done in row-column fasion).
 #' @param extra_data_matrix A matrix with additional variables about each point, one position per row with as many variables as remaining columns.
+#' @param transpose transpose the matrix?
+#' @param sequential disable parallelization with registerDoSEQ()?
+#' @param debug extra output
+#' @param desired_range_start start of range for width and height of matrix for downsampling
+#' @param desired_range_start end of range for width and height of matrix for downsampling
+#' @param saveToDisk saves the matrix to disk
+#' @param max_cap maximum saturation cap, passed to signedRescale
+#' @param rescale perform signedRescale() on matrix?
 #' @return ggplotmatrix a matrix with values sufficient to create a ggplot2 heatmap with geom_tile() or with ggiraph's geom_tile_interactive()
 #' @export
-writeAsymmetricMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,filename,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,multipass=T,desired_range_start=50,desired_range_end=300,saveToDisk=T,outputOriginalValuesInSeparateField=F,max_cap=NULL,rescale=T)
+writeAsymmetricMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,desired_range_start=50,desired_range_end=300,saveToDisk=T,max_cap=NULL,rescale=T)
 {
   if(!is.null(extra_data_matrix))
   {  

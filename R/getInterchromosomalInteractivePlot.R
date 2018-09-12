@@ -2,7 +2,11 @@
 #'
 #' This function requires a matrix with genomic coordinates in the row and column names, and produces a heatmap with a tooltip
 #' @keywords CNV heatmap HTML widget data.table readr
-#' @import biomaRt GenomicRanges heatmaply
+#' @importFrom biomaRt getBM useMart
+#' @importFrom GenomicRanges GRanges seqnames
+#' @importFrom IRanges subsetByOverlaps
+#' @importFrom heatmaply heatmaply
+#' @importFrom ggplot2 scale_fill_gradient2
 #' @param whole_matrix the large, whole genomic matrix from which the submatrix is taken (rows)
 #' @param chrom1 The first chromsome used for the map (columns).
 #' @param chrom2 The second chromsome used for a map axis.
@@ -41,7 +45,7 @@ getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
   row_gene_strings_submatrix<-foreach(i=1:length(rownames_gr_submatrix),.inorder=T) %do% {
     print(i)
     outputstring<-paste(
-      unique(gsub("\\..*[[:space:]]","",unique(mcols(subsetByOverlaps(ensembl_gene_gr,rownames_gr_submatrix[i]))$....external_gene_name)))
+      unique(gsub("\\..*[[:space:]]","",unique(mcols(IRanges::subsetByOverlaps(ensembl_gene_gr,rownames_gr_submatrix[i]))$....external_gene_name)))
       ,collapse=" ")
     if(is.null(outputstring) | anyNA(outputstring) | length(outputstring)==0) {outputstring<-""}
     outputstring
@@ -49,7 +53,7 @@ getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
   col_gene_strings_submatrix<-foreach(i=1:length(colnames_gr_submatrix),.inorder=T) %do% {
     print(i)
     outputstring<-paste(
-      unique(gsub("\\..*[[:space:]]","",unique(mcols(subsetByOverlaps(ensembl_gene_gr,colnames_gr_submatrix[i]))$....external_gene_name)))
+      unique(gsub("\\..*[[:space:]]","",unique(mcols(IRanges::subsetByOverlaps(ensembl_gene_gr,colnames_gr_submatrix[i]))$....external_gene_name)))
       ,collapse=" ")
     if(is.null(outputstring) | anyNA(outputstring) | length(outputstring)==0) {outputstring<-""}
     outputstring

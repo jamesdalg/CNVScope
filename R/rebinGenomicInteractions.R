@@ -9,7 +9,10 @@
 #' @param colnames_mat The column names of the whole_genome_matrix in chr_start_end format.
 #' @param method Method to rebin with-- can use overlap and nearest methods.Default: nearest.
 #' @keywords GenomicInteractions bin matrix colnames rownames binning bin
-#' @import foreach doParallel GenomicFeatures data.table
+#' @importFrom GenomicRanges nearest GRanges
+#' @importFrom InteractionSet findOverlaps
+#' @importFrom GenomicInteractions anchorOne anchorTwo
+#' @import foreach doParallel
 #' @export
 #' @examples
 rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_gr=NULL,colnames_gr=NULL,rownames_mat=NULL,colnames_mat=NULL,method="nearest")
@@ -23,16 +26,16 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
   output<-foreach(i=1:length(gint),.inorder = T,.combine="rbind",.errorhandling = "pass",.export = ls()) %dopar% #length(breakpoint_gint_full)length(breakpoint_gint_full)
   {
     #current_int_df<-as.data.table(gint[i]) #
-    current_int_df<-as.data.frame(cbind(as.data.frame(anchorOne(gint)[i]),as.data.frame(anchorTwo(gint)[i]),as.data.frame(mcols(gint[i]))))
+    current_int_df<-as.data.frame(cbind(as.data.frame(GenomicInteractions::anchorOne(gint)[i]),as.data.frame(GenomicInteractions::anchorTwo(gint)[i]),as.data.frame(mcols(gint[i]))))
     print(paste0(i/length(gint)*100,"%"))
     if(method=="overlap")
     {
-    row_bin_index<-findOverlaps(rownames_gr,anchorOne(gint[i]))@from
-    col_bin_index<-findOverlaps(colnames_gr,anchorTwo(gint[i]))@from} 
+    row_bin_index<-InteractionSet::findOverlaps(rownames_gr,GenomicInteractions::anchorOne(gint[i]))@from
+    col_bin_index<-InteractionSet::findOverlaps(colnames_gr,GenomicInteractions::anchorTwo(gint[i]))@from} 
     if(method=="nearest")
     {
-      row_bin_index<-nearest(anchorOne(gint[i]),rownames_gr)
-      col_bin_index<-nearest(anchorTwo(gint[i]),colnames_gr)
+      row_bin_index<-GenomicRanges::nearest(GenomicInteractions::anchorOne(gint[i]),rownames_gr)
+      col_bin_index<-GenomicRanges::nearest(GenomicInteractions::anchorTwo(gint[i]),colnames_gr)
     }
     
     if(length(row_bin_index)==0 | length(col_bin_index)==0) {
