@@ -2,7 +2,9 @@
 #'
 #' Reads a GDC segmetnation files, adds sample information, and forms a data matrix of samples and bins of a specified size.
 #' @keywords segmentation GDC 
-#' @import reshape2 dplyr data.table BSgenome.Hsapiens.UCSC.hg19 doParallel
+#' @import BSgenome.Hsapiens.UCSC.hg19 doParallel
+#' @importFrom data.table fread
+#' @importFrom reshape2 colsplit
 #' @importFrom tidyr drop_na unite
 #' @param tcga_files GDC files to be read
 #' @param format file format, TCGA or TARGET.
@@ -22,7 +24,7 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
   #                                       return(input_csv_with_sample_info)
   #                                       }
   # )
-  TCGA_CNV_data_with_sample_info<-ldply(tcga_files,function(x) freadGDCfile(x,fread_skip=freadskip))  
+  TCGA_CNV_data_with_sample_info<-plyr::ldply(tcga_files,function(x) freadGDCfile(x,fread_skip=freadskip))  
   #TCGA_CNV_data_with_sample_info_small<-ldply(tcga_files[1:100],freadGDCfile)  
   #end testing
   TCGA_CNV_data<-TCGA_CNV_data_with_sample_info
