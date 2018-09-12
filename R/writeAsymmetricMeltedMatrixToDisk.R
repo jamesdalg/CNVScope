@@ -2,7 +2,7 @@
 #'
 #' Writes an RData file with a ggplot2 object within.
 #' @keywords ggplot2 heatmap plotly ggiraph genomic matrix
-#' @import IRanges GenomicRanges magrittr OpenImageR
+#' @import magrittr OpenImageR
 #' @param whole_genome_matrix A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.
 #' @param chrom1 first chromosome of the two which will subset the matrix. (this is done in row-column fasion).
 #' @param chrom2 second chromosome of the two which will subset the matrix. (this is done in row-column fasion).

@@ -1,13 +1,13 @@
 Package: HiCNV
 Type: Package
-Title: A highly useful package for dealing with CNV relation data
-Version: 1.3.4
-Date: 2018-9-8
+Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
+Version: 1.4.0
+Date: 2018-9-11
 Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
 BugReports: https://github.com/jamesdalg/HiCNV/issues/
 Depends: ggplot2
-Imports: readr,DT,BiocInstaller,tidyr,circlize,igraph,visNetwork,reshape2,magrittr,htmltools,htmlwidgets,jointseg,plotly,shinyjs,logging,shiny,RCurl,foreach,GenomicFeatures,GenomicInteractions,HiCseg,IRanges,Matrix,OpenImageR,biomaRt,blockseg,heatmaply,matrixStats,shinythemes,shinycssloaders,spatialfil,ComplexHeatmap,foreach,GenomicRanges,plyr,data.table,rslurm,dplyr,numbers,rtracklayer,BSgenome.Hsapiens.UCSC.hg19,doParallel
+Imports: readr,DT,BiocInstaller,tidyr,circlize,igraph,visNetwork,reshape2,magrittr,htmltools,htmlwidgets,jointseg,plotly,shinyjs,logging,shiny,RCurl,foreach,GenomicFeatures,GenomicInteractions,HiCseg,IRanges,Matrix,OpenImageR,biomaRt,blockseg,heatmaply,matrixStats,shinythemes,shinycssloaders,spatialfil,ComplexHeatmap,GenomicRanges,plyr,data.table,rslurm,dplyr,numbers,rtracklayer,BSgenome.Hsapiens.UCSC.hg19,doParallel
 Suggests:knitr, rmarkdown
 VignetteBuilder: knitr
 URL: https://github.com/jamesdalg/HiCNV/

@@ -11,6 +11,12 @@ calcCNVKernelProbDist(submatrix = NULL, win = 5, debug = F,
 \item{submatrix}{A matrix of CNV data in an intrachromosomal region (e.g. chr1 vs chr1 or chr5 vs chr5)}
 
 \item{win}{a window size for the matrix that calculates the windowed average using the kernel function}
+
+\item{debug}{extra output for debugging.}
+
+\item{parallel}{use parallelization using mcmapply and doParallel?}
+
+\item{mcmcores}{The number of cores used for parallelization.}
 }
 \description{
 This function produces several matrices, including a Z-score matrix

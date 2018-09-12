@@ -3,6 +3,18 @@
 #' Performs a signed rescale on the data, shrinking the negative and positive ranges into the [0,1] space, such that negative is always less than 0.5 and positive is always greater.
 #' @keywords signed rescale positive negative matrix
 #' @param matrix A matrix to be transformed
+#' @param global_max the global maximum (used if scaling using statistics from a large matrix upon a submatrix).
+#' @param global_min the global minimum
+#' @param global_sigma the global signma
+#' @param global_mu the global mu
+#' @param max_cap the maximum saturation-- decreases the ceiling considered for the scaling function.
+#' Useful to see greater differences if an image is too white, increase it if there is too much color to tell apart domains.
+#' @param method method to perform the rescaling.
+#' Options are "minmax" (default), "tan" for tangent, and "sd" for standard devation
+#' @param tan_transform apply a tangent transformation?
+#' @param global_sigma_pos The positive global sigma. See getGlobalRescalingStats. 
+#' @param global_sigma_neg The negative global sigma. See getGlobalRescalingStats.
+#' @param asymptotic_max make the maximum value in the matrix not 1, but rather something slightly below.
 #' @return transformedmatrix A transformed matrix.
 #' @examples 
 #' \dontrun{

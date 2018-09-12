@@ -7,7 +7,11 @@
 getInterchromosomalInteractivePlot(whole_matrix, chrom1, chrom2)
 }
 \arguments{
-\item{whole_matrix}{the large, whole genomic matrix from which the submatrix is taken}
+\item{whole_matrix}{the large, whole genomic matrix from which the submatrix is taken (rows)}
+
+\item{chrom1}{The first chromsome used for the map (columns).}
+
+\item{chrom2}{The second chromsome used for a map axis.}
 }
 \value{
 An HTML widget.

@@ -11,7 +11,7 @@ createChromosomalMatrixSet(whole_genome_mat, output_dir, prefix = "nbl_")
 
 \item{output_dir}{the folder where the matrices in RData format, will be written.}
 
-\item{var}{description}
+\item{prefix}{filename prefix for individual matrices. Default: "nbl_"}
 }
 \value{
 The list of files already written to disk, with full filenames and paths.

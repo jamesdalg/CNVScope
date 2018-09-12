@@ -9,8 +9,10 @@
 #' @param parallel use parallelization using mcmapply and doParallel?
 #' @param mcmcores The number of cores used for parallelization.
 #' @keywords CNV kernel probability distribution concordance fast
-#' @import ComplexHeatmap foreach doParallel spatialfil Matrix
-#' @export
+#' @import doParallel
+#' @importFrom foreach foreach
+#' @importFrom Matrix bandSparse CsparseMatrix
+#' @importFrom spatialfil applyFilter
 #' @examples
 #' \dontrun{
 #' set.seed(303)
@@ -28,6 +30,8 @@
 #' cluster_rows = F,show_column_names = F,
 #' show_row_names = F,column_title = "original data")
 #' }
+#' @export
+
 calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores=1)
 {
   submatrix<-as.matrix(submatrix)

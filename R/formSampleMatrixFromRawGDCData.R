@@ -2,7 +2,7 @@
 #'
 #' Reads a GDC segmetnation files, adds sample information, and forms a data matrix of samples and bins of a specified size.
 #' @keywords segmentation GDC 
-#' @import BSgenome.Hsapiens.UCSC.hg19 doParallel
+#' @import doParallel
 #' @importFrom data.table fread
 #' @importFrom reshape2 colsplit
 #' @importFrom tidyr drop_na unite
@@ -35,7 +35,7 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
   TCGA_CNV_data_range_filtered<-TCGA_CNV_data %>% tidyr::drop_na(begin,end)
   TCGA_CNV_data_dt<-as.data.table(TCGA_CNV_data_range_filtered)
   TCGA_CNV_data_gr<-GRanges(seqnames = TCGA_CNV_data_range_filtered$`>chr`,ranges = IRanges(start = TCGA_CNV_data_range_filtered$begin,end = TCGA_CNV_data_range_filtered$end),... = TCGA_CNV_data_range_filtered[,4:ncol(TCGA_CNV_data_range_filtered)])
-  bins<-tileGenome(seqinfo(Hsapiens),tilewidth=binsize,cut.last.tile.in.chrom = T)
+  bins<-tileGenome(seqinfo(BSgenome.Hsapiens.UCSC.hg19::Hsapiens),tilewidth=binsize,cut.last.tile.in.chrom = T)
   bins<-bins[bins@seqnames %in% gsub("_","",chromosomes)]
   rownames_gr = bins
   colnames_gr = bins

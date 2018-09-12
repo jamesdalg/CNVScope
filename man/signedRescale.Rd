@@ -11,6 +11,28 @@ signedRescale(matrix, global_max = NULL, global_min = NULL,
 }
 \arguments{
 \item{matrix}{A matrix to be transformed}
+
+\item{global_max}{the global maximum (used if scaling using statistics from a large matrix upon a submatrix).}
+
+\item{global_min}{the global minimum}
+
+\item{global_sigma}{the global signma}
+
+\item{global_mu}{the global mu}
+
+\item{max_cap}{the maximum saturation-- decreases the ceiling considered for the scaling function.
+Useful to see greater differences if an image is too white, increase it if there is too much color to tell apart domains.}
+
+\item{method}{method to perform the rescaling.
+Options are "minmax" (default), "tan" for tangent, and "sd" for standard devation}
+
+\item{tan_transform}{apply a tangent transformation?}
+
+\item{global_sigma_pos}{The positive global sigma. See getGlobalRescalingStats.}
+
+\item{global_sigma_neg}{The negative global sigma. See getGlobalRescalingStats.}
+
+\item{asymptotic_max}{make the maximum value in the matrix not 1, but rather something slightly below.}
 }
 \value{
 transformedmatrix A transformed matrix.

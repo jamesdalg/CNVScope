@@ -1,15 +1,22 @@
 #' Write a matrix, with genes, of a submatrix of a whole genome interaction matrix to disk.
 #'
 #' Writes an RData file with a ggplot2 object within.
-#' @keywords ggplot2 heatmaply plotly ggiraph genomic matrix
-#' @import IRanges GenomicRanges magrittr OpenImageR
+#' @keywords ggplot2 plotly ggiraph genomic matrix
+#' @import magrittr OpenImageR
+#' @importFrom IRanges IRanges
 #' @param whole_genome_matrix A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.
 #' @param chrom1 first chromosome of the two which will subset the matrix. (this is done in row-column fasion).
 #' @param chrom2 second chromosome of the two which will subset the matrix. (this is done in row-column fasion).
 #' @param extra_data_matrix A matrix with additional variables about each point, one position per row with as many variables as remaining columns.
+#' @param filename the filename to be written
+#' @param transpose transpose the matrix?
+#' @param sequential Disable paralleization with doParallel? registerDoSEQ() is used for this.
+#' @param debug verbose output for debugging
+#' @param desired_range_start the downsampled matrix must be of this size (rows & cols) at minimum
+#' @param desired_range_end the downsampled matrix must be of this size (rows & cols) at maximum
 #' @return ggplotmatrix a matrix with values sufficient to create a ggplot2 heatmap with geom_tile() or with ggiraph's geom_tile_interactive()
 #' @export
-writeMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,filename,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,multipass=T,desired_range_start=50,desired_range_end=300)
+writeMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,filename,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,desired_range_start=50,desired_range_end=300)
 {
   if(!is.null(extra_data_matrix))
   {  
@@ -20,7 +27,7 @@ writeMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,f
   submatrix<-whole_genome_matrix[grep(chromosomes[chrom1],rownames(whole_genome_matrix)),grep(chromosomes[chrom2],colnames(whole_genome_matrix))]
   #insert intra code here for compatibility, remembering the bit at the end of the while loops.
   downsample_factor<-NULL
-  desired_range<-IRanges(desired_range_start,desired_range_end)
+  desired_range<-IRanges::IRanges(desired_range_start,desired_range_end)
   downsample_factor_row<-NULL
   downsample_outcomes_row<-as.data.frame(cbind(numbers::divisors(nrow(submatrix)),nrow(submatrix)/numbers::divisors(nrow(submatrix))))
   colnames(downsample_outcomes_row)<-c("factor","downsampled_size")

@@ -8,13 +8,13 @@ formSampleMatrixFromRawGDCData(tcga_files = NULL, format = "TARGET",
   binsize = 1e+06, freadskip = 14)
 }
 \arguments{
+\item{tcga_files}{GDC files to be read}
+
 \item{format}{file format, TCGA or TARGET.}
 
 \item{binsize}{the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.}
 
-\item{file}{GDC file to be read}
-
-\item{freadksip}{the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.}
+\item{freadskip}{the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.}
 }
 \value{
 sample_aggregated_segvals A dataframe containing the aggregated segmentation values, based on the parameters provided.

@@ -14,6 +14,8 @@ postProcessLinRegMatrix(input_matrix, LM_mat, cor_type = "pearson",
 
 \item{cor_type}{The correlation type ("pearson" (linear), "spearman" (rank), "kendall"(also rank-based)).
 Rank correlations capture nonlinear relationships as well as linear. Passed to stats::cor's method parameter.}
+
+\item{inf_replacement_val}{the value for which infinites are replaced, by default 300.}
 }
 \value{
 The output matrix, or if using slurm, the slurm job object (which should be saved as an rds file and reloaded when creating the output matrix).

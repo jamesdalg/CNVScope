@@ -12,6 +12,13 @@ extractNegLogPval(x, y, repval = 300, lowrepval = 0, signed = F)
 \item{y}{a vector that is regressed in the fashion y~x.}
 
 \item{repval}{the replacement value if the regression cannot be performed, default 300 (the vectors are identical if this is used).}
+
+\item{lowrepval}{The low replacement value in the case that a regression p-value is undefined.}
+
+\item{signed}{change the sign of the negative log p-value based on the sign of beta?
+e.g. if the line has a negative slope, so will the returned value.
+ If there is a positive slope, there will be a positive negative log p-value.
+ if this option is disabled, then no sign changes will happen based on the sign of the slope.}
 }
 \value{
 The negative log p-value or replacement value.

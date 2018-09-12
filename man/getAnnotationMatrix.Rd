@@ -13,6 +13,8 @@ getAnnotationMatrix(genomic_matrix, prot_only = T, sequential = F,
 \item{prot_only}{Inlcude only the protein coding genes from ensembl?}
 
 \item{sequential}{Turn off parallelism with doParallel?}
+
+\item{flip_row_col}{Give column genes along the rows and row genes down columns?}
 }
 \value{
 concatenated_gene_matrix A matrix with row and column genes

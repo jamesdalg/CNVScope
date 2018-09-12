@@ -6,8 +6,7 @@
 \usage{
 writeMeltedChromosomalMatrixToDisk(whole_genome_matrix, chrom1, chrom2,
   filename, extra_data_matrix = NULL, transpose = F, sequential = T,
-  debug = T, multipass = T, desired_range_start = 50,
-  desired_range_end = 300)
+  debug = T, desired_range_start = 50, desired_range_end = 300)
 }
 \arguments{
 \item{whole_genome_matrix}{A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.}
@@ -16,7 +15,19 @@ writeMeltedChromosomalMatrixToDisk(whole_genome_matrix, chrom1, chrom2,
 
 \item{chrom2}{second chromosome of the two which will subset the matrix. (this is done in row-column fasion).}
 
+\item{filename}{the filename to be written}
+
 \item{extra_data_matrix}{A matrix with additional variables about each point, one position per row with as many variables as remaining columns.}
+
+\item{transpose}{transpose the matrix?}
+
+\item{sequential}{Disable paralleization with doParallel? registerDoSEQ() is used for this.}
+
+\item{debug}{verbose output for debugging}
+
+\item{desired_range_start}{the downsampled matrix must be of this size (rows & cols) at minimum}
+
+\item{desired_range_end}{the downsampled matrix must be of this size (rows & cols) at maximum}
 }
 \value{
 ggplotmatrix a matrix with values sufficient to create a ggplot2 heatmap with geom_tile() or with ggiraph's geom_tile_interactive()

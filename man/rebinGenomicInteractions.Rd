@@ -20,6 +20,8 @@ rebinGenomicInteractions(gint = NULL, whole_genome_matrix = NULL,
 \item{rownames_mat}{The row names of the whole_genome_matrix in chr_start_end format.}
 
 \item{colnames_mat}{The column names of the whole_genome_matrix in chr_start_end format.}
+
+\item{method}{Method to rebin with-- can use overlap and nearest methods.Default: nearest.}
 }
 \description{
 This function allows the user to assign a set of genomicinteractions to a pre-existing matrix with known dimensions and column/row names. It finds the row/column index of each point and produces a merged dataframe with the original annotation columns that correspond to each bin in the matrix, with appropriate labels & indexes.

@@ -2,7 +2,8 @@
 #'
 #' Averages the columns and rows of a matrix by a certain amount.
 #' @keywords rescale downsample average edges matrix
-#' @import reshape2 matrixStats
+#' @importFrom reshape2 colsplit
+#' @importFrom matrixStats colMeans
 #' @param unchangedmatrix A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.
 #' @param nedges The number of edges to be averaged
 #' @param dimension Selectively averages edges in one dimension. Performs symmetric edge averaging by default.
@@ -22,7 +23,7 @@ averageMatrixEdges<-function(unchangedmatrix,nedges=1,dimension=c("row","column"
   {
     #dim(unchangedmatrix[(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix),])
     #length(colMeans(unchangedmatrix[(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix),]))
-    averaged_row<-(colMeans(unchangedmatrix[(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix),]))
+    averaged_row<-(matrixStats::colMeans(unchangedmatrix[(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix),]))
     averaged_rownames_df<-reshape2::colsplit(string = rownames(unchangedmatrix)[(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix)],pattern = "_",names = c("chrom","start","end"))
     #<-(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix)
     #averaged_matrix<-unchangedmatrix[1:nrow(unchangedmatrix)-nedges-1),]
