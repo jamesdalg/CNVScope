@@ -3,7 +3,7 @@
 #' Averages the columns and rows of a matrix by a certain amount.
 #' @keywords rescale downsample average edges matrix
 #' @importFrom reshape2 colsplit
-#' @importFrom matrixStats colMeans
+#' @importFrom Matrix colMeans rowMeans
 #' @param unchangedmatrix A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.
 #' @param nedges The number of edges to be averaged
 #' @param dimension Selectively averages edges in one dimension. Performs symmetric edge averaging by default.
