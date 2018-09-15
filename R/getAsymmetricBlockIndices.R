@@ -2,8 +2,8 @@
 #' 
 #' This function segments a matrix, including asymmetric matrices using multiple imputation (MI) techniques and a segmentation algorithm to generate breakpoints for column and row.
 #' 
-#' @keywords HiCseg MI multiple imputation Hi-C CNV breakpoints
-#' @import HiCseg blockseg jointseg
+#' @keywords HiCseg MI multiple imputation Hi-C CNV breakpoints blockseg jointseg
+#' @importFrom HiCseg HiCseg_linkC_R
 #' @param genomicmatrix the large, whole matrix from which blocks are taken
 #' @param nb_change_max the maximal number of changepoints, passed to HiCseg (if this algorithm is used). Note: HiCseg doesn't actually obey this limit. Rather, use it as a parameter to increase/decrease segmentation extent.
 #' @param distrib Passed to Hicseg_linkC_R, from their documentation: Distribution of the data: "B" is for Negative Binomial distribution, "P" is for the Poisson distribution and "G" is for the Gaussian distribution."

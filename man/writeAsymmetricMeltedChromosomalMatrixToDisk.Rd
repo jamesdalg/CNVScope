@@ -26,13 +26,13 @@ writeAsymmetricMeltedChromosomalMatrixToDisk(whole_genome_matrix, chrom1,
 
 \item{desired_range_start}{start of range for width and height of matrix for downsampling}
 
+\item{desired_range_end}{end of range for width and height of matrix for downsampling}
+
 \item{saveToDisk}{saves the matrix to disk}
 
 \item{max_cap}{maximum saturation cap, passed to signedRescale}
 
 \item{rescale}{perform signedRescale() on matrix?}
-
-\item{desired_range_start}{end of range for width and height of matrix for downsampling}
 }
 \value{
 ggplotmatrix a matrix with values sufficient to create a ggplot2 heatmap with geom_tile() or with ggiraph's geom_tile_interactive()

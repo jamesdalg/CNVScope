@@ -11,7 +11,7 @@
 #' @param sequential disable parallelization with registerDoSEQ()?
 #' @param debug extra output
 #' @param desired_range_start start of range for width and height of matrix for downsampling
-#' @param desired_range_start end of range for width and height of matrix for downsampling
+#' @param desired_range_end end of range for width and height of matrix for downsampling
 #' @param saveToDisk saves the matrix to disk
 #' @param max_cap maximum saturation cap, passed to signedRescale
 #' @param rescale perform signedRescale() on matrix?

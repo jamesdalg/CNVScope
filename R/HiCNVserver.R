@@ -2,8 +2,16 @@
 #'
 #'  Server function of the HiCNV shiny application. run with runHiCNVShiny
 #' @keywords CNV heatmap shiny plotly
-#' @import shinycssloaders shinythemes circlize igraph visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg plotly shinyjs logging shiny data.table RCurl foreach GenomicFeatures GenomicInteractions shinythemes
+#' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
 #' @importFrom tidyr unite
+#' @rawNamespace import(circlize, except = degree)
+#' @rawNamespace import(shiny, except = runExample)
+#' @rawNamespace import(shinyjs, except = runExample)
+#' @rawNamespace import(RCurl, except = reset)
+#' @rawNamespace import(plotly, except = c(last_plot,select,filter))
+#' @rawNamespace import(igraph, except = c(decompose, spectrum, groups))
+#' @rawNamespace import(data.table, except = c(melt, dcast))
+#' @rawNamespace import(GenomicFeatures ,except = show)
 #' @param session The shiny session object for the application.
 #' @param input shiny server input
 #' @param output shiny server output

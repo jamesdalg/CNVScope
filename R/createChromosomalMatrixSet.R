@@ -2,7 +2,8 @@
 #'
 #' Takes a linear regression matrix and sets infinites to a finite value, and changes the sign to match the sign of the correlation for each value.
 #' @keywords Interaction matrix
-#' @import GenomicInteractions reshape2 biomaRt magrittr foreach doParallel
+#' @import GenomicInteractions reshape2 magrittr foreach doParallel
+#' @importFrom biomaRt useMart getBM
 #' @param whole_genome_mat The matrix containing all of the data, from which the individual matrices will be split.
 #' @param output_dir the folder where the matrices in RData format, will be written.
 #' @param prefix filename prefix for individual matrices. Default: "nbl_"

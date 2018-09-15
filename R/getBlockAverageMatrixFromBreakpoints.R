@@ -2,7 +2,7 @@
 #'
 #' This function produces several matrix outputs of averages and areas of matrix blocks, given a pair of vectors for breakpoints.
 #' @keywords CNV kernel probability distribution concordance fast
-#' @import ComplexHeatmap foreach doParallel spatialfil 
+#' @import foreach doParallel spatialfil 
 #' @param whole_matrix the large, whole matrix from which blocks are taken
 #' @param breakpoints_col An integer list of column breakpoints, including 1 and the number of columns in the whole matrix.
 #' @param breakpoints_row An integer list of row breakpoints, including 1 and the number of rows in the whole matrix.

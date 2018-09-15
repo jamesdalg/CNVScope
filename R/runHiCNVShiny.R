@@ -2,8 +2,16 @@
 #'
 #' Runs the interactive suite of tools locally or on a server if called in a script file (e.g. App.R).
 #' @keywords CNV heatmap shiny plotly
-#' @import shinycssloaders shinythemes circlize igraph visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg plotly shinyjs logging shiny data.table RCurl foreach GenomicFeatures GenomicInteractions shinythemes
-#' @importFrom BiocInstaller biocinstallRepos
+#' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
+#' @importFrom BiocManager repositories
+#' @rawNamespace import(circlize, except = degree)
+#' @rawNamespace import(shiny, except = runExample)
+#' @rawNamespace import(shinyjs, except = runExample)
+#' @rawNamespace import(RCurl, except = reset)
+#' @rawNamespace import(plotly, except = c(last_plot,select,filter))
+#' @rawNamespace import(igraph, except = c(decompose, spectrum, groups))
+#' @rawNamespace import(data.table, except = c(melt, dcast))
+#' @rawNamespace import(GenomicFeatures ,except = show)
 #' @param baseurl the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.
 #' @param basefn the linux file path of the same source files.
 #' @return returns absolutely nothing. It just runs the application.
@@ -27,7 +35,7 @@ delete.isolates <- function(graph, mode = 'all') {
   isolates <- which(igraph::degree(graph, mode = mode) == 0) 
   delete.vertices(graph, isolates)
 }
-options(repos = BiocInstaller::biocinstallRepos())
+options(repos = BiocManager::repositories())
 options(shiny.error = browser)
 options(shiny.fullstacktrace = TRUE)
 getOption("repos")

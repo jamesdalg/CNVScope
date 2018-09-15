@@ -100,6 +100,8 @@ random_wide_test_copy_with_transpose$t_breakpoints_col)
 \keyword{Hi-C}
 \keyword{HiCseg}
 \keyword{MI}
+\keyword{blockseg}
 \keyword{breakpoints}
 \keyword{imputation}
+\keyword{jointseg}
 \keyword{multiple}
