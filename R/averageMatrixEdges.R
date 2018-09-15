@@ -23,7 +23,7 @@ averageMatrixEdges<-function(unchangedmatrix,nedges=1,dimension=c("row","column"
   {
     #dim(unchangedmatrix[(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix),])
     #length(colMeans(unchangedmatrix[(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix),]))
-    averaged_row<-(matrixStats::colMeans(unchangedmatrix[(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix),]))
+    averaged_row<-(Matrix::colMeans(unchangedmatrix[(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix),]))
     averaged_rownames_df<-reshape2::colsplit(string = rownames(unchangedmatrix)[(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix)],pattern = "_",names = c("chrom","start","end"))
     #<-(nrow(unchangedmatrix)-nedges):nrow(unchangedmatrix)
     #averaged_matrix<-unchangedmatrix[1:nrow(unchangedmatrix)-nedges-1),]
@@ -42,7 +42,7 @@ averageMatrixEdges<-function(unchangedmatrix,nedges=1,dimension=c("row","column"
   if("column" %in% dimension)
   {
     #dim(unchangedmatrix)
-    averaged_column<-(rowMeans(unchangedmatrix[,(ncol(unchangedmatrix)-nedges):ncol(unchangedmatrix)]))
+    averaged_column<-(Matrix::rowMeans(unchangedmatrix[,(ncol(unchangedmatrix)-nedges):ncol(unchangedmatrix)]))
     averaged_colnames_df<-reshape2::colsplit(string = colnames(unchangedmatrix)[(ncol(unchangedmatrix)-nedges):ncol(unchangedmatrix)],pattern = "_",names = c("chrom","start","end"))
     averaged_matrix<-cbind(unchangedmatrix[,1:(ncol(unchangedmatrix)-nedges-1)],averaged_column)
     colnames(averaged_matrix)[ncol(averaged_matrix)]<-paste(c(as.character(averaged_colnames_df[1,c("chrom","start")]),as.character(averaged_colnames_df[nrow(averaged_colnames_df),c("end")])),collapse = "_")
