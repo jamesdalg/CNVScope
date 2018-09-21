@@ -20,7 +20,7 @@
 #' runHiCNVShiny()
 #' }
 #' @export
-
+globalVariables(c("common_coords_linreg","chrom.pairs"))
 
 
 

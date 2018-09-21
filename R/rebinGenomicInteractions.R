@@ -9,12 +9,15 @@
 #' @param colnames_mat The column names of the whole_genome_matrix in chr_start_end format.
 #' @param method Method to rebin with-- can use overlap and nearest methods.Default: nearest.
 #' @keywords GenomicInteractions bin matrix colnames rownames binning bin
+#' @import GenomicInteractions
 #' @importFrom GenomicRanges nearest GRanges
 #' @importFrom InteractionSet findOverlaps
 #' @importFrom GenomicInteractions anchorOne anchorTwo
 #' @import foreach doParallel
 #' @export
 #' @examples
+
+globalVariables("mcols")
 rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_gr=NULL,colnames_gr=NULL,rownames_mat=NULL,colnames_mat=NULL,method="nearest")
 {
   if(is.null(gint)){return("No GenomicInteractions to rebin!")}

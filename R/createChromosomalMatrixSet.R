@@ -37,7 +37,7 @@ createChromosomalMatrixSet<-function(whole_genome_mat,output_dir,prefix="nbl_")
       save("ggplotmatrix",file=paste0(chromosomes[chrom.pairs[q,1]],chromosomes[chrom.pairs[q,2]],prefix,"sample_matched","_unrescaled",".RData"))
     }
   } 
-  outputfilelist<-list.files(pattern=glob2rx("*chr*.RData"))
+  outputfilelist<-list.files(pattern=utils::glob2rx("*chr*.RData"))
   setwd(original_dir)
   return(outputfilelist)
 }

@@ -74,6 +74,8 @@
 #' mean(as.numeric(as.character(unlist(submatrix[3:12,1:34]))))
 #' }
 #' @export
+
+globalVariables(c("j"))
 getBlockAverageMatrixFromBreakpoints<-function(whole_matrix,breakpoints_col,breakpoints_row,outputs=c("blockaverages_reformatted_by_index","blockaverages_reformatted_by_label","blockaverages_matrix_idx_area","blockaverages_matrix_idx_avg","blockaverages_matrix_label_avg","blockaverages_matrix_label_area"))
 {
   breakpoints_col<-as.integer(unique(

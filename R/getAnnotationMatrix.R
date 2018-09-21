@@ -3,7 +3,7 @@
 #'
 #' Gets the genes in the ranges within each cell of the matrix.
 #' @keywords genomic matrix
-#' @importFrom GenomicRanges GRanges seqnames
+#' @importFrom GenomicRanges GRanges seqnames mcols
 #' @importFrom biomaRt useMart getBM
 #' @importFrom IRanges IRanges subsetByOverlaps
 #' @import foreach doParallel
@@ -39,7 +39,7 @@ getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_c
     row_gene_strings_genomic_matrix<-foreach(i=1:length(rownames_gr_genomic_matrix),.inorder=T) %dopar% {
       print(i)
       outputstring<-paste(
-        unique(gsub("\\..*[[:space:]]","",unique(mcols(IRanges::subsetByOverlaps(ensembl_gene_gr_prot,rownames_gr_genomic_matrix[i]))$....external_gene_name)))
+        unique(gsub("\\..*[[:space:]]","",unique(GenomicRanges::mcols(IRanges::subsetByOverlaps(ensembl_gene_gr_prot,rownames_gr_genomic_matrix[i]))$....external_gene_name)))
         ,collapse=" ")
       if(is.null(outputstring) | anyNA(outputstring) | length(outputstring)==0) {outputstring<-""}
       outputstring
@@ -47,7 +47,7 @@ getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_c
     col_gene_strings_genomic_matrix<-foreach(i=1:length(colnames_gr_genomic_matrix),.inorder=T) %dopar% {
       print(i)
       outputstring<-paste(
-        unique(gsub("\\..*[[:space:]]","",unique(mcols(IRanges::subsetByOverlaps(ensembl_gene_gr_prot,colnames_gr_genomic_matrix[i]))$....external_gene_name)))
+        unique(gsub("\\..*[[:space:]]","",unique(GenomicRanges::mcols(IRanges::subsetByOverlaps(ensembl_gene_gr_prot,colnames_gr_genomic_matrix[i]))$....external_gene_name)))
         ,collapse=" ")
       if(is.null(outputstring) | anyNA(outputstring) | length(outputstring)==0) {outputstring<-""}
       outputstring
@@ -57,7 +57,7 @@ getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_c
     row_gene_strings_genomic_matrix<-foreach(i=1:length(rownames_gr_genomic_matrix),.inorder=T) %dopar% {
       print(i)
       outputstring<-paste(
-        unique(gsub("\\..*[[:space:]]","",unique(mcols(IRanges::subsetByOverlaps(ensembl_gene_gr,rownames_gr_genomic_matrix[i]))$....external_gene_name)))
+        unique(gsub("\\..*[[:space:]]","",unique(GenomicRanges::mcols(IRanges::subsetByOverlaps(ensembl_gene_gr,rownames_gr_genomic_matrix[i]))$....external_gene_name)))
         ,collapse=" ")
       if(is.null(outputstring) | anyNA(outputstring) | length(outputstring)==0) {outputstring<-""}
       outputstring
@@ -65,7 +65,7 @@ getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_c
     col_gene_strings_genomic_matrix<-foreach(i=1:length(colnames_gr_genomic_matrix),.inorder=T) %dopar% {
       print(i)
       outputstring<-paste(
-        unique(gsub("\\..*[[:space:]]","",unique(mcols(IRanges::subsetByOverlaps(ensembl_gene_gr,colnames_gr_genomic_matrix[i]))$....external_gene_name)))
+        unique(gsub("\\..*[[:space:]]","",unique(GenomicRanges::mcols(IRanges::subsetByOverlaps(ensembl_gene_gr,colnames_gr_genomic_matrix[i]))$....external_gene_name)))
         ,collapse=" ")
       if(is.null(outputstring) | anyNA(outputstring) | length(outputstring)==0) {outputstring<-""}
       outputstring

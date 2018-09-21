@@ -6,13 +6,16 @@
 #' @importFrom data.table fread
 #' @importFrom reshape2 colsplit
 #' @importFrom tidyr drop_na unite
+#' @importFrom GenomicRanges tileGenome mcols
+#' @importFrom IRanges mergeByOverlaps IRanges
+#' @importFrom dplyr ddply
 #' @param tcga_files GDC files to be read
 #' @param format file format, TCGA or TARGET.
 #' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
 #' @param freadskip the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.
 #' @return sample_aggregated_segvals A dataframe containing the aggregated segmentation values, based on the parameters provided.
 #' @export
-
+globalVariables(c('begin','s',".","pos",'....relativeCvg','....sample'))
 
 formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize=1e6,freadskip=14)
 {
@@ -35,11 +38,11 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
   TCGA_CNV_data_range_filtered<-TCGA_CNV_data %>% tidyr::drop_na(begin,end)
   TCGA_CNV_data_dt<-as.data.table(TCGA_CNV_data_range_filtered)
   TCGA_CNV_data_gr<-GRanges(seqnames = TCGA_CNV_data_range_filtered$`>chr`,ranges = IRanges(start = TCGA_CNV_data_range_filtered$begin,end = TCGA_CNV_data_range_filtered$end),... = TCGA_CNV_data_range_filtered[,4:ncol(TCGA_CNV_data_range_filtered)])
-  bins<-tileGenome(seqinfo(BSgenome.Hsapiens.UCSC.hg19::Hsapiens),tilewidth=binsize,cut.last.tile.in.chrom = T)
+  bins<-GenomicRanges::tileGenome(seqinfo(BSgenome.Hsapiens.UCSC.hg19::Hsapiens),tilewidth=binsize,cut.last.tile.in.chrom = T)
   bins<-bins[bins@seqnames %in% gsub("_","",chromosomes)]
   rownames_gr = bins
   colnames_gr = bins
-  samples<-unique(mcols(TCGA_CNV_data_gr)$....sample)
+  samples<-unique(GenomicRanges::mcols(TCGA_CNV_data_gr)$....sample)
   options(scipen=999)
   bins_underscored<-GRanges_to_underscored_pos(bins)
   registerDoParallel()
@@ -48,7 +51,7 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
   TCGA_CNV_data_gr<-TCGA_CNV_data_gr_single_comparison
   sample_aggregated_segvals<-foreach(s=1:length(samples),.combine="cbind",.errorhandling = "stop") %dopar% {
     current_gr<-TCGA_CNV_data_gr[mcols(TCGA_CNV_data_gr)$....sample %in% samples[s]]
-    current_merged_df<-as.data.frame(mergeByOverlaps(bins,current_gr))
+    current_merged_df<-as.data.frame(IRanges::mergeByOverlaps(bins,current_gr))
     current_merged_df$pos<-unlist(tidyr::unite(current_merged_df[,c("bins.seqnames","bins.start","bins.end")]))
     #sort(table(current_merged_df$pos),decreasing=T)
     current_merged_df_bins_vals<-current_merged_df[,c("pos","....relativeCvg","....sample")] #,"....comparison"
@@ -56,7 +59,7 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
     current_merged_df_bins_vals<-na.omit(current_merged_df_bins_vals)
     #current_merged_df_bins_aggregated_test<-ddply(na.omit(current_merged_df_bins_vals[1,]),.(pos),summarise,meanrelcvg=mean(current_merged_df_bins_vals$....relativeCvg))#,samples=list(unique(current_merged_df_bins_vals$....sample))
     
-    current_merged_df_bins_aggregated<-ddply(na.omit(current_merged_df_bins_vals),.(pos),summarise,meanrelcvg=mean(....relativeCvg),samples=paste0(unique(....sample),collapse=","))#
+    current_merged_df_bins_aggregated<-dplyr::ddply(na.omit(current_merged_df_bins_vals),.(pos),summarise,meanrelcvg=mean(....relativeCvg),samples=paste0(unique(....sample),collapse=","))#
     #insert bins that are not represented.
     unused_bins<-bins_underscored[!(bins_underscored %in% current_merged_df_bins_aggregated$pos)]
     unused_bins_rows<-as.data.frame(cbind(unused_bins,rep(0,length(unused_bins)),rep(samples[s],length(unused_bins))))

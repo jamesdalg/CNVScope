@@ -1,8 +1,8 @@
 Package: HiCNV
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
-Version: 1.5.0
-Date: 2018-9-15
+Version: 1.5.6
+Date: 2018-9-21
 Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
 BugReports: https://github.com/jamesdalg/HiCNV/issues/

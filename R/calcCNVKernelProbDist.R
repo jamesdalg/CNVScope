@@ -31,7 +31,7 @@
 #' show_row_names = F,column_title = "original data")
 #' }
 #' @export
-
+globalVariables(c("x","y"))
 calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores=1)
 {
   submatrix<-as.matrix(submatrix)
@@ -57,8 +57,8 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores
     print("diag sd complete")
     print(proc.time() - diag_sd_start)
   }
-  if(!parallel){registerDoSEQ()}
-  if(parallel){registerdoParallel()}
+  if(!parallel){foreach::registerDoSEQ()}
+  if(parallel){doParallel::registerDoParallel()}
   #if(parallel){registerdoParallel()}
   coladjustments2<-foreach(y=c(nrow(submatrix),1),.combine="rbind") %dopar%
   {
