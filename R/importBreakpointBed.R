@@ -2,6 +2,7 @@
 #'
 #' Imports a BED file with breakpoints or other interactions, in a dual position format.
 #'
+#' @name importBreakpointBed
 #' @keywords bed
 #' @import GenomicInteractions
 #' @importFrom rtracklayer import.bed

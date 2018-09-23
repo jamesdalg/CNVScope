@@ -1,6 +1,7 @@
 #' Calculate block averages and areas in a matrix given breakpoints.
 #'
 #' This function produces several matrix outputs of averages and areas of matrix blocks, given a pair of vectors for breakpoints.
+#' @name getBlockAverageMatrixFromBreakpoints
 #' @keywords CNV kernel probability distribution concordance fast
 #' @import foreach doParallel spatialfil 
 #' @param whole_matrix the large, whole matrix from which blocks are taken

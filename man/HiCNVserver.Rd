@@ -3,9 +3,6 @@
 \name{HiCNVserver}
 \alias{HiCNVserver}
 \title{Server component of the HiCNV plotly shiny application.}
-\usage{
-HiCNVserver(session, input, output)
-}
 \arguments{
 \item{session}{The shiny session object for the application.}
 

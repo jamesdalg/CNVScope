@@ -1,6 +1,7 @@
 #' Form sample matrix from GDC low-pass segmentation datafiles.
 #'
 #' Reads a GDC segmetnation files, adds sample information, and forms a data matrix of samples and bins of a specified size.
+#' @name formSampleMatrixFromRawGDCData
 #' @keywords segmentation GDC 
 #' @import doParallel
 #' @importFrom data.table fread
@@ -8,7 +9,7 @@
 #' @importFrom tidyr drop_na unite
 #' @importFrom GenomicRanges tileGenome mcols
 #' @importFrom IRanges mergeByOverlaps IRanges
-#' @importFrom dplyr ddply
+#' @importFrom plyr ddply
 #' @param tcga_files GDC files to be read
 #' @param format file format, TCGA or TARGET.
 #' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
@@ -59,7 +60,7 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
     current_merged_df_bins_vals<-na.omit(current_merged_df_bins_vals)
     #current_merged_df_bins_aggregated_test<-ddply(na.omit(current_merged_df_bins_vals[1,]),.(pos),summarise,meanrelcvg=mean(current_merged_df_bins_vals$....relativeCvg))#,samples=list(unique(current_merged_df_bins_vals$....sample))
     
-    current_merged_df_bins_aggregated<-dplyr::ddply(na.omit(current_merged_df_bins_vals),.(pos),summarise,meanrelcvg=mean(....relativeCvg),samples=paste0(unique(....sample),collapse=","))#
+    current_merged_df_bins_aggregated<-plyr::ddply(na.omit(current_merged_df_bins_vals),.(pos),summarise,meanrelcvg=mean(....relativeCvg),samples=paste0(unique(....sample),collapse=","))#
     #insert bins that are not represented.
     unused_bins<-bins_underscored[!(bins_underscored %in% current_merged_df_bins_aggregated$pos)]
     unused_bins_rows<-as.data.frame(cbind(unused_bins,rep(0,length(unused_bins)),rep(samples[s],length(unused_bins))))

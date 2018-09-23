@@ -3,13 +3,6 @@
 \name{getBlockAverageMatrixFromBreakpoints}
 \alias{getBlockAverageMatrixFromBreakpoints}
 \title{Calculate block averages and areas in a matrix given breakpoints.}
-\usage{
-getBlockAverageMatrixFromBreakpoints(whole_matrix, breakpoints_col,
-  breakpoints_row, outputs = c("blockaverages_reformatted_by_index",
-  "blockaverages_reformatted_by_label", "blockaverages_matrix_idx_area",
-  "blockaverages_matrix_idx_avg", "blockaverages_matrix_label_avg",
-  "blockaverages_matrix_label_area"))
-}
 \arguments{
 \item{whole_matrix}{the large, whole matrix from which blocks are taken}
 

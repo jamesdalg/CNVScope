@@ -6,7 +6,6 @@
 #' @keywords Genomic Ranges position
 #' @importFrom GenomicRanges seqnames GRanges
 #' @export
-#' @examples
 GRanges_to_underscored_pos<-function(input_gr,minusOneToEnd=T)
 {
   if(minusOneToEnd){adjustment<-1} else {adjustment=0}

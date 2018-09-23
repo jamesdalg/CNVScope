@@ -1,6 +1,7 @@
 #' Server component of the HiCNV plotly shiny application.
 #'
 #'  Server function of the HiCNV shiny application. run with runHiCNVShiny
+#' @name HiCNVserver 
 #' @keywords CNV heatmap shiny plotly
 #' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
 #' @importFrom tidyr unite
@@ -16,6 +17,7 @@
 #' @param input shiny server input
 #' @param output shiny server output
 #' @return None
+
 #' @examples
 #' \dontrun{
 #' runHiCNVShiny()

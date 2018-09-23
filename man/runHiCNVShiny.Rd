@@ -3,9 +3,6 @@
 \name{runHiCNVShiny}
 \alias{runHiCNVShiny}
 \title{Runs the HiCNV plotly shiny application.}
-\usage{
-runHiCNVShiny(baseurl = NULL, basefn = NULL)
-}
 \arguments{
 \item{baseurl}{the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.}
 

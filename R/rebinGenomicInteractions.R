@@ -1,6 +1,7 @@
 #' Assign GenomicInteractions to a predefined series of bins for row and column, corresponding to a genomic matrix.
 #'
 #' This function allows the user to assign a set of genomicinteractions to a pre-existing matrix with known dimensions and column/row names. It finds the row/column index of each point and produces a merged dataframe with the original annotation columns that correspond to each bin in the matrix, with appropriate labels & indexes.
+#' @name rebinGenomicInteractions
 #' @param gint A GenomicInteractions object needing to be binned.
 #' @param whole_genome_matrix A matrix with underscored positions for column and rownames e.g. chr1_1_5000,chr1_5001_10000.  If this is provided, it will override rown/column names and GRanges objects.
 #' @param rownames_gr A Genomic Ranges object created from the whole genome matrix row names in chr_start_end format, e.g. chr1_1_5000. No effect if whole_genome_mattrix is specified.
@@ -15,7 +16,6 @@
 #' @importFrom GenomicInteractions anchorOne anchorTwo
 #' @import foreach doParallel
 #' @export
-#' @examples
 
 globalVariables("mcols")
 rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_gr=NULL,colnames_gr=NULL,rownames_mat=NULL,colnames_mat=NULL,method="nearest")

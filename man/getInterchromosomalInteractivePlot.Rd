@@ -3,9 +3,6 @@
 \name{getInterchromosomalInteractivePlot}
 \alias{getInterchromosomalInteractivePlot}
 \title{Create an HTML widget for use in shiny or webshot for a given pair of chromosomes.}
-\usage{
-getInterchromosomalInteractivePlot(whole_matrix, chrom1, chrom2)
-}
 \arguments{
 \item{whole_matrix}{the large, whole genomic matrix from which the submatrix is taken (rows)}
 

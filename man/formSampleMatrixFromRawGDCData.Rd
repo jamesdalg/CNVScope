@@ -3,10 +3,6 @@
 \name{formSampleMatrixFromRawGDCData}
 \alias{formSampleMatrixFromRawGDCData}
 \title{Form sample matrix from GDC low-pass segmentation datafiles.}
-\usage{
-formSampleMatrixFromRawGDCData(tcga_files = NULL, format = "TARGET",
-  binsize = 1e+06, freadskip = 14)
-}
 \arguments{
 \item{tcga_files}{GDC files to be read}
 

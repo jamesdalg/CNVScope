@@ -3,6 +3,7 @@
 #' This function produces several matrices, including a Z-score matrix
 #' from a matrix of the same size
 #' and a percentile matrix of these Z-scores
+#' @name calcCNVKernelProbDist
 #' @param submatrix A matrix of CNV data in an intrachromosomal region (e.g. chr1 vs chr1 or chr5 vs chr5)
 #' @param win a window size for the matrix that calculates the windowed average using the kernel function
 #' @param debug extra output for debugging.

@@ -3,10 +3,6 @@
 \name{calcCNVKernelProbDist}
 \alias{calcCNVKernelProbDist}
 \title{Calculate the probability distribution of CNV concordance events with a fast kernel}
-\usage{
-calcCNVKernelProbDist(submatrix = NULL, win = 5, debug = F,
-  parallel = T, mcmcores = 1)
-}
 \arguments{
 \item{submatrix}{A matrix of CNV data in an intrachromosomal region (e.g. chr1 vs chr1 or chr5 vs chr5)}
 

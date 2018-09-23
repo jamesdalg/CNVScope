@@ -1,6 +1,7 @@
 #' Create an HTML widget for use in shiny or webshot for a given pair of chromosomes.
 #'
 #' This function requires a matrix with genomic coordinates in the row and column names, and produces a heatmap with a tooltip
+#' @name getInterchromosomalInteractivePlot
 #' @keywords CNV heatmap HTML widget data.table readr
 #' @importFrom biomaRt getBM useMart
 #' @importFrom GenomicRanges GRanges seqnames mcols

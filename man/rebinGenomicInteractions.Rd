@@ -3,11 +3,6 @@
 \name{rebinGenomicInteractions}
 \alias{rebinGenomicInteractions}
 \title{Assign GenomicInteractions to a predefined series of bins for row and column, corresponding to a genomic matrix.}
-\usage{
-rebinGenomicInteractions(gint = NULL, whole_genome_matrix = NULL,
-  rownames_gr = NULL, colnames_gr = NULL, rownames_mat = NULL,
-  colnames_mat = NULL, method = "nearest")
-}
 \arguments{
 \item{gint}{A GenomicInteractions object needing to be binned.}
 

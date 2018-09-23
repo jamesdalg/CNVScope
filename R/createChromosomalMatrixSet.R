@@ -8,7 +8,6 @@
 #' @param output_dir the folder where the matrices in RData format, will be written.
 #' @param prefix filename prefix for individual matrices. Default: "nbl_"
 #' @return The list of files already written to disk, with full filenames and paths.
-#' @examples
 #' @export
 createChromosomalMatrixSet<-function(whole_genome_mat,output_dir,prefix="nbl_")
 {

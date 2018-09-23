@@ -1,6 +1,7 @@
 #' Rescale positive and negative data, preserving sign information.
 #'
 #' Downsamples a matrix by a specified factor.
+#' @name downsample_genomic_matrix
 #' @keywords signed rescale positive negative matrix
 #' @import reshape2 OpenImageR foreach
 #' @param whole_matrix A matrix to be downsampled, on a single chromosome

@@ -9,8 +9,6 @@
 #' @return A list of the output statistics, including:
 #' the global min, max, length, sigma (matrix variance), pos_sigma (variance of the positive values), neg_sigma(variance of the negative values), global mean (global_mu),
 #'  est_max_cap (global_mu+global_sigma_pos*2), as well as the number of rows and columns of the matrix.
-#' 
-#' @examples
 #' @export
 getGlobalRescalingStats<-function(whole_matrix,saveToDisk=F,output_fn=NULL)
 {

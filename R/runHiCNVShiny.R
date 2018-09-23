@@ -1,6 +1,7 @@
 #' Runs the HiCNV plotly shiny application.
 #'
 #' Runs the interactive suite of tools locally or on a server if called in a script file (e.g. App.R).
+#' @name runHiCNVShiny
 #' @keywords CNV heatmap shiny plotly
 #' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
 #' @importFrom BiocManager repositories
@@ -20,7 +21,7 @@
 #' runHiCNVShiny()
 #' }
 #' @export
-globalVariables(c("common_coords_linreg","chrom.pairs"))
+globalVariables(c("common_coords_linreg","chrom.pairs","expression_data_gr"))
 
 
 
