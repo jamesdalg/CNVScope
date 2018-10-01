@@ -17,10 +17,12 @@ whole_matrix_dsamp A downsampled matrix.
 Downsamples a matrix by a specified factor.
 }
 \examples{
+\dontrun{
 test_mat<-matrix(runif(81),nrow=9)
 colnames(test_mat)<-paste0("chr1_",1:ncol(test_mat))
 rownames(test_mat)<-paste0("chr1_",1:nrow(test_mat))
 downsample_genomic_matrix(whole_matrix=test_mat,downsamplefactor=3,singlechromosome=T)
+}
 }
 \keyword{matrix}
 \keyword{negative}

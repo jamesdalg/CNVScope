@@ -9,10 +9,12 @@
 #' @param singlechromosome Single chromosome mode; Multi-chromosome not yet implemented (leave T)
 #' @return whole_matrix_dsamp A downsampled matrix.
 #' @examples 
+#' \dontrun{
 #' test_mat<-matrix(runif(81),nrow=9)
 #' colnames(test_mat)<-paste0("chr1_",1:ncol(test_mat))
 #' rownames(test_mat)<-paste0("chr1_",1:nrow(test_mat))
 #' downsample_genomic_matrix(whole_matrix=test_mat,downsamplefactor=3,singlechromosome=T)
+#' }
 #' @export
 #lines to disable spurrious CRAN notes below. i is obviously not global.
 globalVariables("i")

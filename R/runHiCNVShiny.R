@@ -22,7 +22,7 @@
 #' }
 #' @export
 globalVariables(c("common_coords_linreg","chrom.pairs","expression_data_gr"))
-
+chrom.pairs<-NULL
 
 
 runHiCNVShiny<-function(baseurl=NULL,basefn=NULL) {
