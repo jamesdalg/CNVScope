@@ -17,12 +17,9 @@ whole_matrix_dsamp A downsampled matrix.
 Downsamples a matrix by a specified factor.
 }
 \examples{
-\dontrun{
-test_mat<-matrix(runif(81),nrow=9)
-colnames(test_mat)<-paste0("chr1_",1:ncol(test_mat))
-rownames(test_mat)<-paste0("chr1_",1:nrow(test_mat))
-downsample_genomic_matrix(whole_matrix=test_mat,downsamplefactor=3,singlechromosome=T)
-}
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+downsample_genomic_matrix(whole_matrix=nbl_result_matrix_sign_small,
+downsamplefactor=5,singlechromosome=TRUE)
 }
 \keyword{matrix}
 \keyword{negative}

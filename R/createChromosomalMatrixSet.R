@@ -7,6 +7,13 @@
 #' @param whole_genome_mat The matrix containing all of the data, from which the individual matrices will be split.
 #' @param output_dir the folder where the matrices in RData format, will be written.
 #' @param prefix filename prefix for individual matrices. Default: "nbl_"
+#' @examples 
+#' #examples for this function would be too large to 
+#' #include and should be run on an HPC machine node.
+#' #illustration of this process is shown clearly in 
+#' #the vignette and can be done if a user properly
+#' #follows the instructions.
+#' # The function is intended to be run on a whole interactome matrix (chr1-X).
 #' @return The list of files already written to disk, with full filenames and paths.
 #' @export
 createChromosomalMatrixSet<-function(whole_genome_mat,output_dir,prefix="nbl_")

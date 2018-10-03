@@ -19,5 +19,13 @@ The list of files already written to disk, with full filenames and paths.
 \description{
 Takes a linear regression matrix and sets infinites to a finite value, and changes the sign to match the sign of the correlation for each value.
 }
+\examples{
+#examples for this function would be too large to 
+#include and should be run on an HPC machine node.
+#illustration of this process is shown clearly in 
+#the vignette and can be done if a user properly
+#follows the instructions.
+# The function is intended to be run on a whole interactome matrix (chr1-X).
+}
 \keyword{Interaction}
 \keyword{matrix}
