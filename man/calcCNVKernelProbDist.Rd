@@ -21,7 +21,7 @@ and a percentile matrix of these Z-scores
 }
 \examples{
 load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
-mat_prob_dist<-calcCNVKernelProbDist(nbl_result_matrix_sign_small)
+mat_prob_dist<-calcCNVKernelProbDist(nbl_result_matrix_sign_small,parallel=FALSE)
 mat_prob_dist
 }
 \keyword{CNV}

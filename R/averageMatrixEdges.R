@@ -11,9 +11,11 @@
 #' @examples 
 #' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
 #' dim(nbl_result_matrix_sign_small)
-#' nbl_result_matrix_sign_small_avg<-averageMatrixEdges(nbl_result_matrix_sign_small,nedges=1,dimension="row")
+#' nbl_result_matrix_sign_small_avg<-averageMatrixEdges(nbl_result_matrix_sign_small,
+#' nedges=1,dimension="row")
 #' dim(nbl_result_matrix_sign_small_avg)
-#' nbl_result_matrix_sign_small_avg<-averageMatrixEdges(nbl_result_matrix_sign_small,nedges=1,dimension="column")
+#' nbl_result_matrix_sign_small_avg<-averageMatrixEdges(nbl_result_matrix_sign_small,
+#' nedges=1,dimension="column")
 #' dim(nbl_result_matrix_sign_small_avg)
 #' @export
 averageMatrixEdges<-function(unchangedmatrix,nedges=1,dimension=c("row","column"))

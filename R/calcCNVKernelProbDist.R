@@ -16,7 +16,7 @@
 #' @importFrom spatialfil applyFilter
 #' @examples
 #' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
-#' mat_prob_dist<-calcCNVKernelProbDist(nbl_result_matrix_sign_small)
+#' mat_prob_dist<-calcCNVKernelProbDist(nbl_result_matrix_sign_small,parallel=FALSE)
 #' mat_prob_dist
 #' @export
 globalVariables(c("x","y"))
@@ -96,7 +96,7 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores
       rep(diag_avg,length(diag_avg_matrix[row(diag_avg_matrix)==col(diag_avg_matrix)-(y-x)]))
     },x=coladjustments2[,"x"],y=coladjustments2[,"y"],diag_avg=coladjustments2[,"diag_avg"]
     )
-    bands<-bands_mcmapply[c(1:(length(bands_mapply)/2),
+    bands<-bands_mapply[c(1:(length(bands_mapply)/2),
                             (length(bands_mapply)/2+2):length(bands_mapply))]
     
     #bands_unique<-unique(bands)
@@ -122,7 +122,7 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores
       rep(diag_sd,length(diag_sd_matrix[row(diag_sd_matrix)==col(diag_sd_matrix)-(y-x)]))
     },x=coladjustments2[,"x"],y=coladjustments2[,"y"],diag_sd=coladjustments2[,"diag_sd"]
     )
-    bands<-bands_mcmapply[c(1:(length(bands_mapply)/2),
+    bands<-bands_mapply[c(1:(length(bands_mapply)/2),
                             (length(bands_mapply)/2+2):length(bands_mapply))]
     #bands_unique<-unique(bands)
   }
