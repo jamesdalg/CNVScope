@@ -23,10 +23,8 @@ A GRanges object
 This function creates a new GRanges object from a character vector of coordinates in the form "chr1_0_5000" and creates a GRanges object from them.
 }
 \examples{
-\dontrun{
 load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
 underscored_pos_to_GRanges(colnames(nbl_result_matrix_sign_small))
-}
 }
 \keyword{CNV}
 \keyword{GRanges}

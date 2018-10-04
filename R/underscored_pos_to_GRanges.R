@@ -11,10 +11,8 @@
 #' @param zeroToOneBasedEnd Adds 1 to the end of the underscored positions
 #' @return A GRanges object
 #' @examples
-#' \dontrun{
 #' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
 #' underscored_pos_to_GRanges(colnames(nbl_result_matrix_sign_small))
-#' }
 #' @export
 underscored_pos_to_GRanges<-function(underscored_positions=NULL,extended_data=NULL,zeroToOneBasedStart=T,zeroToOneBasedEnd=F)
 {
