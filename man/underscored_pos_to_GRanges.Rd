@@ -24,7 +24,8 @@ This function creates a new GRanges object from a character vector of coordinate
 }
 \examples{
 \dontrun{
-underscored_pos_to_GRanges(c("chr1_0_5000","chr1_7500_10000","chr1_10000_15000"))
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+underscored_pos_to_GRanges(colnames(nbl_result_matrix_sign_small))
 }
 }
 \keyword{CNV}

@@ -28,7 +28,7 @@ Finds the negative log p-value of a matrix, if it exists.
 Checks first to see if there is a p-value to return.
 }
 \examples{
-\dontrun{
+
 #small example
 xval<-c(1,1,1,1,1)
 yval<-c(1,2,3,4,5)
@@ -36,11 +36,11 @@ a<-c(3,4,5,6,7)
 extractNegLogPval(x=xval,y=yval) #no possible p-value if one vector is constant.
 #Some edge cases this may not be correct (if the data lies near a constant),
 # but the indiviual sample data should reveal true trends.
-cor(xval,yval) #you can't get a correlation value either.
+suppressWarnings(cor(xval,yval)) #you can't get a correlation value either.
 cor(a,a) #gives correlation of 1.
 extractNegLogPval(a,a) #gives replacement value.
-extractNegLogPval(x=a,y=yval) #gives 107.3909 and warns about a nearly perfect fit.
-}
+suppressWarnings(extractNegLogPval(x=a,y=yval)) #gives 107.3909 and warns about a nearly perfect fit.
+
 }
 \keyword{linear}
 \keyword{lm}

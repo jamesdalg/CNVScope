@@ -17,12 +17,10 @@
 #' @param asymptotic_max make the maximum value in the matrix not 1, but rather something slightly below.
 #' @return transformedmatrix A transformed matrix.
 #' @examples 
-#' \dontrun{
 #' mat<-matrix(c(5,10,15,20,0,40,-45,300,-50),byrow=TRUE,nrow=3)
 #' rescaled_mat<-signedRescale(mat)
 #' mat
 #' rescaled_mat
-#' }
 #' @export
 signedRescale<-function(matrix,global_max=NULL,global_min=NULL,global_sigma=NULL,global_mu=NULL,max_cap=NULL,method="minmax",tan_transform=F,global_sigma_pos=NULL,global_sigma_neg=NULL,asymptotic_max=T)
 {

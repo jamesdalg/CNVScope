@@ -18,5 +18,9 @@ sample_aggregated_segvals A dataframe containing the aggregated segmentation val
 \description{
 Reads a GDC segmetnation files, adds sample information, and forms a data matrix of samples and bins of a specified size.
 }
+\examples{
+#Examples would be too large to include in package.
+#please see browseVignettes("HiCNV") for a demonstration.
+}
 \keyword{GDC}
 \keyword{segmentation}

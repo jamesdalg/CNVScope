@@ -41,12 +41,10 @@ transformedmatrix A transformed matrix.
 Performs a signed rescale on the data, shrinking the negative and positive ranges into the [0,1] space, such that negative is always less than 0.5 and positive is always greater.
 }
 \examples{
-\dontrun{
 mat<-matrix(c(5,10,15,20,0,40,-45,300,-50),byrow=TRUE,nrow=3)
 rescaled_mat<-signedRescale(mat)
 mat
 rescaled_mat
-}
 }
 \keyword{matrix}
 \keyword{negative}

@@ -18,6 +18,10 @@ averaged_matrix a small matrix of size n.
 Gives a small square of a matrix to get an idea of content rather than grabbing the entire row.
 When this row is thousands of numbers long, this can be a problem.
 }
+\examples{
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+mathead(nbl_result_matrix_sign_small)
+}
 \keyword{average}
 \keyword{downsample}
 \keyword{edges}
