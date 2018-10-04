@@ -15,22 +15,9 @@
 #' @importFrom Matrix bandSparse sparseMatrix
 #' @importFrom spatialfil applyFilter
 #' @examples
-#' \dontrun{
-#' set.seed(303)
-#' mat<-matrix(data=runif(n = 25),nrow=5,ncol=5)
-#' calcCNVKernelProbDist(matrix)
-#' mat_prob_dist<-calcCNVKernelProbDist(mat)
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+#' mat_prob_dist<-calcCNVKernelProbDist(nbl_result_matrix_sign_small)
 #' mat_prob_dist
-#' ComplexHeatmap::Heatmap(mat_prob_dist$zscore_matrix,
-#' cluster_columns = F,cluster_rows = F,show_column_names = F,show_row_names = F,
-#' column_title = "z scores") + 
-#' ComplexHeatmap::Heatmap(mat_prob_dist$percentile_matrix,
-#' cluster_columns = F,cluster_rows = F,show_column_names = F,
-#' show_row_names = F,column_title = "percentile scores") + 
-#' ComplexHeatmap::Heatmap(mat_prob_dist$original_matrix,cluster_columns = F,
-#' cluster_rows = F,show_column_names = F,
-#' show_row_names = F,column_title = "original data")
-#' }
 #' @export
 globalVariables(c("x","y"))
 calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores=1)

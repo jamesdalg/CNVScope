@@ -15,6 +15,9 @@
 #' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
 #' @param freadskip the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.
 #' @return sample_aggregated_segvals A dataframe containing the aggregated segmentation values, based on the parameters provided.
+#' @examples 
+#' #Examples would be too large to include in package.
+#' #please see browseVignettes("HiCNV") for a demonstration.
 #' @export
 globalVariables(c('begin','s',".","pos",'....relativeCvg','....sample'))
 
