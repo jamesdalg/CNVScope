@@ -6,6 +6,9 @@
 #' @param mat A matrix.
 #' @param n The length and width of the piece to view.
 #' @return averaged_matrix a small matrix of size n.
+#' @examples 
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+#' mathead(nbl_result_matrix_sign_small)
 #' @export
 
 mathead<-function(mat,n=6L)

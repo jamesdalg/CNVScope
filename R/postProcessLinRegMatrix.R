@@ -10,7 +10,6 @@
 #' @param inf_replacement_val the value for which infinites are replaced, by default 300.
 #' @return The output matrix, or if using slurm, the slurm job object (which should be saved as an rds file and reloaded when creating the output matrix).
 #' @examples
-#'\dontrun{
 #' inputmat<-matrix(runif(15),nrow=3)
 #' colnames(inputmat)<-c("chr2_1_1000","chr2_1001_2000","chr2_2001_3000","chr2_3001_4000",
 #' "chr2_4001_5000")
@@ -20,7 +19,6 @@
 #' diag(outputmat)<-Inf
 #' postProcessLinRegMatrix(input_matrix=t(inputmat),LM_mat=outputmat,cor_type="pearson",
 #' inf_replacement_val=300)
-#'}
 #' @export
 postProcessLinRegMatrix<-function(input_matrix,LM_mat,cor_type="pearson",inf_replacement_val=300)
 {
