@@ -15,6 +15,9 @@
 #' @param desired_range_start the downsampled matrix must be of this size (rows & cols) at minimum
 #' @param desired_range_end the downsampled matrix must be of this size (rows & cols) at maximum
 #' @return ggplotmatrix a matrix with values sufficient to create a ggplot2 heatmap with geom_tile() or with ggiraph's geom_tile_interactive()
+#' @examples 
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+#' writeMeltedChromosomalMatrixToDisk(whole_genome_matrix = nbl_result_matrix_sign_small,chrom1 = 1,chrom2 = 1,desired_range_start = 25, desired_range_end = 25)
 #' @export
 writeMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,filename,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,desired_range_start=50,desired_range_end=300)
 {
@@ -140,7 +143,7 @@ if(debug){    print(paste0("col factors:",downsample_factor_col))
   if(nrow(submatrix)!=ncol(submatrix)){if(length(intersect(downsample_factor_row,downsample_factor_col))>0){downsample_factor<-min(intersect(downsample_factor_row,downsample_factor_col))}}
  if(debug){ print(paste0("final col:",downsample_factor_col)) 
    print(paste0("final row:",downsample_factor_row))}
-  
+  if(is.null(downsample_factor)){downsample_factor<-1}
   submatrix_downsample<-downsample_genomic_matrix(submatrix,downsample_factor,singlechromosome = T)
   if(transpose){concatenated_gene_matrix<-getAnnotationMatrix(t(submatrix_downsample),prot_only = T,flip_row_col=T,sequential=T)} else{
     concatenated_gene_matrix<-getAnnotationMatrix(submatrix_downsample,prot_only = T,flip_row_col=T)}

@@ -12,10 +12,16 @@ freadGDCfile(file, fread_skip = 14)
 \item{fread_skip}{The number of metadata lines to be skipped(typically 14)..}
 }
 \value{
-input_tsv_with_sample_info A data frame containing the sample information extracted from the filename, including sample name & comparison type.
+input_tsv_with_sample_info A data frame containing the sample information extracted
+ from the filename, including sample name & comparison type.
 }
 \description{
 Reads a GDC segmetnation file and extract the segmetnation data.
+}
+\examples{
+freadGDCfile(file =
+system.file("extdata","somaticCnvSegmentsDiploidBeta_TARGET-30-PANRVJ_NormalVsPrimary.tsv",
+package = "HiCNV"))
 }
 \keyword{file}
 \keyword{read}
