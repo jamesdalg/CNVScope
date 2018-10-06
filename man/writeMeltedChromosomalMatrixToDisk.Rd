@@ -33,7 +33,7 @@ writeMeltedChromosomalMatrixToDisk(whole_genome_matrix, chrom1, chrom2,
 ggplotmatrix a matrix with values sufficient to create a ggplot2 heatmap with geom_tile() or with ggiraph's geom_tile_interactive()
 }
 \description{
-Writes an RData file with a ggplot2 object within.
+Writes an RData file with a ggplot2 object within the current directory.
 }
 \examples{
 load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
