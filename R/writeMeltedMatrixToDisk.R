@@ -1,6 +1,6 @@
 #' Write a matrix, with genes, of a submatrix of a whole genome interaction matrix to disk.
 #'
-#' Writes an RData file with a ggplot2 object within.
+#' Writes an RData file with a ggplot2 object within the current directory.
 #' @keywords ggplot2 plotly ggiraph genomic matrix
 #' @import magrittr OpenImageR
 #' @importFrom IRanges IRanges
@@ -145,8 +145,9 @@ if(debug){    print(paste0("col factors:",downsample_factor_col))
    print(paste0("final row:",downsample_factor_row))}
   if(is.null(downsample_factor)){downsample_factor<-1}
   submatrix_downsample<-downsample_genomic_matrix(submatrix,downsample_factor,singlechromosome = T)
-  if(transpose){concatenated_gene_matrix<-getAnnotationMatrix(t(submatrix_downsample),prot_only = T,flip_row_col=T,sequential=T)} else{
-    concatenated_gene_matrix<-getAnnotationMatrix(submatrix_downsample,prot_only = T,flip_row_col=T)}
+  if(transpose){
+    concatenated_gene_matrix<-getAnnotationMatrix(t(submatrix_downsample),prot_only = T,flip_row_col=T,sequential=T)} else{
+    concatenated_gene_matrix<-getAnnotationMatrix(submatrix_downsample,prot_only = T,flip_row_col=T,sequential=T)}
   concatenated_gene_matrix.m<-melt(concatenated_gene_matrix)
   concatenated_gene_matrix.m$Var1<-rownames(submatrix_downsample)[concatenated_gene_matrix.m$Var1]
   concatenated_gene_matrix.m$Var2<-colnames(submatrix_downsample)[concatenated_gene_matrix.m$Var2]
