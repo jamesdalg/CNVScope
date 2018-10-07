@@ -13,27 +13,29 @@
 #' @return An output list of the following:
 #' @return breakpoints_col A vector of breakpoints for the columns.
 #' @return breakpoints_row A vector of breakpoints for the rows.
-#' @return breakpoints_col A vector of breakpoints for the columns on the transposed genomic matrix.
+#' @return breakpoints_col A vector of breakpoints for columns on the transposed genomic matrix.
 #' @return breakpoints_row A vector of breakpoints for the rows on the transposed genomic matrix.
 #' @examples 
-#' \dontrun{
-#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) #from chr17 vs chr 6, 5x10.
+#' 
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
 #' submatrix_tiny<-nbl_result_matrix_sign_small
 #' tiny_test<-getAsymmetricBlockIndices(submatrix_tiny)
+#' \dontrun{
 #' submatrix_wide<-submatrix_tiny[1:5,]
 #' submatrix_narrow<-submatrix_tiny[.1:5]
 #' wide_test<-getAsymmetricBlockIndices(submatrix_wide,distrib = "G",model = "Dplus",
-#'                                      nb_change_max = 1e4)
+#'  nb_change_max = 1e4)
+#'  #the below work, but the time to run all of these would be greater than 10 seconds..
 #' random_wide<-matrix(runif(n = 400*200),ncol=400,nrow=200)
 #' random_narrow<-matrix(runif(n = 400*200),ncol=200,nrow=400)
 #' random_wide_test_avg<-getAsymmetricBlockIndices(random_wide,
-#'                                                distrib = "G",model = "Dplus",nb_change_max = 1e4)
+#'  distrib = "G",model = "Dplus",nb_change_max = 1e4)
 #' random_narrow_test_avg<-getAsymmetricBlockIndices(random_narrow,
-#'                                                  distrib = "G",model = "Dplus",nb_change_max = 1e4)
+#'  distrib = "G",model = "Dplus",nb_change_max = 1e4)
 #' random_wide_test_copy<-getAsymmetricBlockIndices(random_wide,
-#'                                                 distrib = "G",model = "Dplus",nb_change_max = 1e4,MI_strategy = "copy")
+#'  distrib = "G",model = "Dplus",nb_change_max = 1e4,MI_strategy = "copy")
 #' random_narrow_test_copy<-getAsymmetricBlockIndices(random_narrow,
-#'                                                   distrib = "G",model = "Dplus",nb_change_max = 1e4,MI_strategy = "copy")
+#'  distrib = "G",model = "Dplus",nb_change_max = 1e4,MI_strategy = "copy")
 #' genomicmatrix=random_narrow
 #' nb_change_max=100
 #' model = "D"
@@ -46,33 +48,37 @@
 #' rm(distrib)
 #' rm(MI_strategy)
 #' random_wide_test_copy<-getAsymmetricBlockIndices(genomicmatrix = random_wide,
-#'                                                  distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy")
+#'                                                  distrib = "G",
+#'                                      model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy")
 #' random_narrow_test_copy<-getAsymmetricBlockIndices(random_narrow,distrib = "G",
-#'                                                    model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy")
+#'                                                    model = "Dplus",
+#'                                                    nb_change_max = 1e2,MI_strategy = "copy")
 #' random_wide_test_copy_t<-getAsymmetricBlockIndices(genomicmatrix = t(random_wide),
-#'                                                   distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy")
+#'                                                   distrib = "G",model = "Dplus",
+#'                                                   nb_change_max = 1e2,MI_strategy = "copy")
 #' random_narrow_test_copy_t<-getAsymmetricBlockIndices(genomicmatrix = t(random_narrow),
-#'                                                     distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy")
+#'                                                     distrib = "G",model = "Dplus",
+#'                                                     nb_change_max = 1e2,MI_strategy = "copy")
 #' length(intersect(random_wide_test_copy$breakpoints_col,
-#'                 random_wide_test_copy_t$breakpoints_row))/length(unique(c(random_wide_test_copy$breakpoints_col,
-#'                                                                           random_wide_test_copy_t$breakpoints_row)))
+#' random_wide_test_copy_t$breakpoints_row))/length(unique(c(random_wide_test_copy$breakpoints_col,
+#' random_wide_test_copy_t$breakpoints_row)))
 #' random_wide_test_copy_with_transpose<-getAsymmetricBlockIndices(genomicmatrix = random_wide,
-#'                                                                distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
+#'  distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
 #' random_narrow_test_copy_with_transpose<-getAsymmetricBlockIndices(genomicmatrix = random_narrow,
-#'                                                                  distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
+#'  distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
 #passes tests
 #' random_narrow_test_copy_with_transpose<-getAsymmetricBlockIndices(genomicmatrix = random_narrow,
-#'                                                                  distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
+#'  distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
 #' conserved_breakpoints_col<-intersect(random_narrow_test_copy_with_transpose$breakpoints_col,
-#'                                     random_narrow_test_copy_with_transpose$t_breakpoints_row)
+#'  random_narrow_test_copy_with_transpose$t_breakpoints_row)
 #' conserved_breakpoints_row<-intersect(random_narrow_test_copy_with_transpose$breakpoints_row,
-#'                                     random_narrow_test_copy_with_transpose$t_breakpoints_col)
+#'  random_narrow_test_copy_with_transpose$t_breakpoints_col)
 #' random_wide_test_copy_with_transpose<-getAsymmetricBlockIndices(genomicmatrix = random_wide,
-#'                                                                distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
+#'  distrib = "G",model = "Dplus",nb_change_max = 1e2,MI_strategy = "copy",transpose = T)
 #' conserved_breakpoints_col<-intersect(random_wide_test_copy_with_transpose$breakpoints_col,
-#'                                     random_wide_test_copy_with_transpose$t_breakpoints_row)
+#'  random_wide_test_copy_with_transpose$t_breakpoints_row)
 #' conserved_breakpoints_row<-intersect(random_wide_test_copy_with_transpose$breakpoints_row,
-#'                                     random_wide_test_copy_with_transpose$t_breakpoints_col)
+#'  random_wide_test_copy_with_transpose$t_breakpoints_col)
 #' }
 #' @export
 getAsymmetricBlockIndices<-function(genomicmatrix=NULL,nb_change_max=100,distrib = "G",model = "D",MI_strategy="average",transpose=T)

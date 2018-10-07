@@ -12,6 +12,9 @@
 #' @param sequential Turn off parallelism with doParallel?
 #' @param flip_row_col Give column genes along the rows and row genes down columns?
 #' @return concatenated_gene_matrix A matrix with row and column genes
+#' @examples 
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
+#' getAnnotationMatrix(nbl_result_matrix_sign_small)
 #' @export
 getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_col=F)
 {

@@ -20,7 +20,7 @@
 #' mat<-matrix(c(5,10,15,20,0,40,-45,300,-50),byrow=TRUE,nrow=3)
 #' rescaled_mat<-signedRescale(mat)
 #' mat
-#' rescaled_mat
+#' rescaled_mat<-signedRescale(abs(mat))
 #' @export
 signedRescale<-function(matrix,global_max=NULL,global_min=NULL,global_sigma=NULL,global_mu=NULL,max_cap=NULL,method="minmax",tan_transform=F,global_sigma_pos=NULL,global_sigma_neg=NULL,asymptotic_max=T)
 {
@@ -29,7 +29,14 @@ signedRescale<-function(matrix,global_max=NULL,global_min=NULL,global_sigma=NULL
   transformedmatrix[transformedmatrix==0]<-(0.5+1e9*.Machine$double.eps)
   if(!is.null(max_cap)){transformedmatrix[transformedmatrix>max_cap]<-max_cap}
   if(is.null(global_max)){global_max<-max(transformedmatrix[transformedmatrix>0])}
-  if(is.null(global_min)){global_min<-min(transformedmatrix[transformedmatrix<0])}
+  if(is.null(global_min)){
+    if(length(transformedmatrix[transformedmatrix<0])!=0){
+      global_min<-min(transformedmatrix[transformedmatrix<0])
+    } else {
+      global_min <- -Inf #this is only used in the case that there are no negative values, which stores no data.
+      #essentially, this is a fix to remove warnings. The scaling will happen correctly.
+    }
+    }
   if(is.null(global_sigma_pos)){global_sigma_pos<-sd(transformedmatrix[transformedmatrix>0])}
   if(is.null(global_sigma_neg)){global_sigma_neg<-sd(transformedmatrix[transformedmatrix<0])}
   if(is.null(global_sigma)){global_sigma<-sd(transformedmatrix)}

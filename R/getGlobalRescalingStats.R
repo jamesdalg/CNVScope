@@ -9,6 +9,9 @@
 #' @return A list of the output statistics, including:
 #' the global min, max, length, sigma (matrix variance), pos_sigma (variance of the positive values), neg_sigma(variance of the negative values), global mean (global_mu),
 #'  est_max_cap (global_mu+global_sigma_pos*2), as well as the number of rows and columns of the matrix.
+#' @examples
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+#' getGlobalRescalingStats(nbl_result_matrix_sign_small)
 #' @export
 getGlobalRescalingStats<-function(whole_matrix,saveToDisk=F,output_fn=NULL)
 {
@@ -17,14 +20,18 @@ getGlobalRescalingStats<-function(whole_matrix,saveToDisk=F,output_fn=NULL)
 global_max<-max(whole_matrix)
 global_min<-min(whole_matrix)
 global_length<-length(whole_matrix)
-global_sigma<-sqrt(var(whole_matrix)*(global_length)/(global_length-1))
-global_sigma_pos<-sqrt(var(whole_matrix[whole_matrix>0])*(global_length)/(global_length-1))
-global_sigma_neg<-sqrt(var(whole_matrix[whole_matrix<0])*(global_length)/(global_length-1))
+global_sigma<-sqrt(var(as.numeric(whole_matrix)))
+global_sigma_pos<-sqrt(var(whole_matrix[whole_matrix>0]))
+if(length(whole_matrix[whole_matrix<0])==0) {
+  global_sigma_neg=NULL
+} else {
+  global_sigma_neg<-sqrt(var(whole_matrix[whole_matrix<0]))
+}
 global_mu<-mean(whole_matrix)
 est_max_cap<-global_mu+global_sigma_pos*2
 nrow_mat<-nrow(whole_matrix)
 ncol_mat<-ncol(whole_matrix)
-output<-list(global_max,global_min,global_sigma_pos,global_sigma_neg,global_mu,est_max_cap,nrow_mat,ncol_mat,global_length)
+output<-list(global_max=global_max,global_min=global_min,global_sigma=global_sigma,global_sigma_pos=global_sigma_pos,global_sigma_neg=global_sigma_neg,global_mu=global_mu,est_max_cap=est_max_cap,nrow_mat=nrow_mat,ncol_mat=ncol_mat,global_length=global_length)
 if(saveToDisk){saveRDS(object = "output",file=paste0(output_fn))}
 
 return(output)
