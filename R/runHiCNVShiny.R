@@ -15,7 +15,7 @@
 #' @rawNamespace import(GenomicFeatures ,except = show)
 #' @param baseurl the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.
 #' @param basefn the linux file path of the same source files.
-#' @return returns absolutely nothing. It just runs the application.
+#' @return none. Runs the application if the correct files are present.
 #' @examples
 #' \dontrun{
 #' runHiCNVShiny()

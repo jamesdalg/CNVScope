@@ -14,15 +14,9 @@
 #' @return An HTML widget.
 #' @examples
 #' \dontrun{
-#' all_conc<-data.table::fread(paste0(groupdir,
-#' "dalgleishjl/hicnv/all_concondace_neg_log10_pvalue_seg.txt"),data.table = F)
-#'rownames(all_conc)<-all_conc$pos
-#'all_conc_cleaned<-all_conc[,5:ncol(all_conc)]
-#'common_coords<-intersect(rownames(all_conc_cleaned),colnames(all_conc_cleaned))
-#'all_conc_cleaned_common_coords<-all_conc_cleaned[common_coords,common_coords]
-#'chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
-#'chrom.pairs<-expand.grid(1:length(chromosomes),1:length(chromosomes))
-#' getInterchromosomalInteractivePlot()
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
+#' getInterchromosomalInteractivePlot(whole_matrix=nbl_result_matrix_sign_small,chrom1=1,
+#' chrom2=1)
 #' }
 #' @export
 
@@ -30,6 +24,7 @@ globalVariables(c('chromosomes'))
 getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
 {
   #if(rownames(whole_matrix)==colnames(whole_matrix))
+  chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
     submatrix<-whole_matrix[grep(chromosomes[chrom1],rownames(whole_matrix)),grep(chromosomes[chrom2],colnames(whole_matrix))]
   
   grch37 = biomaRt::useMart(biomart="ENSEMBL_MART_ENSEMBL", host="grch37.ensembl.org", path="/biomart/martservice", dataset="hsapiens_gene_ensembl")

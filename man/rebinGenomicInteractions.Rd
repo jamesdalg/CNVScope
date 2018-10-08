@@ -21,6 +21,18 @@
 \description{
 This function allows the user to assign a set of genomicinteractions to a pre-existing matrix with known dimensions and column/row names. It finds the row/column index of each point and produces a merged dataframe with the original annotation columns that correspond to each bin in the matrix, with appropriate labels & indexes.
 }
+\examples{
+gint_small_chr1<-importBreakpointBed(breakpoint_fn = system.file("extdata",
+"sample_breakpoints_chr1.bed",package = "HiCNV"))
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
+rebinGenomicInteractions(gint=gint_small_chr1,whole_genome_matrix=NULL,
+rownames_gr=underscored_pos_to_GRanges(rownames(nbl_result_matrix_sign_small)),
+colnames_gr=underscored_pos_to_GRanges(colnames(nbl_result_matrix_sign_small)),
+rownames_mat = rownames(nbl_result_matrix_sign_small),
+colnames_mat = colnames(nbl_result_matrix_sign_small),
+method="nearest")
+
+}
 \keyword{GenomicInteractions}
 \keyword{bin}
 \keyword{binning}

@@ -9,7 +9,7 @@
 \item{basefn}{the linux file path of the same source files.}
 }
 \value{
-returns absolutely nothing. It just runs the application.
+none. Runs the application if the correct files are present.
 }
 \description{
 Runs the interactive suite of tools locally or on a server if called in a script file (e.g. App.R).
