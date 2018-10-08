@@ -41,6 +41,7 @@ ggplotmatrix a matrix with values sufficient to create a ggplot2 heatmap with ge
 Writes an RData file with a ggplot2 object within.
 }
 \examples{
+load(system.file("extdata","grch37.rda",package = "CNVScope"))
 load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope"))
 load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "CNVScope"))
 writeAsymmetricMeltedChromosomalMatrixToDisk(whole_genome_matrix = 

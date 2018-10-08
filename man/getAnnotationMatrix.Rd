@@ -24,8 +24,9 @@ Gets the genes in the ranges within each cell of the matrix.
 }
 \examples{
 load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
-load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "CNVScope")) 
-getAnnotationMatrix(nbl_result_matrix_sign_small,sequential=TRUE)
+load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "CNVScope"))
+load(system.file("extdata","grch37.rda",package = "CNVScope"))
+getAnnotationMatrix(genomic_matrix=nbl_result_matrix_sign_small[1:5,1:5],sequential=TRUE,prot_only=T)
 }
 \keyword{genomic}
 \keyword{matrix}

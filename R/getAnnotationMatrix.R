@@ -14,20 +14,26 @@
 #' @return concatenated_gene_matrix A matrix with row and column genes
 #' @examples 
 #' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
-#' load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "CNVScope")) 
-#' getAnnotationMatrix(nbl_result_matrix_sign_small,sequential=TRUE)
+#' load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "CNVScope"))
+#' load(system.file("extdata","grch37.rda",package = "CNVScope"))
+#' getAnnotationMatrix(genomic_matrix=nbl_result_matrix_sign_small[1:5,1:5],sequential=TRUE,prot_only=T)
 #' @export
 getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_col=F)
 {
   if(!exists("grch37")){
   grch37 = biomaRt::useMart(biomart="ENSEMBL_MART_ENSEMBL", host="grch37.ensembl.org", path="/biomart/martservice", dataset="hsapiens_gene_ensembl")
   }
-  if(!exists("ensembl_gene_tx_table") | !exists("ensembl_gen_tx_table$gene_biotype") | (!exists("ensembl_gene_tx_table_prot") & prot_only==TRUE))
+  if(!exists("ensembl_gene_tx_table_prot") & prot_only==TRUE)
+  {
+  if(!(exists("ensembl_gene_tx_table") | !exists("ensembl_gen_tx_table$gene_biotype") ))
 {  ensembl_gene_tx_table <- biomaRt::getBM(attributes = c("ensembl_gene_id", "ensembl_transcript_id","chromosome_name","transcript_start","transcript_end","start_position","end_position", "strand", "percentage_gene_gc_content","external_gene_name","gene_biotype"),
                                  mart = grch37)
+ensembl_gene_gr<-GenomicRanges::GRanges(seqnames = paste0("chr",ensembl_gene_tx_table$chromosome_name),ranges = IRanges::IRanges(start = ensembl_gene_tx_table$start_position,end=ensembl_gene_tx_table$end_position),strand = ensembl_gene_tx_table$strand,...=ensembl_gene_tx_table)
   }
+  
   ensembl_gene_tx_table_prot<-ensembl_gene_tx_table[ensembl_gene_tx_table$gene_biotype=="protein_coding",]
-  ensembl_gene_gr<-GenomicRanges::GRanges(seqnames = paste0("chr",ensembl_gene_tx_table$chromosome_name),ranges = IRanges::IRanges(start = ensembl_gene_tx_table$start_position,end=ensembl_gene_tx_table$end_position),strand = ensembl_gene_tx_table$strand,...=ensembl_gene_tx_table)
+  }
+  
   
   ensembl_gene_gr_prot<-GenomicRanges::GRanges(seqnames = paste0("chr",ensembl_gene_tx_table_prot$chromosome_name),
                                                ranges = IRanges::IRanges(start = ensembl_gene_tx_table_prot$start_position,
@@ -36,7 +42,7 @@ getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_c
                                                ...=ensembl_gene_tx_table_prot)
   rownames_gr_genomic_matrix<-underscored_pos_to_GRanges(rownames(genomic_matrix))
   colnames_gr_genomic_matrix<-underscored_pos_to_GRanges(colnames(genomic_matrix))
-  if(sequential){registerDoSEQ()} else {registerDoParallel()}
+  if(sequential){foreach::registerDoSEQ()} else {registerDoParallel()}
   if(prot_only)
   {
     print("prot_only")

@@ -27,12 +27,12 @@ nbl_input_matrix<-readRDS("NBL_sample_matched_input_matrix.rds")
 From our previous work, we created a small input matrix, with segmented 1Mb regions as our row labels and with sample names from TARGET data as our column labels.
 We can read that in using the following code:
 ```{r,echo=T,warning=F,message=F}
-library(HiCNV)
+library(CNVScope)
 ```
 ```{r,echo=T}
 nbl_input_matrix[1:5,1:5]
 ```
-calcVecLMs() comes standard in the HiCNV package. It allows calculation of the matrix with parallel processing using mclapply, but larger matrices will require a bit more power, and thus we use slurm_apply, from the rslurm pacakge to distribute the work over multiple cores. Our particular establishment has a limit approximating 1000 jobs, so it's best not to use more than that unless your cluster will support it. Conversely, you should use less if you can't submit that many individual jobs in a job array in your cluster. In this particular example, I've removed rows where there is no segmentation data, across the board using colSums().
+calcVecLMs() comes standard in the CNVScope package. It allows calculation of the matrix with parallel processing using mclapply, but larger matrices will require a bit more power, and thus we use slurm_apply, from the rslurm pacakge to distribute the work over multiple cores. Our particular establishment has a limit approximating 1000 jobs, so it's best not to use more than that unless your cluster will support it. Conversely, you should use less if you can't submit that many individual jobs in a job array in your cluster. In this particular example, I've removed rows where there is no segmentation data, across the board using colSums().
 ```{r, eval=F,echo=T}
 library(parallel)
 nbl_slurm_object_test_zero_removed<-calcVecLMs(bin_data =as.data.frame(t(nbl_input_matrix[which(rowSds(as.matrix(nbl_input_matrix))!=0.0),])),use_slurm = T,n_nodes = 975,memory_per_node = "32g",walltime = "04:00:00",cpus_on_each_node = 2,job_finished = F,slurmjob = NULL)
