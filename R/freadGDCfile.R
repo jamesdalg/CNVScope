@@ -13,7 +13,7 @@
 #' @examples 
 #' freadGDCfile(file =
 #' system.file("extdata","somaticCnvSegmentsDiploidBeta_TARGET-30-PANRVJ_NormalVsPrimary.tsv",
-#' package = "HiCNV"))
+#' package = "CNVScope"))
 #' @export
 freadGDCfile<-function(file,fread_skip=14) {input_tsv<-data.table::fread(file,skip=fread_skip)
 sample_info_colsplit<-reshape2::colsplit(basename(file),"_|-|\\.",c("pre","project","num","sample","comparison","fn_ext"))

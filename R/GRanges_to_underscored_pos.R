@@ -6,7 +6,7 @@
 #' @keywords Genomic Ranges position
 #' @importFrom GenomicRanges seqnames GRanges
 #' @examples 
-#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
 #' col_gr<-underscored_pos_to_GRanges(colnames(nbl_result_matrix_sign_small))
 #' GRanges_to_underscored_pos(col_gr)
 #' @export

@@ -1,7 +1,7 @@
-#' Runs the HiCNV plotly shiny application.
+#' Runs the CNVScope plotly shiny application.
 #'
 #' Runs the interactive suite of tools locally or on a server if called in a script file (e.g. App.R).
-#' @name runHiCNVShiny
+#' @name runCNVScopeShiny
 #' @keywords CNV heatmap shiny plotly
 #' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
 #' @importFrom BiocManager repositories
@@ -18,14 +18,14 @@
 #' @return none. Runs the application if the correct files are present.
 #' @examples
 #' \dontrun{
-#' runHiCNVShiny()
+#' runCNVScopeShiny()
 #' }
 #' @export
 globalVariables(c("common_coords_linreg","chrom.pairs","expression_data_gr"))
 chrom.pairs<-NULL
 
 
-runHiCNVShiny<-function(baseurl=NULL,basefn=NULL) {
+runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL) {
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
   
 head.matrix<-function(mat,n=6L)
@@ -91,7 +91,7 @@ if(exists("basefn")) {#local objects:
     tryCatch(ensembl_gene_tx_data_gr<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/ensembl_gene_tx_table_gr.rds"))),error = function(e) NULL)
   }
 }
-HiCNVui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector() 
+CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector() 
                    tags$style(type="text/css",
                               ".shiny-output-error { visibility: hidden; }",
                               ".shiny-output-error:before { visibility: hidden; }"),
@@ -161,5 +161,5 @@ HiCNVui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                    
                    
 )
-shinyApp(ui = HiCNVui, server = HiCNVserver)
+shinyApp(ui = CNVScopeui, server = CNVScopeserver)
 }

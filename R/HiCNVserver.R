@@ -1,7 +1,7 @@
-#' Server component of the HiCNV plotly shiny application.
+#' Server component of the CNVScope plotly shiny application.
 #'
-#'  Server function of the HiCNV shiny application. run with runHiCNVShiny
-#' @name HiCNVserver 
+#'  Server function of the CNVScope shiny application. run with runCNVScopeShiny
+#' @name CNVScopeserver 
 #' @keywords CNV heatmap shiny plotly
 #' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
 #' @importFrom tidyr unite
@@ -20,7 +20,7 @@
 
 #' @examples
 #' \dontrun{
-#' runHiCNVShiny()
+#' runCNVScopeShiny()
 #' }
 #' @export
 globalVariables(c("ensembl_gene_tx_data_gr","baseurl","chromosomes","downsample_factor","basefn",
@@ -33,7 +33,7 @@ subset_name<-NULL
 expression_data_gr_nbl<-NULL
 tcga_type<-NULL
 chrom.pairs<-NULL
-HiCNVserver<-function(session,input, output) {
+CNVScopeserver<-function(session,input, output) {
   if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
   
   printLogJs <- function(x, ...) {

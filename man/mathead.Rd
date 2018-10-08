@@ -19,7 +19,7 @@ Gives a small square of a matrix to get an idea of content rather than grabbing 
 When this row is thousands of numbers long, this can be a problem.
 }
 \examples{
-load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope"))
 mathead(nbl_result_matrix_sign_small)
 }
 \keyword{average}

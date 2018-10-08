@@ -21,7 +21,7 @@ Reads a GDC segmetnation file and extract the segmetnation data.
 \examples{
 freadGDCfile(file =
 system.file("extdata","somaticCnvSegmentsDiploidBeta_TARGET-30-PANRVJ_NormalVsPrimary.tsv",
-package = "HiCNV"))
+package = "CNVScope"))
 }
 \keyword{file}
 \keyword{read}

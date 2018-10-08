@@ -17,7 +17,7 @@
 #' @return sample_aggregated_segvals A dataframe containing the aggregated segmentation values, based on the parameters provided.
 #' @examples 
 #' #Pipeline examples would be too large to include in package checks.
-#' #please see browseVignettes("HiCNV") for a demonstration.
+#' #please see browseVignettes("CNVScope") for a demonstration.
 #' @export
 globalVariables(c('begin','s',".","pos",'....relativeCvg','....sample'))
 

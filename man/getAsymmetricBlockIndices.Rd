@@ -36,7 +36,7 @@ This function segments a matrix, including asymmetric matrices using multiple im
 }
 \examples{
 
-load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
 submatrix_tiny<-nbl_result_matrix_sign_small
 tiny_test<-getAsymmetricBlockIndices(submatrix_tiny)
 \dontrun{

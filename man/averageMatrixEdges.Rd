@@ -21,7 +21,7 @@ averaged_matrix A matrix with edges averaged, which may be more amenable to down
 Averages the columns and rows of a matrix by a certain amount.
 }
 \examples{
-load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope"))
 dim(nbl_result_matrix_sign_small)
 nbl_result_matrix_sign_small_avg<-averageMatrixEdges(nbl_result_matrix_sign_small,
 nedges=1,dimension="row")

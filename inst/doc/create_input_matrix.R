@@ -2,10 +2,10 @@
 knitr::opts_chunk$set(echo = TRUE)
 
 knitr::opts_knit$set(root.dir = '.')
-library(HiCNV)
+library(CNVScope)
 
 ## ----eval=F,echo=T-------------------------------------------------------
-#  library(HiCNV)
+#  library(CNVScope)
 
 ## ----eval=F,echo=T-------------------------------------------------------
 #  if(!dir.exists("extracted_nbl_data")){dir.create("extracted_nbl_data")}

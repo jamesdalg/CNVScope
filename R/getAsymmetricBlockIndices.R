@@ -17,7 +17,7 @@
 #' @return breakpoints_row A vector of breakpoints for the rows on the transposed genomic matrix.
 #' @examples 
 #' 
-#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
 #' submatrix_tiny<-nbl_result_matrix_sign_small
 #' tiny_test<-getAsymmetricBlockIndices(submatrix_tiny)
 #' \dontrun{

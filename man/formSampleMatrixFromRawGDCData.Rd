@@ -20,7 +20,7 @@ Reads a GDC segmetnation files, adds sample information, and forms a data matrix
 }
 \examples{
 #Pipeline examples would be too large to include in package checks.
-#please see browseVignettes("HiCNV") for a demonstration.
+#please see browseVignettes("CNVScope") for a demonstration.
 }
 \keyword{GDC}
 \keyword{segmentation}

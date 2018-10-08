@@ -25,11 +25,11 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 
 knitr::opts_knit$set(root.dir = '.')
-library(HiCNV)
+library(CNVScope)
 ```
 We have to begin our work by loading the library:
 ```{r,eval=F,echo=T}
-library(HiCNV)
+library(CNVScope)
 ```
 Following this, we'll obtain TARGET low-pass neuroblastoma data (NBL) from the GDC archive.
 Please note: TARGET_NBL_WGS_CNVLOH.tsv is a clinical metadata file and therefore not compatible with the ensuing functions to extract segment data.

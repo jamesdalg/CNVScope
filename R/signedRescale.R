@@ -68,15 +68,15 @@ signedRescale<-function(matrix,global_max=NULL,global_min=NULL,global_sigma=NULL
 }
 #all_conc_cleaned_common_coords_linreg_tiny<-all_conc_cleaned_common_coords_linreg[1:25,1:25]
 # all_conc_cleaned_common_coords_linreg_tiny.m<-melt(as.matrix(all_conc_cleaned_common_coords_linreg[1:5,1:5]))
-# signedRescale(all_conc_cleaned_common_coords_linreg_tiny)==HiCNV::signedRescale(all_conc_cleaned_common_coords_linreg_tiny)
+# signedRescale(all_conc_cleaned_common_coords_linreg_tiny)==CNVScope::signedRescale(all_conc_cleaned_common_coords_linreg_tiny)
 # bins<-fread(paste0(groupdir,"dalgleishjl/hicnv/binfile.txt"))
 # bins_t<-t(bins[,2:ncol(bins)])
 # colnames(bins_t)<-bins$probe
 # #head(bins_t)
 # Heatmap(signedRescale(all_conc_cleaned_common_coords_linreg_tiny,tan_transform = F),cluster_rows = F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
-# Heatmap(HiCNV::signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),tan_transform = F),cluster_rows = F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
+# Heatmap(CNVScope::signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),tan_transform = F),cluster_rows = F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
 # Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),tan_transform = F),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
-# HiCNV::signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:85,1:85]))
+# CNVScope::signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:85,1:85]))
 # matrix=all_conc_cleaned_common_coords_linreg[1:85,1:85]
 # setwd(paste0(groupdir,"dalgleishjl/hicnv/color_scale_test_plots/"))
 # 

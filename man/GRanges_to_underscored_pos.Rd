@@ -15,7 +15,7 @@ GRanges_to_underscored_pos(input_gr, minusOneToEnd = T)
 This function converts row or column names (or any character vector of the format) into a GenomicRanges object.
 }
 \examples{
-load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
 col_gr<-underscored_pos_to_GRanges(colnames(nbl_result_matrix_sign_small))
 GRanges_to_underscored_pos(col_gr)
 }

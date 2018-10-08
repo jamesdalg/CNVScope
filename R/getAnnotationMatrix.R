@@ -13,8 +13,8 @@
 #' @param flip_row_col Give column genes along the rows and row genes down columns?
 #' @return concatenated_gene_matrix A matrix with row and column genes
 #' @examples 
-#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
-#' load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "HiCNV")) 
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
+#' load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "CNVScope")) 
 #' getAnnotationMatrix(nbl_result_matrix_sign_small,sequential=TRUE)
 #' @export
 getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_col=F)

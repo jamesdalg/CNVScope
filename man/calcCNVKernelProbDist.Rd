@@ -20,7 +20,7 @@ from a matrix of the same size
 and a percentile matrix of these Z-scores
 }
 \examples{
-load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope"))
 mat_prob_dist<-calcCNVKernelProbDist(nbl_result_matrix_sign_small,parallel=FALSE)
 mat_prob_dist
 }

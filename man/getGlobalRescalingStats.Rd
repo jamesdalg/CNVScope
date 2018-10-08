@@ -22,7 +22,7 @@ the global min, max, length, sigma (matrix variance), pos_sigma (variance of the
 calculates several statistics from a large matrix that can then be applied to smaller submatrices without needing to load the entire matrix into memmory
 }
 \examples{
-load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope"))
 getGlobalRescalingStats(nbl_result_matrix_sign_small)
 }
 \keyword{color}

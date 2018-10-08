@@ -2,7 +2,7 @@
 % Please edit documentation in R/createChromosomalMatrixSet.R
 \name{createChromosomalMatrixSet}
 \alias{createChromosomalMatrixSet}
-\title{Create chromosomal interaction matrices for HiCNV shiny application.}
+\title{Create chromosomal interaction matrices for CNVScope shiny application.}
 \usage{
 createChromosomalMatrixSet(whole_genome_mat, output_dir, prefix = "nbl_")
 }

@@ -31,7 +31,7 @@ blockaverages_matrix_label_avg a matrix of the block averages, with indexes base
 This function produces several matrix outputs of averages and areas of matrix blocks, given a pair of vectors for breakpoints.
 }
 \examples{
-load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope"))
 set.seed(303)
 mat<-matrix(data=runif(n = 25),nrow=5,ncol=5,dimnames = list(c("chr1_0_5000",
 "chr1_5000_10000","chr1_10000_15000","chr1_15000_20000","chr1_20000_25000"),

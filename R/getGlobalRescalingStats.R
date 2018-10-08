@@ -10,7 +10,7 @@
 #' the global min, max, length, sigma (matrix variance), pos_sigma (variance of the positive values), neg_sigma(variance of the negative values), global mean (global_mu),
 #'  est_max_cap (global_mu+global_sigma_pos*2), as well as the number of rows and columns of the matrix.
 #' @examples
-#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope"))
 #' getGlobalRescalingStats(nbl_result_matrix_sign_small)
 #' @export
 getGlobalRescalingStats<-function(whole_matrix,saveToDisk=F,output_fn=NULL)

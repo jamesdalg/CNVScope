@@ -9,7 +9,7 @@
 #' @param singlechromosome Single chromosome mode; Multi-chromosome not yet implemented (leave T)
 #' @return whole_matrix_dsamp A downsampled matrix.
 #' @examples 
-#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope"))
 #' downsample_genomic_matrix(whole_matrix=nbl_result_matrix_sign_small,
 #' downsamplefactor=5,singlechromosome=TRUE)
 #' @export

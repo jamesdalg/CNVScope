@@ -1,16 +1,16 @@
-Package: HiCNV
+Package: CNVScope
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
 Version: 1.8.4
 Date: 2018-10-08
 Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
-BugReports: https://github.com/jamesdalg/HiCNV/issues/
+BugReports: https://github.com/jamesdalg/CNVScope/issues/
 Depends: ggplot2
 Imports: readr,DT,InteractionSet,BiocManager,tidyr,S4Vectors,circlize,igraph,visNetwork,reshape2,magrittr,htmltools,htmlwidgets,jointseg,plotly,shinyjs,logging,shiny,RCurl,foreach,GenomicFeatures,GenomicInteractions,HiCseg,IRanges,Matrix,OpenImageR,biomaRt,blockseg,heatmaply,matrixStats,shinythemes,shinycssloaders,spatialfil,ComplexHeatmap,GenomicRanges,plyr,data.table,rslurm,dplyr,numbers,rtracklayer,BSgenome.Hsapiens.UCSC.hg19,doParallel
 Suggests:knitr, rmarkdown
 VignetteBuilder: knitr
-URL: https://github.com/jamesdalg/HiCNV/
+URL: https://github.com/jamesdalg/CNVScope/
 biocViews: 
 Description: A Versatile Toolkit For Copy Number Variation Relationship Data Analysis And Visualization.
 License: BSD_3_clause + file LICENSE

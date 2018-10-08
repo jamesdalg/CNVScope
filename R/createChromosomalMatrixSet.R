@@ -1,4 +1,4 @@
-#'  Create chromosomal interaction matrices for HiCNV shiny application.
+#'  Create chromosomal interaction matrices for CNVScope shiny application.
 #'
 #' Takes a linear regression matrix and sets infinites to a finite value, and changes the sign to match the sign of the correlation for each value.
 #' @keywords Interaction matrix

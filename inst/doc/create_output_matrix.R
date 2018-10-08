@@ -12,7 +12,7 @@ nbl_input_matrix<-readRDS("NBL_sample_matched_input_matrix.rds")
 
 
 ## ----echo=T,warning=F,message=F------------------------------------------
-library(HiCNV)
+library(CNVScope)
 
 ## ----echo=T--------------------------------------------------------------
 nbl_input_matrix[1:5,1:5]

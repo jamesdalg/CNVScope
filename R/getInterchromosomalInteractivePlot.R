@@ -14,7 +14,7 @@
 #' @return An HTML widget.
 #' @examples
 #' \dontrun{
-#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
 #' getInterchromosomalInteractivePlot(whole_matrix=nbl_result_matrix_sign_small,chrom1=1,
 #' chrom2=1)
 #' }
