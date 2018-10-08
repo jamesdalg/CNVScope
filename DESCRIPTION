@@ -1,7 +1,7 @@
 Package: CNVScope
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
-Version: 1.8.4
+Version: 1.8.5
 Date: 2018-10-08
 Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
@@ -12,7 +12,7 @@ Suggests:knitr, rmarkdown
 VignetteBuilder: knitr
 URL: https://github.com/jamesdalg/CNVScope/
 biocViews: 
-Description: A Versatile Toolkit For Copy Number Variation Relationship Data Analysis And Visualization.
+Description: Provides the ability to create interaction maps, discover CNV map domains (edges), gene annotate interactions, and create interactive visualizations of these CNV interaction maps.
 License: BSD_3_clause + file LICENSE
 RoxygenNote: 6.0.1
 LazyData: true
