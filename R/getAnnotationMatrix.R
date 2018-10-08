@@ -14,14 +14,15 @@
 #' @return concatenated_gene_matrix A matrix with row and column genes
 #' @examples 
 #' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
-#' getAnnotationMatrix(nbl_result_matrix_sign_small)
+#' load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "HiCNV")) 
+#' getAnnotationMatrix(nbl_result_matrix_sign_small,sequential=TRUE)
 #' @export
 getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_col=F)
 {
   if(!exists("grch37")){
   grch37 = biomaRt::useMart(biomart="ENSEMBL_MART_ENSEMBL", host="grch37.ensembl.org", path="/biomart/martservice", dataset="hsapiens_gene_ensembl")
   }
-  if(!exists("ensembl_gene_tx_table") | !exists("ensembl_gen_tx_table$gene_biotype"))
+  if(!exists("ensembl_gene_tx_table") | !exists("ensembl_gen_tx_table$gene_biotype") | (!exists("ensembl_gene_tx_table_prot") & prot_only==TRUE))
 {  ensembl_gene_tx_table <- biomaRt::getBM(attributes = c("ensembl_gene_id", "ensembl_transcript_id","chromosome_name","transcript_start","transcript_end","start_position","end_position", "strand", "percentage_gene_gc_content","external_gene_name","gene_biotype"),
                                  mart = grch37)
   }

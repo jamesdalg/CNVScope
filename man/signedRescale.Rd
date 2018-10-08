@@ -44,7 +44,7 @@ Performs a signed rescale on the data, shrinking the negative and positive range
 mat<-matrix(c(5,10,15,20,0,40,-45,300,-50),byrow=TRUE,nrow=3)
 rescaled_mat<-signedRescale(mat)
 mat
-rescaled_mat
+rescaled_mat<-signedRescale(abs(mat))
 }
 \keyword{matrix}
 \keyword{negative}

@@ -22,5 +22,9 @@ concatenated_gene_matrix A matrix with row and column genes
 \description{
 Gets the genes in the ranges within each cell of the matrix.
 }
+\examples{
+load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV")) 
+getAnnotationMatrix(nbl_result_matrix_sign_small,sequential=TRUE)
+}
 \keyword{genomic}
 \keyword{matrix}

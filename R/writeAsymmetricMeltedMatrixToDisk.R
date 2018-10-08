@@ -19,7 +19,10 @@
 #' @return ggplotmatrix a matrix with values sufficient to create a ggplot2 heatmap with geom_tile() or with ggiraph's geom_tile_interactive()
 #' @examples
 #' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
-#' writeAsymmetricMeltedChromosomalMatrixToDisk(whole_genome_matrix = nbl_result_matrix_sign_small,chrom1 = 1,chrom2 = 1,desired_range_start = 25, desired_range_end = 25)
+#' load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "HiCNV"))
+#' writeAsymmetricMeltedChromosomalMatrixToDisk(whole_genome_matrix = 
+#' nbl_result_matrix_sign_small,
+#' chrom1 = 1,chrom2 = 1,desired_range_start = 25, desired_range_end = 25)
 #' @export
 writeAsymmetricMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,desired_range_start=50,desired_range_end=300,saveToDisk=T,max_cap=NULL,rescale=T)
 {
