@@ -38,7 +38,7 @@ mat<-matrix(data=runif(n = 25),nrow=5,ncol=5,dimnames = list(c("chr1_0_5000",
 c("chr1_0_5000","chr1_5000_10000","chr1_10000_15000","chr1_15000_20000","chr1_20000_25000")))
 breakpoints_col<-c(1,2,4,5)
 breakpoints_row<-c(1,2,4,5)
-registerDoSEQ()
+foreach::registerDoSEQ()
 getBlockAverageMatrixFromBreakpoints(whole_matrix=mat,breakpoints_col=breakpoints_col,
 breakpoints_row=breakpoints_row)
 \dontrun{ #extra examples

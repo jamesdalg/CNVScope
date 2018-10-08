@@ -4,7 +4,7 @@
 #' @name getBlockAverageMatrixFromBreakpoints
 #' @keywords CNV kernel probability distribution concordance fast
 #' @import foreach doParallel spatialfil 
-#' @importFrom jointSeg jointSeg
+#' @importFrom jointseg jointSeg
 #' @param whole_matrix the large, whole matrix from which blocks are taken
 #' @param breakpoints_col An integer list of column breakpoints, including 1 and the number of columns in the whole matrix.
 #' @param breakpoints_row An integer list of row breakpoints, including 1 and the number of rows in the whole matrix.
@@ -24,7 +24,7 @@
 #' c("chr1_0_5000","chr1_5000_10000","chr1_10000_15000","chr1_15000_20000","chr1_20000_25000")))
 #' breakpoints_col<-c(1,2,4,5)
 #' breakpoints_row<-c(1,2,4,5)
-#' registerDoSEQ()
+#' foreach::registerDoSEQ()
 #' getBlockAverageMatrixFromBreakpoints(whole_matrix=mat,breakpoints_col=breakpoints_col,
 #' breakpoints_row=breakpoints_row)
 #' \dontrun{ #extra examples

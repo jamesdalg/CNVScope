@@ -18,7 +18,8 @@
 #' @examples 
 #' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
 #' load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "HiCNV"))
-#' writeMeltedChromosomalMatrixToDisk(whole_genome_matrix = nbl_result_matrix_sign_small,chrom1 = 1,chrom2 = 1,desired_range_start = 25, desired_range_end = 25)
+#' writeMeltedChromosomalMatrixToDisk(whole_genome_matrix = nbl_result_matrix_sign_small,
+#' chrom1 = 1,chrom2 = 1,desired_range_start = 25, desired_range_end = 25)
 #' @export
 writeMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,filename,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,desired_range_start=50,desired_range_end=300)
 {
