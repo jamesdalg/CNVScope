@@ -4,6 +4,7 @@
 #' @name getBlockAverageMatrixFromBreakpoints
 #' @keywords CNV kernel probability distribution concordance fast
 #' @import foreach doParallel spatialfil 
+#' @importFrom jointSeg jointSeg
 #' @param whole_matrix the large, whole matrix from which blocks are taken
 #' @param breakpoints_col An integer list of column breakpoints, including 1 and the number of columns in the whole matrix.
 #' @param breakpoints_row An integer list of row breakpoints, including 1 and the number of rows in the whole matrix.
@@ -16,15 +17,17 @@
 #' @return blockaverages_matrix_label_area a matrix of the block areas, with indexes based on the original row/col label used to generate the data. 
 #' @return blockaverages_matrix_label_avg a matrix of the block averages, with indexes based on the original row/col label used to generate the data. 
 #' @examples
-#' \dontrun{
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
 #' set.seed(303)
 #' mat<-matrix(data=runif(n = 25),nrow=5,ncol=5,dimnames = list(c("chr1_0_5000",
 #' "chr1_5000_10000","chr1_10000_15000","chr1_15000_20000","chr1_20000_25000"),
 #' c("chr1_0_5000","chr1_5000_10000","chr1_10000_15000","chr1_15000_20000","chr1_20000_25000")))
 #' breakpoints_col<-c(1,2,4,5)
 #' breakpoints_row<-c(1,2,4,5)
-#' HiCNV::getBlockAverageMatrixFromBreakpoints(whole_matrix=mat,breakpoints_col=breakpoints_col,
+#' registerDoSEQ()
+#' getBlockAverageMatrixFromBreakpoints(whole_matrix=mat,breakpoints_col=breakpoints_col,
 #' breakpoints_row=breakpoints_row)
+#' \dontrun{ #extra examples
 #' mat<-matrix(data=round(runif(min = 0,max=100,n = 25)),nrow=5,ncol=5,
 #' dimnames = list(c("chr1_0_5000","chr1_5000_10000","chr1_10000_15000","chr1_15000_20000",
 #' "chr1_20000_25000"),c("chr2_0_50000","chr2_50000_100000",
@@ -48,31 +51,11 @@
 #' avg_results$blockaverages_reformatted_by_label
 #' avg_results$blockaverages_reformatted_by_index
 #' whole_matrix=mat
-#all_conc<-data.table::fread("~/concondance_tumor_log10_pvalue_seg_segdiff01.txt",data.table = F)
-#' if(Sys.info()['sysname']=="Windows"){groupdir<-"W:/"} else {groupdir<-"/data/CCRBioinfo/"}
-#' all_conc<-data.table::fread(paste0(gropudir,
-#' "dalgleishjl/hicnv/concondance_tumor_log10_pvalue_seg_segdiff01.txt"),data.table = F)
-#' 
-#' #all_conc<-data.table::fread(paste0(groupdir,
-#' "dalgleishjl/hicnv/all_concondace_neg_log10_pvalue_seg.txt"),data.table = F)
-#' #all_conc<-data.table::fread("all_conc.csv",data.table = F)
-#' rownames(all_conc)<-all_conc$pos
-#' all_conc_cleaned<-all_conc[,5:ncol(all_conc)]
-#' common_coords<-intersect(rownames(all_conc_cleaned),colnames(all_conc_cleaned))
-#' all_conc_cleaned_common_coords<-all_conc_cleaned[common_coords,common_coords]
-#' chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
-#' chrom1<-17 #for testing
-#' chrom2<-6 #for testing
-#' submatrix<-all_conc_cleaned_common_coords[grep(chromosomes[chrom1],
-#' rownames(all_conc_cleaned_common_coords)),grep(chromosomes[chrom2],
-#' colnames(all_conc_cleaned_common_coords))]
-#' breakpoints_row_jointseg<-jointseg::jointSeg(submatrix,K=50)$bestBkp
-#' breakpoints_col_jointseg<-jointseg::jointSeg(t(submatrix),K=50)$bestBkp
-#' 
+#' submatrix<-nbl_result_matrix_sign_small
+#' breakpoints_row_jointseg<-jointseg::jointSeg(submatrix,K=5)$bestBkp
+#' breakpoints_col_jointseg<-jointseg::jointSeg(t(submatrix),K=5)$bestBkp
 #' submatrix_avg_results<-getBlockAverageMatrixFromBreakpoints(whole_matrix=submatrix,
 #' breakpoints_col=breakpoints_col_jointseg,breakpoints_row=breakpoints_row_jointseg)
-#' mean(as.numeric(as.character(unlist(submatrix[1:3,1:34]))))
-#' mean(as.numeric(as.character(unlist(submatrix[3:12,1:34]))))
 #' }
 #' @export
 

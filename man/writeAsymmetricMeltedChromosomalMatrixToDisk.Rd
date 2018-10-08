@@ -42,6 +42,7 @@ Writes an RData file with a ggplot2 object within.
 }
 \examples{
 load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "HiCNV"))
+load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "HiCNV"))
 writeAsymmetricMeltedChromosomalMatrixToDisk(whole_genome_matrix = 
 nbl_result_matrix_sign_small,
 chrom1 = 1,chrom2 = 1,desired_range_start = 25, desired_range_end = 25)
