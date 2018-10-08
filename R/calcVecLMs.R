@@ -13,11 +13,16 @@
 #' @param walltime Time for job to be completed for SLURM scheduler in hh:mm:ss format. Defaults to 4h.
 #' @return The output matrix, or if using slurm, the slurm job object (which should be saved as an rds file and reloaded when creating the output matrix).
 #' @examples
-#'\dontrun{
+#'
 #' #small example
 #' #bin_data<-matrix(runif(5*5),ncol=5)
-#' #full_matrix<-calcVecLMs(bin_data)
-#'}
+#' foreach::registerDoSEQ()
+#' #full_matrix<-suppressWarnings(calcVecLMs(bin_data))
+#' #Please note that lm() will make a warning when there are two vectors that are too close 
+#' #numerically (this will always happen along the diagonal).
+#' #This is normal behavior and is controlled & accounted for using this function as well as
+#' #the postProcessLinRegMatrix function (which converts the infinite values to a maximum).
+#'
 #' @export
 calcVecLMs<-function(bin_data,use_slurm=F,job_finished=F,slurmjob=NULL,n_nodes=NULL,cpus_on_each_node=2,memory_per_node="2g",walltime="4:00:00")
 {

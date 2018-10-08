@@ -14,6 +14,7 @@
 #' @importFrom GenomicRanges nearest GRanges
 #' @importFrom InteractionSet findOverlaps
 #' @importFrom GenomicInteractions anchorOne anchorTwo
+#' @importFrom S4Vectors mcols mcols<-
 #' @import foreach doParallel
 #' @examples
 #' foreach::registerDoSEQ()
@@ -26,7 +27,6 @@
 #' rownames_mat = rownames(nbl_result_matrix_sign_small),
 #' colnames_mat = colnames(nbl_result_matrix_sign_small),
 #' method="nearest")
-#' 
 #' @export
 
 globalVariables("mcols")
@@ -37,7 +37,6 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
     rownames_mat<-rownames(whole_genome_matrix)
     colnames_mat<-rownames(whole_genome_matrix)
   }
-  registerDoParallel()
   output<-foreach(i=1:length(gint),.inorder = T,.combine="rbind",.errorhandling = "pass",.export = ls()) %dopar% #length(breakpoint_gint_full)length(breakpoint_gint_full)
   {
     #current_int_df<-as.data.table(gint[i]) #

@@ -32,11 +32,16 @@ The output matrix, or if using slurm, the slurm job object (which should be save
 Creates a matrix of linear regression p-values, log transformed from every combination of columns in the parent matrix.
 }
 \examples{
-\dontrun{
+
 #small example
 #bin_data<-matrix(runif(5*5),ncol=5)
-#full_matrix<-calcVecLMs(bin_data)
-}
+foreach::registerDoSEQ()
+#full_matrix<-suppressWarnings(calcVecLMs(bin_data))
+#Please note that lm() will make a warning when there are two vectors that are too close 
+#numerically (this will always happen along the diagonal).
+#This is normal behavior and is controlled & accounted for using this function as well as
+#the postProcessLinRegMatrix function (which converts the infinite values to a maximum).
+
 }
 \keyword{linear}
 \keyword{lm}

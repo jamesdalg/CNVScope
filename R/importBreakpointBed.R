@@ -10,7 +10,8 @@
 #' @param breakpoint_fn the filename of the breakpoint bed file
 #' @return a Genomic Interactions Object
 #' @examples 
-#' importBreakpointBed(breakpoint_fn = system.file("extdata","sample_breakpoints.bed",package = "HiCNV"))
+#' importBreakpointBed(breakpoint_fn = system.file("extdata",
+#' "sample_breakpoints.bed",package = "HiCNV"))
 #' @export
 globalVariables(c("mcols","mcols<-"))
   importBreakpointBed<-function(breakpoint_fn)
