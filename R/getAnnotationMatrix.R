@@ -16,7 +16,8 @@
 #' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
 #' load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "CNVScope"))
 #' load(system.file("extdata","grch37.rda",package = "CNVScope"))
-#' getAnnotationMatrix(genomic_matrix=nbl_result_matrix_sign_small[1:5,1:5],sequential=TRUE,prot_only=T)
+#' getAnnotationMatrix(genomic_matrix=nbl_result_matrix_sign_small[1:5,1:5],sequential=TRUE,
+#' prot_only=TRUE)
 #' @export
 getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_col=F)
 {
