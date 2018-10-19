@@ -45,7 +45,7 @@ Saving the slurm object is essential as it will be required when you retrieve yo
 saveRDS(nbl_slurm_object_test_zero_removed,"nbl_slurm_object_test_zero_removed.rds")
 ```
 
-Retrieving the data is as simple as using rslurm::get_slurm_out() on the saved slurm object and coercing it into a matrix with the original number of columns. The slurm object must have been read with readRDS() previously or done in the same session. For the purposes of making this tutorial, we have chosen to work on a small version of the whole matrix to make 5MB CRAN documentation limits. Previous versions of the tutorial included the whole matrix, but we leave that to the user to construct at this point. For reproducibility, one can find the original full data matrix at https://github.com/jamesdalg/CNScope_public_data.
+Retrieving the data is as simple as using rslurm::get_slurm_out() on the saved slurm object and coercing it into a matrix with the original number of columns. The slurm object must have been read with readRDS() previously or done in the same session. For the purposes of making this tutorial, we have chosen to work on a small version of the whole matrix to make 5MB CRAN documentation limits. Previous versions of the tutorial included the whole matrix, but we leave that to the user to construct at this point. For reproducibility, one can find the original full data matrix at https://github.com/jamesdalg/CNVScope_public_data.
 ```{r, eval=F,echo=T}
 library(matrixStats)
 nbl_result_matrix<-matrix(as.numeric(unlist( get_slurm_out(nbl_slurm_object_test_zero_removed))),ncol=ncol(as.data.frame(t(nbl_input_matrix[which(rowSds(as.matrix(nbl_input_matrix))!=0.0),])) ) )

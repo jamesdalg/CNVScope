@@ -15,5 +15,6 @@ Imports a BED file with breakpoints or other interactions, in a dual position fo
 \examples{
 importBreakpointBed(breakpoint_fn = system.file("extdata",
 "sample_breakpoints.bed",package = "CNVScope"))
+closeAllConnections()
 }
 \keyword{bed}

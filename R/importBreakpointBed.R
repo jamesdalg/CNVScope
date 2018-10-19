@@ -12,6 +12,7 @@
 #' @examples 
 #' importBreakpointBed(breakpoint_fn = system.file("extdata",
 #' "sample_breakpoints.bed",package = "CNVScope"))
+#' closeAllConnections()
 #' @export
 globalVariables(c("mcols","mcols<-"))
   importBreakpointBed<-function(breakpoint_fn)
@@ -24,5 +25,7 @@ globalVariables(c("mcols","mcols<-"))
     colsplit_bed<-reshape2::colsplit(string = GenomicRanges::mcols(imported_bed)$name,pattern = "_",names=c("otherdata","id_containing"))[,1]
     S4Vectors::mcols(gint)$id<-colsplit_id
     S4Vectors::mcols(gint)$bed<-colsplit_bed 
+    closeAllConnections()
+    rm(imported_bed)
     return(gint)
   }
