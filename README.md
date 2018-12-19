@@ -21,3 +21,8 @@ Expression data is provided for neuroblastoma, sorting the most variable genes t
 Finally, a whole genome view is provided to give the viewer a sense of the complexity and domains of the neuroblastoma interactome and to encourage further exploration of subpoints. The slider allows the user to select the saturation limit and thereby see domains that otherwise would be invisible due to the high values on the diagonal.
 
 ![tert-tp53 walkthrough](./tp53_tert_walkthrough.gif)
+
+Package
+=======
+
+The package focuses on methods of analyzing these matrices and constructing components for app use. See the following vignettes for more information (also available on command line): [Creating the Input matrix from public data](https://cran.r-project.org/web/packages/CNVScope/vignettes/create_input_matrix.html) [Linear Regression/Postprocess](https://cran.r-project.org/web/packages/CNVScope/vignettes/create_output_matrix.html)
