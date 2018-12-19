@@ -22,7 +22,7 @@
 #' @export
 globalVariables(c('begin','s',".","pos",'....relativeCvg','....sample'))
 
-formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize=1e6,freadskip=NULL)
+formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize=1e6,freadskip=NULL, parallel = F)
 {
   chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
   # TCGA_CNV_data_with_sample_info<-ldply(tcga_files,
@@ -34,6 +34,7 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
   # )
   if(format=="TARGET")
   {
+    if(is.null(freadskip)) {freadskip=14}
     TCGA_CNV_data_with_sample_info<-plyr::ldply(tcga_files,function(x) freadGDCfile(x,fread_skip=freadskip)) 
     #TCGA_CNV_data_with_sample_info <- tcga_files %>% purrr::map_dfr(freadGDCfile, format = "TCGA",fread_skip=freadskip)
   }
@@ -74,7 +75,8 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
     }
   options(scipen=999)
   bins_underscored<-GRanges_to_underscored_pos(bins)
-  doParallel::registerDoParallel()
+  if(parallel){doParallel::registerDoParallel()}
+  if(!parallel){foreach::registerDoSEQ()}
   if(format=="TARGET"){
   TCGA_CNV_data_gr_all_comparisons<-TCGA_CNV_data_gr
   TCGA_CNV_data_gr_single_comparison<-TCGA_CNV_data_gr[mcols(TCGA_CNV_data_gr)$....comparison=="NormalVsPrimary"]
@@ -82,7 +84,7 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
   TCGA_CNV_data_gr<-TCGA_CNV_data_gr_single_comparison
   }
   sample_aggregated_segvals<-foreach(s=1:length(samples),.combine="cbind",.errorhandling = "stop",.export=ls(),.packages=c("magrittr","GenomicRanges","plyr","CNVScope")) %dopar% {
-    browser()
+    #browser()
     if(format=="TCGA"){
       current_gr<-TCGA_CNV_data_gr[mcols(TCGA_CNV_data_gr)$....uuid %in% samples[s]]
     } 
