@@ -3,7 +3,7 @@ CNVScope
 James Dalgleish
 November 26, 2018
 
-CNVScope is a visualization toolkit for seeing copy number data in a relationship fashion, both utilizing tools that find regions of interest (much like domains in Hi-C terminology), visualize the relationships in vibrant color (blue for negative association, red for positive), and integrates several different relevant types of data (RNASeq, sample information, Cancer Gene Census data, and structural variants). Structural variants like rearrangements can be thought of as interactions between genomic regions, which is why it makes sense to build GenomicInteractions objects and from this, interaction matrices that can be easily visualized .
+CNVScope is a visualization toolkit for seeing copy number data in a relationship fashion, both utilizing tools that find regions of interest (much like domains in Hi-C terminology), visualize the relationships in vibrant color (blue for negative association, red for positive), and integrates several different relevant types of data (RNASeq, sample information, Cancer Gene Census data, and structural variants). Structural variants like rearrangements can be thought of as interactions between genomic regions, which is why it makes sense to build GenomicInteractions objects and from this, interaction matrices that can be easily visualized.
 
 App
 ===
