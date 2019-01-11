@@ -40,3 +40,7 @@ The package focuses on methods of analyzing these matrices and constructing comp
 [Creating the Input matrix from public data](https://cran.r-project.org/web/packages/CNVScope/vignettes/create_input_matrix.html)
 
 [Linear Regression/Postprocess](https://cran.r-project.org/web/packages/CNVScope/vignettes/create_output_matrix.html)
+
+#Video Tutorial
+
+For a complete video tutorial (12 minutes in length), [click here](cnvscope_tutorial.mp4).
