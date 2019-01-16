@@ -4,9 +4,9 @@
 \alias{calcVecLMs}
 \title{Create a linear regression matrix.}
 \usage{
-calcVecLMs(bin_data, use_slurm = F, job_finished = F, slurmjob = NULL,
-  n_nodes = NULL, cpus_on_each_node = 2, memory_per_node = "2g",
-  walltime = "4:00:00")
+calcVecLMs(bin_data, use_slurm = F, job_finished = F,
+  slurmjob = NULL, n_nodes = NULL, cpus_on_each_node = 2,
+  memory_per_node = "2g", walltime = "4:00:00")
 }
 \arguments{
 \item{bin_data}{The parent matrix, with columns to have linear regression performed on them.}

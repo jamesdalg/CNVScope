@@ -5,7 +5,8 @@
 \title{Convert coordinates in underscored format to a GRanges object.}
 \usage{
 underscored_pos_to_GRanges(underscored_positions = NULL,
-  extended_data = NULL, zeroToOneBasedStart = T, zeroToOneBasedEnd = F)
+  extended_data = NULL, zeroToOneBasedStart = T,
+  zeroToOneBasedEnd = F)
 }
 \arguments{
 \item{underscored_positions}{A vector of positions of the form c("chr1_0_5000","chr1_7500_10000","chr1_10000_15000")}

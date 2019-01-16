@@ -9,6 +9,7 @@
 #' @importFrom tidyr drop_na unite
 #' @importFrom GenomicRanges tileGenome mcols
 #' @importFrom IRanges mergeByOverlaps IRanges
+#' @importFrom stringr str_detect
 #' @importFrom plyr ddply
 #' @param tcga_files GDC files to be read
 #' @param format file format, TCGA or TARGET.
@@ -20,7 +21,7 @@
 #' #please see browseVignettes("CNVScope") for a demonstration.
 #' 
 #' @export
-globalVariables(c('begin','s',".","pos",'....relativeCvg','....sample'))
+globalVariables(c('begin','s',".","pos",'....relativeCvg','....sample','current_gr.....Segment_Mean','....uuid'))
 
 formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize=1e6,freadskip=NULL, parallel = F)
 {

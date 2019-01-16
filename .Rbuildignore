@@ -1,3 +1,11 @@
+^Meta$
+^doc$
 ^.*\.Rproj$
 ^\.git$
+^\www$
 ^\.Rproj\.user$
+.Rhistory
+^.*\\.mp4$
+^.*\\.html$
+^.*\\.yml$
+^.*\\.gif$

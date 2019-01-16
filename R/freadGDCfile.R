@@ -6,8 +6,10 @@
 #' @importFrom data.table fread
 #' @importFrom reshape2 colsplit
 #' @importFrom dplyr bind_cols
+#' @importFrom tibble as.tibble
 #' @param file GDC file to be read
-#' @param fread_skip The number of metadata lines to be skipped(typically 14)..
+#' @param fread_skip The number of metadata lines to be skipped(typically 14)
+#' @param format The format of the files (TCGA or TARGET)
 #' @references https://docs.gdc.cancer.gov/Encyclopedia/pages/TCGA_Barcode/
 #' @return input_tsv_with_sample_info A data frame containing the sample information extracted
 #'  from the filename, including sample name & comparison type.
@@ -16,6 +18,7 @@
 #' system.file("extdata","somaticCnvSegmentsDiploidBeta_TARGET-30-PANRVJ_NormalVsPrimary.tsv",
 #' package = "CNVScope"))
 #' @export
+globalVariables(c('....uuid','barcode1','barcode2','current_gr.....Segment_Mean','fn', 'sep', 'uuid'))
 freadGDCfile<-function(file,fread_skip=NULL, format = "TARGET") {
 if(format=="TARGET"){
 if(is.null(fread_skip)){  fread_skip=14}

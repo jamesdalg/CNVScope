@@ -19,7 +19,7 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
@@ -56,8 +56,28 @@ code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Ann
 code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 
-
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -90,7 +110,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 nbl_slurm_object_test_zero_removed&lt;-<span class="kw">calcVecLMs</span>(<span class="dt">bin_data =</span><span class="kw">as.data.frame</span>(<span class="kw">t</span>(nbl_input_matrix[<span class="kw">which</span>(<span class="kw">rowSds</span>(<span class="kw">as.matrix</span>(nbl_input_matrix))<span class="op">!=</span><span class="fl">0.0</span>),])),<span class="dt">use_slurm =</span> T,<span class="dt">n_nodes =</span> <span class="dv">975</span>,<span class="dt">memory_per_node =</span> <span class="st">&quot;32g&quot;</span>,<span class="dt">walltime =</span> <span class="st">&quot;04:00:00&quot;</span>,<span class="dt">cpus_on_each_node =</span> <span class="dv">2</span>,<span class="dt">job_finished =</span> F,<span class="dt">slurmjob =</span> <span class="ot">NULL</span>)</code></pre></div>
 <p>Saving the slurm object is essential as it will be required when you retrieve your results.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">saveRDS</span>(nbl_slurm_object_test_zero_removed,<span class="st">&quot;nbl_slurm_object_test_zero_removed.rds&quot;</span>)</code></pre></div>
-<p>Retrieving the data is as simple as using rslurm::get_slurm_out() on the saved slurm object and coercing it into a matrix with the original number of columns. The slurm object must have been read with readRDS() previously or done in the same session. For the purposes of making this tutorial, we have chosen to work on a small version of the whole matrix to make 5MB CRAN documentation limits. Previous versions of the tutorial included the whole matrix, but we leave that to the user to construct at this point. For reproducibility, one can find the original full data matrix at <a href="https://github.com/jamesdalg/CNScope_public_data" class="uri">https://github.com/jamesdalg/CNScope_public_data</a>.</p>
+<p>Retrieving the data is as simple as using rslurm::get_slurm_out() on the saved slurm object and coercing it into a matrix with the original number of columns. The slurm object must have been read with readRDS() previously or done in the same session. For the purposes of making this tutorial, we have chosen to work on a small version of the whole matrix to make 5MB CRAN documentation limits. Previous versions of the tutorial included the whole matrix, but we leave that to the user to construct at this point. For reproducibility, one can find the original full data matrix at <a href="https://github.com/jamesdalg/CNVScope_public_data" class="uri">https://github.com/jamesdalg/CNVScope_public_data</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(matrixStats)
 nbl_result_matrix&lt;-<span class="kw">matrix</span>(<span class="kw">as.numeric</span>(<span class="kw">unlist</span>( <span class="kw">get_slurm_out</span>(nbl_slurm_object_test_zero_removed))),<span class="dt">ncol=</span><span class="kw">ncol</span>(<span class="kw">as.data.frame</span>(<span class="kw">t</span>(nbl_input_matrix[<span class="kw">which</span>(<span class="kw">rowSds</span>(<span class="kw">as.matrix</span>(nbl_input_matrix))<span class="op">!=</span><span class="fl">0.0</span>),])) ) )
 
