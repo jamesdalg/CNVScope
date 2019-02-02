@@ -8,7 +8,7 @@ CNVScope is a visualization toolkit for seeing copy number data in a relationshi
 App
 ===
 
-The app includes several components and starts with a customizable control panel. As an example, we'll search for TERT and TP53. ![tert-tp53 control panel example](./control%20panel%20demo.gif)
+The app includes several components and starts with a customizable control panel. As an example, we'll search for TERT and TP53. ![tert-tp53 control panel example](./control_panel_demo.gif)
 
 Doing it this way creates a zoomed in plot of the copy number relationships between the chromosomes containing TERT (chromosome 5) and TP53 (chromosome 17), zoomed into the specific region for those particular genes (as denoted in the search box). For many regions, we can rely on the tooltip for genes, but this region is particularly gene dense and it's best to simply click on the region of interest. The row and column genes are searchable here and will aid us to understand that we're in the right place. ![tert-tp53 zoomed with click](./zoomed_tp53_tert.gif)
 
