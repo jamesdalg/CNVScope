@@ -18,7 +18,7 @@ date: "January 12, 2019"
 output: rmarkdown::html_vignette
 vignette: >
  %\VignetteEngine{knitr::rmarkdown}
- %\VignetteIndexEntry{Creating the Input matrix from public data}
+ %\VignetteIndexEntry{Creating the TCGA Input matrix from public data}
  %\VignetteEncoding{UTF-8}
 ---
 ```{r setup, include=FALSE}

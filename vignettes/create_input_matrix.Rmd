@@ -18,7 +18,7 @@ date: "August 1, 2018"
 output: rmarkdown::html_vignette
 vignette: >
  %\VignetteEngine{knitr::rmarkdown}
- %\VignetteIndexEntry{Creating the Input matrix from public data}
+ %\VignetteIndexEntry{Creating the TARGET Input matrix from public data}
  %\VignetteEncoding{UTF-8}
 ---
 ```{r setup, include=FALSE}
