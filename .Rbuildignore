@@ -9,3 +9,6 @@
 ^.*\\.html$
 ^.*\\.yml$
 ^.*\\.gif$
+^\docs$
+docs
+\docs
