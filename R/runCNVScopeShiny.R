@@ -24,8 +24,8 @@
 globalVariables(c("common_coords_linreg","chrom.pairs","expression_data_gr"))
 chrom.pairs<-NULL
 
-
 runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL) {
+options(scipen=999)
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
   
 head.matrix<-function(mat,n=6L)

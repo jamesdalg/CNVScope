@@ -302,6 +302,7 @@ CNVScopeserver<-function(session,input, output) {
     ggplotmatrix$value1<-gsub("row_genes:","col_genes:",ggplotmatrix$value1)
     rownames_ordered<-GRanges_to_underscored_pos(rownames_gr[order(rownames_gr)])
     colnames_ordered<-GRanges_to_underscored_pos(colnames_gr[order(colnames_gr)])
+    browser()
     recast_matrix<-recast_matrix[rownames_ordered,colnames_ordered]
     block_indices_row<-jointseg::jointSeg(recast_matrix,K=10,method="RBS")$bestBkp
     block_indices_col<-jointseg::jointSeg(t(recast_matrix),K=10,method="RBS")$bestBkp
@@ -349,13 +350,13 @@ CNVScopeserver<-function(session,input, output) {
         tryCatch(lumpy_summarized_counts<-readRDS(paste0(basefn,"plotly_dashboard_ext/lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" )),error = function(e) NULL)
         tcga_type<<-gsub("_low_pass","",gsub("TCGA_","",isolate(input$data_source)))
         tryCatch(TCGA_low_pass_sample_info<<-readRDS(paste0(basefn,"plotly_dashboard_ext/sample_info/",tcga_type,"TCGA_merged_dtv2.rds" )),error = function(e) NULL)
-        if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<-tidyr::unite(TCGA_low_pass_sample_info[,c(1:3)])}
+        if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<- tidyr::unite(TCGA_low_pass_sample_info,pos,bins.seqnames,bins.start,bins.end)$pos}
       } else {
         tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/breakpoint_gint/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_common_coords.rds" ))),error = function(e) NULL)
         tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" ))),error = function(e) NULL)
         tcga_type<<-gsub("_low_pass","",gsub("TCGA_","",isolate(input$data_source)))
         tryCatch(TCGA_low_pass_sample_info<<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/sample_info/",tcga_type,"TCGA_merged_dtv2.rds" ))),error = function(e) NULL)
-        if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<-tidyr::unite(TCGA_low_pass_sample_info[,c(1:3)])}
+        if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<- tidyr::unite(TCGA_low_pass_sample_info,pos,bins.seqnames,bins.start,bins.end)$pos}
       }
     }
     if(isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
@@ -367,13 +368,13 @@ CNVScopeserver<-function(session,input, output) {
         tryCatch(lumpy_summarized_counts<-readRDS(paste0(basefn,"plotly_dashboard_ext/lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" )),error = function(e) NULL)
         tcga_type<<-gsub("_low_pass","",gsub("TCGA_","",isolate(input$data_source)))
         tryCatch(TCGA_low_pass_sample_info<<-readRDS(paste0(basefn,"plotly_dashboard_ext/sample_info/",tcga_type,"TCGA_merged_dtv2.rds" )),error = function(e) NULL)
-        if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<-tidyr::unite(TCGA_low_pass_sample_info[,c(1:3)])}
+        if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<- tidyr::unite(TCGA_low_pass_sample_info,pos,bins.seqnames,bins.start,bins.end)$pos}
       } else {
         tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/breakpoint_gint/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_common_coords.rds" ))),error = function(e) NULL)
         tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" ))),error = function(e) NULL)
         tcga_type<<-gsub("_low_pass","",gsub("TCGA_","",isolate(input$data_source)))
         tryCatch(TCGA_low_pass_sample_info<<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/sample_info/",tcga_type,"TCGA_merged_dtv2.rds" ))),error = function(e) NULL)
-        if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<-tidyr::unite(TCGA_low_pass_sample_info[,c(1:3)])}
+        if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<- tidyr::unite(TCGA_low_pass_sample_info,pos,bins.seqnames,bins.start,bins.end)$pos}
       }
     }
     
