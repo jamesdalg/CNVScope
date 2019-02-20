@@ -21,12 +21,13 @@
 #' runCNVScopeShiny()
 #' }
 #' @export
-globalVariables(c("common_coords_linreg","chrom.pairs","expression_data_gr"), add=F)
-chrom.pairs<-NULL
+globalVariables(c("common_coords_linreg","expression_data_gr","."), add=F)
 
 runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL) {
+chrom.pairs<-NULL
+  
 options(scipen=999)
-if(getRversion() >= "2.15.1")  utils::globalVariables(c("."),add=F)
+#if(getRversion() >= "2.15.1")  utils::globalVariables(c("."),add=F)
   
 head.matrix<-function(mat,n=6L)
 {
