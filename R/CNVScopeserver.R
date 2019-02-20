@@ -27,14 +27,15 @@ globalVariables(c("ensembl_gene_tx_data_gr","baseurl","chromosomes","downsample_
                   "subset_name",
                   "expression_data_gr_nbl",'start2','start1','value','Var1','Var2','value1',
                   'tcga_type','census_data_gr','common_coords','myReactives',
-                  'genev','delete.isolates','freq_data'))
+                  'genev','delete.isolates','freq_data'),add = F)
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 downsample_factor<-NULL
 subset_name<-NULL
 expression_data_gr_nbl<-NULL
 tcga_type<-NULL
 chrom.pairs<-NULL
 CNVScopeserver<-function(session,input, output) {
-  if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+  
   
   printLogJs <- function(x, ...) {
     
