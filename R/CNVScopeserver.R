@@ -494,7 +494,7 @@ CNVScopeserver<-function(session,input, output) {
     #plotly_output<-plotly::ggplotly(p) %>%       layout(margin=list(r=0, l=200, t=0, b=200),width=1280,height=1024)
     #%>% saveWidget(title = gsub("_","",paste0(chromosomes[isolate(input$chrom1)],"-",chromosomes[isolate(input$chrom2)])),file = paste0(chromosomes[isolate(input$chrom1)],chromosomes[isolate(input$chrom2)],"transparent_tooltipv27_coord_no_flip_downsample_upward_orientation_plotly_nrsample.html"),selfcontained = T)
     #
-    if(!is.null(isolate(input$loc_input_row)) | !is.null(isolate(input$loc_input_col)))
+    if( (!is.null(isolate(input$loc_input_row)) | !is.null(isolate(input$loc_input_col)) ) & (!isolate(input$loc_input_row)=="" | !isolate(input$loc_input_col)==""))
     {
       browser()
       #acknowledgement: thanks to stackoverflow comments that made package a reality.
