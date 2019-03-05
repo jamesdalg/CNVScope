@@ -9,6 +9,8 @@
 \item{input}{shiny server input}
 
 \item{output}{shiny server output}
+
+\item{debug}{enable debugging mode}
 }
 \value{
 None

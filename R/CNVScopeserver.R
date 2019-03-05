@@ -16,6 +16,7 @@
 #' @param session The shiny session object for the application.
 #' @param input shiny server input
 #' @param output shiny server output
+#' @param debug enable debugging mode
 #' @return None
 
 #' @examples
@@ -29,12 +30,12 @@
 #                 'tcga_type','census_data_gr','common_coords','myReactives',
 #                  'genev','delete.isolates','freq_data'),add = F)
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
-downsample_factor<-NULL
-subset_name<-NULL
-expression_data_gr_nbl<-NULL
-tcga_type<-NULL
-chrom.pairs<-NULL
-CNVScopeserver<-function(session,input, output) {
+CNVScopeserver<-function(session,input, output, debug=F) {
+  downsample_factor<-NULL
+  subset_name<-NULL
+  #expression_data_gr_nbl<-NULL
+  tcga_type<-NULL
+  chrom.pairs<-NULL
   
   
   printLogJs <- function(x, ...) {
@@ -202,9 +203,9 @@ CNVScopeserver<-function(session,input, output) {
     if(isolate(input$data_source)=="TCGA_NBL_low_pass")
     {
       sample_name<-"NBL_output_matrix1e6"
-      load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/TCGA_low_pass/NBL/",
+      load( paste0(paste0(basefn,"plotly_dashboard_ext/matrix/TCGA_low_pass/NBL/",
                               paste0(isolate(input$chrom1),isolate(input$chrom2),"nbl_sample_matched_unrescaled.RData")
-      ))))
+      )))
       #browser()
       #     ggplotmatrix
       ggplotmatrix_full<-ggplotmatrix
@@ -303,7 +304,7 @@ CNVScopeserver<-function(session,input, output) {
     ggplotmatrix$value1<-gsub("row_genes:","col_genes:",ggplotmatrix$value1)
     rownames_ordered<-GRanges_to_underscored_pos(rownames_gr[order(rownames_gr)])
     colnames_ordered<-GRanges_to_underscored_pos(colnames_gr[order(colnames_gr)])
-    browser()
+   if(debug){browser()}
     recast_matrix<-recast_matrix[rownames_ordered,colnames_ordered]
     block_indices_row<-jointseg::jointSeg(recast_matrix,K=10,method="RBS")$bestBkp
     block_indices_col<-jointseg::jointSeg(t(recast_matrix),K=10,method="RBS")$bestBkp
@@ -480,7 +481,7 @@ CNVScopeserver<-function(session,input, output) {
     
     #                                      scale_colour_gradient2()
     #set the range to be specific if there are coordinates (the cell +/- 4), else choose the max range for the particular axis.
-    browser()
+   if(debug){browser()}
     
     
     #check for the correct format.
@@ -497,7 +498,7 @@ CNVScopeserver<-function(session,input, output) {
     #
     if( (!is.null(isolate(input$loc_input_row)) | !is.null(isolate(input$loc_input_col)) ) & (!isolate(input$loc_input_row)=="" | !isolate(input$loc_input_col)==""))
     {
-      browser()
+     if(debug){browser()}
       #acknowledgement: thanks to stackoverflow comments that made package a reality.
       #find the location of the bin in terms of map coordinates for x
       #store this as the xcentercoord
@@ -546,7 +547,7 @@ CNVScopeserver<-function(session,input, output) {
       return(plotly_output)
     } else {}
     
-    browser()
+   if(debug){browser()}
     print(plotly_output)
   })
   outputOptions(output,"plotlyChromosomalHeatmap",suspendWhenHidden=F)
@@ -612,14 +613,23 @@ CNVScopeserver<-function(session,input, output) {
       #
       #rowclick<-length(common_coords)-myReactives$currentClick$lat
       #colclick<-myReactives$currentClick$lng
+     if(debug){browser()}
       rowexpression<-as.data.table(subsetByOverlaps(expression_data_gr,get_rownames_gr_full()[seq(from=row_index_full,to=row_index_full+3)]))
       colexpression<-as.data.table(subsetByOverlaps(expression_data_gr,get_colnames_gr_full()[seq(from=col_index_full,to=col_index_full+3)]))} else {
         if(isolate(input$data_source)=="TCGA_NBL_low_pass" | isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
         {
+          
+if(debug){browser()}
           rownames_gr_full<-get_rownames_gr_full()
           colnames_gr_full<-get_colnames_gr_full()
+#         if(!exists("expression_data_gr_nbl")){
+            tryCatch(expression_data_gr_nbl<-readRDS(paste0(get("basefn",.GlobalEnv),"plotly_dashboard_ext/tcga_nbl_expression.rds")),error = function(e) NULL)  
+ #         }
+          if(length(expression_data_gr_nbl)==0){
+          tryCatch(expression_data_gr_nbl<-readRDS(paste0(get("basefn",.GlobalEnv),"plotly_dashboard_ext/tcga_nbl_expression.rds")),error = function(e) NULL)
+            }
           #mcols(expression_data_gr_nbl)$SYMBOL<-expression_data_gr_nbl$....external_gene_name
-          
+         if(debug){browser()}
           rowexpression<-as.data.table(subsetByOverlaps(expression_data_gr_nbl,rownames_gr_full[rownames_gr_full@ranges@start==event_data("plotly_click")[["y"]]]))
           colexpression<-as.data.table(subsetByOverlaps(expression_data_gr_nbl,colnames_gr_full[colnames_gr_full@ranges@start==event_data("plotly_click")[["x"]]]))
         }
@@ -641,6 +651,7 @@ CNVScopeserver<-function(session,input, output) {
     #
     if(is.null(event_data("plotly_click"))){return(data.table())}
     recast_matrix<-get_recast_matrix()
+    if(length(intersect(ls(),"census_data_gr"))!=1) {    tryCatch(census_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/censushg19.rds")),error = function(e) NULL)}
     row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
     column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
     #row_point_gr<-underscored_pos_to_GRanges(row_label)

@@ -22,11 +22,11 @@
 #' }
 #' @export
 #globalVariables(c("common_coords_linreg","expression_data_gr","chrom.pairs","."), add=F)
-chrom.pairs<-NULL
+
 
 
 runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL) {
-  
+chrom.pairs<-NULL  
 options(scipen=999)
 #if(getRversion() >= "2.15.1")  utils::globalVariables(c("."),add=F)
   
@@ -43,6 +43,7 @@ options(shiny.error = browser)
 options(shiny.fullstacktrace = TRUE)
 getOption("repos")
 options(shiny.sanitize.errors = F)
+if(is.null(baseurl)&is.null(basefn)) {
 if(Sys.info()["nodename"]=="ncias-d2037-v.nci.nih.gov" | Sys.info()["nodename"]=="plotly.nci.nih.gov")
 {
   baseurl<-"file:///srv/shiny-server/plotly_dashboard/"
@@ -58,26 +59,31 @@ if(Sys.info()["nodename"]=="NCI-02105037-L")
   #baseurl<-"file:///W:/dalgleishjl/hicnv/"
   basefn<-"W:/dalgleishjl/hicnv/"
 }
+}
+browser()
 baseurl<<-baseurl
 basefn<<-basefn
-tryCatch(bin_data<-readRDS((url(paste0(baseurl,"plotly_dashboard_ext/bin_data.rds")))),error = function(e) NULL) 
-tryCatch(bin_data<-readRDS((paste0(basefn,"plotly_dashboard_ext/bin_data.rds"))),error = function(e) NULL) 
+#tryCatch(bin_data<-readRDS((url(paste0(baseurl,"plotly_dashboard_ext/bin_data.rds")))),error = function(e) NULL) 
+#tryCatch(bin_data<-readRDS((paste0(basefn,"plotly_dashboard_ext/bin_data.rds"))),error = function(e) NULL) 
 chromosomes<<-paste0("chr",c(seq(1:22),"X"),"_")
 options(shiny.error = function() { 
   logging::logerror(sys.calls() %>% as.character %>% paste(collapse = ", ")) })
-tryCatch(load(url(paste0(paste0(baseurl,"plotly_dashboard_ext/common_coords_linreg.RData")))),error = function(e) NULL)
-tryCatch(load(paste0(paste0(basefn,"plotly_dashboard_ext/common_coords_linreg.RData"))),error = function(e) NULL)
+#tryCatch(load(url(paste0(paste0(baseurl,"plotly_dashboard_ext/common_coords_linreg.RData")))),error = function(e) NULL)
+#tryCatch(load(paste0(paste0(basefn,"plotly_dashboard_ext/common_coords_linreg.RData"))),error = function(e) NULL)
 
-chromstarts_linreg<-unlist(foreach(i=1:length(1:length(chromosomes))) %do% {grep(chromosomes[i],common_coords_linreg)[1]})
+#chromstarts_linreg<-unlist(foreach(i=1:length(1:length(chromosomes))) %do% {grep(chromosomes[i],common_coords_linreg)[1]})
 swap_row_col_genes=F
 chrom.pairs<<-expand.grid(1:length(chromosomes),1:length(chromosomes))
 chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
+browser()
 if(exists("basefn")) {#local objects:
-  tryCatch(freq_data<-data.table::fread(paste0(basefn,"plotly_dashboard_ext/OS_freq_data.txt")),error = function(e) NULL)
-  tryCatch(breakpoint_gint_full<-readRDS(paste0(basefn,"plotly_dashboard_ext/breakpoint_gint_full.rds")),error = function(e) NULL)
-  tryCatch(expression_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/expression_data_gr.rds")),error = function(e) NULL)
+  # tryCatch(freq_data<-data.table::fread(paste0(basefn,"plotly_dashboard_ext/OS_freq_data.txt")),error = function(e) NULL)
+#  tryCatch(breakpoint_gint_full<-readRDS(paste0(basefn,"plotly_dashboard_ext/breakpoint_gint_full.rds")),error = function(e) NULL)
+#  tryCatch(expression_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/expression_data_gr.rds")),error = function(e) NULL)
   tryCatch(expression_data_gr_nbl<-readRDS(paste0(basefn,"plotly_dashboard_ext/tcga_nbl_expression.rds")),error = function(e) NULL)
-  tryCatch(bin_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/bin_data_gr.rds")),error = function(e) NULL)
+browser()
+  
+#  tryCatch(bin_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/bin_data_gr.rds")),error = function(e) NULL)
   #tryCatch(census_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/census_data_gr.rds")),error = function(e) NULL)
   tryCatch(census_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/censushg19.rds")),error = function(e) NULL)
   tryCatch(ensembl_gene_tx_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/ensembl_gene_tx_table_gr.rds")),error = function(e) NULL)
@@ -89,6 +95,7 @@ if(exists("basefn")) {#local objects:
     tryCatch(expression_data_gr_nbl<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/tcga_nbl_expression.rds"))),error = function(e) NULL)
     tryCatch(bin_data_gr<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/bin_data_gr.rds"))),error = function(e) NULL)
     #tryCatch(census_data_gr<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/census_data_gr.rds"))),error = function(e) NULL)
+    browse()
     tryCatch(census_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/censushg19.rds")),error = function(e) NULL)
     tryCatch(ensembl_gene_tx_data_gr<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/ensembl_gene_tx_table_gr.rds"))),error = function(e) NULL)
   }
