@@ -15,6 +15,7 @@
 #' @rawNamespace import(GenomicFeatures ,except = show)
 #' @param baseurl the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.
 #' @param basefn the linux file path of the same source files.
+#' @param debug Enable debugging output.
 #' @return none. Runs the application if the correct files are present.
 #' @examples
 #' \dontrun{
@@ -25,7 +26,7 @@
 
 
 
-runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL) {
+runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, debug=F) {
 chrom.pairs<-NULL  
 options(scipen=999)
 #if(getRversion() >= "2.15.1")  utils::globalVariables(c("."),add=F)
@@ -60,7 +61,7 @@ if(Sys.info()["nodename"]=="NCI-02105037-L")
   basefn<-"W:/dalgleishjl/hicnv/"
 }
 }
-browser()
+   if(debug){browser()}
 baseurl<<-baseurl
 basefn<<-basefn
 #tryCatch(bin_data<-readRDS((url(paste0(baseurl,"plotly_dashboard_ext/bin_data.rds")))),error = function(e) NULL) 
@@ -75,13 +76,13 @@ options(shiny.error = function() {
 swap_row_col_genes=F
 chrom.pairs<<-expand.grid(1:length(chromosomes),1:length(chromosomes))
 chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
-browser()
+   if(debug){browser()}
 if(exists("basefn")) {#local objects:
   # tryCatch(freq_data<-data.table::fread(paste0(basefn,"plotly_dashboard_ext/OS_freq_data.txt")),error = function(e) NULL)
 #  tryCatch(breakpoint_gint_full<-readRDS(paste0(basefn,"plotly_dashboard_ext/breakpoint_gint_full.rds")),error = function(e) NULL)
 #  tryCatch(expression_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/expression_data_gr.rds")),error = function(e) NULL)
   tryCatch(expression_data_gr_nbl<-readRDS(paste0(basefn,"plotly_dashboard_ext/tcga_nbl_expression.rds")),error = function(e) NULL)
-browser()
+   if(debug){browser()}
   
 #  tryCatch(bin_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/bin_data_gr.rds")),error = function(e) NULL)
   #tryCatch(census_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/census_data_gr.rds")),error = function(e) NULL)

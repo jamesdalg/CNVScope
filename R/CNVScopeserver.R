@@ -31,9 +31,9 @@
 #                  'genev','delete.isolates','freq_data'),add = F)
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 CNVScopeserver<-function(session,input, output, debug=F) {
-  privpolurl <- a("NCI Privacy Policy", href="https://www.cancer.gov/policies/privacy-security")
+  privpolurl <- a("NCI Privacy Policy", href="https://www.cancer.gov/policies/privacy-security",target="_blank")
   output$privpol <- renderUI({
-    tagList("Privacy Policy", privpolurl)})
+    tagList(privpolurl)})
   downsample_factor<-NULL
   subset_name<-NULL
   #expression_data_gr_nbl<-NULL
@@ -865,8 +865,6 @@ if(debug){browser()}
       row_labels_minimap<-rownames(recast_matrix_full)[grep(row_label,rownames(recast_matrix_full)):(grep(row_label,rownames(recast_matrix_full))+3)] #we subset by every fourth number along the rows and columns, hence we need n, n+1, n+2, n+3 (or n1:n2-1, the first number and all the numbers leading up to the next).
       col_labels_minimap<-colnames(recast_matrix_full)[grep(column_label,colnames(recast_matrix_full)):(grep(column_label,colnames(recast_matrix_full))+3)]
       ggplotmatrix_minimap<-ggplotmatrix_full[as.character(ggplotmatrix_full$Var1) %in% row_labels_minimap & as.character(ggplotmatrix_full$Var2) %in% col_labels_minimap, ]
-      
-      #browser()
       p <- ggplot(data = ggplotmatrix_minimap ) + #geom_tile() + theme_void()
         geom_raster(aes(x = Var2, y = Var1,fill=value,text=paste0("value:",value,"\nrow:",Var1,"\ncol:",Var2,"\n",value1))) + scale_x_discrete() +
         scale_y_discrete() + theme(axis.text.x = element_text(angle=60, hjust=1)) + 
