@@ -31,6 +31,9 @@
 #                  'genev','delete.isolates','freq_data'),add = F)
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 CNVScopeserver<-function(session,input, output, debug=F) {
+  privpolurl <- a("NCI Privacy Policy", href="https://www.cancer.gov/policies/privacy-security")
+  output$privpol <- renderUI({
+    tagList("Privacy Policy", privpolurl)})
   downsample_factor<-NULL
   subset_name<-NULL
   #expression_data_gr_nbl<-NULL

@@ -19,7 +19,7 @@
 #' package = "CNVScope"))
 #' @export
 freadGDCfile<-function(file,fread_skip=NULL, format = "TARGET") {
-#globalVariables(c('....uuid','barcode1','barcode2','current_gr.....Segment_Mean','fn', 'sep', 'uuid'))
+globalVariables(c('....uuid','barcode1','barcode2','current_gr.....Segment_Mean','fn', 'sep', 'uuid'))
   
 if(format=="TARGET"){
 if(is.null(fread_skip)){  fread_skip=14}
