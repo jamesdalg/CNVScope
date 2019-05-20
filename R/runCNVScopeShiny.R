@@ -20,6 +20,10 @@
 #' @examples
 #' \dontrun{
 #' runCNVScopeShiny()
+#' #to install everything with the matrices, please do the following and run using third line:
+#' install_github("jamesdalg/CNVScope")
+#' install_github("jamesdalg/CNVscope_public_data)
+#' CNVScope::runCNVScopeShiny(basefn=paste0(system.file("plotly_dashboard_ext/",package = "CNVScopePublicData"),"/"))
 #' }
 #' @export
 #globalVariables(c("common_coords_linreg","expression_data_gr","chrom.pairs","."), add=F)
@@ -64,13 +68,13 @@ if(Sys.info()["nodename"]=="NCI-02105037-L")
    if(debug){browser()}
 baseurl<<-baseurl
 basefn<<-basefn
-#tryCatch(bin_data<-readRDS((url(paste0(baseurl,"plotly_dashboard_ext/bin_data.rds")))),error = function(e) NULL) 
-#tryCatch(bin_data<-readRDS((paste0(basefn,"plotly_dashboard_ext/bin_data.rds"))),error = function(e) NULL) 
+#tryCatch(bin_data<-readRDS((url(paste0(baseurl,"bin_data.rds")))),error = function(e) NULL) 
+#tryCatch(bin_data<-readRDS((paste0(basefn,"bin_data.rds"))),error = function(e) NULL) 
 chromosomes<<-paste0("chr",c(seq(1:22),"X"),"_")
 options(shiny.error = function() { 
   logging::logerror(sys.calls() %>% as.character %>% paste(collapse = ", ")) })
-#tryCatch(load(url(paste0(paste0(baseurl,"plotly_dashboard_ext/common_coords_linreg.RData")))),error = function(e) NULL)
-#tryCatch(load(paste0(paste0(basefn,"plotly_dashboard_ext/common_coords_linreg.RData"))),error = function(e) NULL)
+#tryCatch(load(url(paste0(paste0(baseurl,"common_coords_linreg.RData")))),error = function(e) NULL)
+#tryCatch(load(paste0(paste0(basefn,"common_coords_linreg.RData"))),error = function(e) NULL)
 
 #chromstarts_linreg<-unlist(foreach(i=1:length(1:length(chromosomes))) %do% {grep(chromosomes[i],common_coords_linreg)[1]})
 swap_row_col_genes=F
@@ -78,27 +82,27 @@ chrom.pairs<<-expand.grid(1:length(chromosomes),1:length(chromosomes))
 chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
    if(debug){browser()}
 if(exists("basefn")) {#local objects:
-  # tryCatch(freq_data<-data.table::fread(paste0(basefn,"plotly_dashboard_ext/OS_freq_data.txt")),error = function(e) NULL)
-#  tryCatch(breakpoint_gint_full<-readRDS(paste0(basefn,"plotly_dashboard_ext/breakpoint_gint_full.rds")),error = function(e) NULL)
-#  tryCatch(expression_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/expression_data_gr.rds")),error = function(e) NULL)
-  tryCatch(expression_data_gr_nbl<-readRDS(paste0(basefn,"plotly_dashboard_ext/tcga_nbl_expression.rds")),error = function(e) NULL)
+  # tryCatch(freq_data<-data.table::fread(paste0(basefn,"OS_freq_data.txt")),error = function(e) NULL)
+#  tryCatch(breakpoint_gint_full<-readRDS(paste0(basefn,"breakpoint_gint_full.rds")),error = function(e) NULL)
+#  tryCatch(expression_data_gr<-readRDS(paste0(basefn,"expression_data_gr.rds")),error = function(e) NULL)
+  tryCatch(expression_data_gr_nbl<-readRDS(paste0(basefn,"tcga_nbl_expression.rds")),error = function(e) NULL)
    if(debug){browser()}
   
-#  tryCatch(bin_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/bin_data_gr.rds")),error = function(e) NULL)
-  #tryCatch(census_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/census_data_gr.rds")),error = function(e) NULL)
-  tryCatch(census_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/censushg19.rds")),error = function(e) NULL)
-  tryCatch(ensembl_gene_tx_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/ensembl_gene_tx_table_gr.rds")),error = function(e) NULL)
+#  tryCatch(bin_data_gr<-readRDS(paste0(basefn,"bin_data_gr.rds")),error = function(e) NULL)
+  #tryCatch(census_data_gr<-readRDS(paste0(basefn,"census_data_gr.rds")),error = function(e) NULL)
+  tryCatch(census_data_gr<-readRDS(paste0(basefn,"censushg19.rds")),error = function(e) NULL)
+  tryCatch(ensembl_gene_tx_data_gr<-readRDS(paste0(basefn,"ensembl_gene_tx_table_gr.rds")),error = function(e) NULL)
 } else {
   if(exists("baseurl"))
-  {tryCatch(freq_data<-data.table::fread(paste0(baseurl,"plotly_dashboard_ext/OS_freq_data.txt")),error = function(e) NULL)
-    tryCatch(breakpoint_gint_full<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/breakpoint_gint_full.rds"))),error = function(e) NULL)
-    tryCatch(expression_data_gr<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/expression_data_gr.rds"))),error = function(e) NULL)
-    tryCatch(expression_data_gr_nbl<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/tcga_nbl_expression.rds"))),error = function(e) NULL)
-    tryCatch(bin_data_gr<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/bin_data_gr.rds"))),error = function(e) NULL)
-    #tryCatch(census_data_gr<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/census_data_gr.rds"))),error = function(e) NULL)
+  {tryCatch(freq_data<-data.table::fread(paste0(baseurl,"OS_freq_data.txt")),error = function(e) NULL)
+    tryCatch(breakpoint_gint_full<-readRDS(url(paste0(baseurl,"breakpoint_gint_full.rds"))),error = function(e) NULL)
+    tryCatch(expression_data_gr<-readRDS(url(paste0(baseurl,"expression_data_gr.rds"))),error = function(e) NULL)
+    tryCatch(expression_data_gr_nbl<-readRDS(url(paste0(baseurl,"tcga_nbl_expression.rds"))),error = function(e) NULL)
+    tryCatch(bin_data_gr<-readRDS(url(paste0(baseurl,"bin_data_gr.rds"))),error = function(e) NULL)
+    #tryCatch(census_data_gr<-readRDS(url(paste0(baseurl,"census_data_gr.rds"))),error = function(e) NULL)
     browse()
-    tryCatch(census_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/censushg19.rds")),error = function(e) NULL)
-    tryCatch(ensembl_gene_tx_data_gr<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/ensembl_gene_tx_table_gr.rds"))),error = function(e) NULL)
+    tryCatch(census_data_gr<-readRDS(paste0(basefn,"censushg19.rds")),error = function(e) NULL)
+    tryCatch(ensembl_gene_tx_data_gr<-readRDS(url(paste0(baseurl,"ensembl_gene_tx_table_gr.rds"))),error = function(e) NULL)
   }
 }
 CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector() 

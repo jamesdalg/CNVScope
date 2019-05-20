@@ -152,27 +152,27 @@ CNVScopeserver<-function(session,input, output, debug=F) {
     
     
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
-    {     load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/linreg/unrescaled/",
+    {     load( url(paste0(paste0(baseurl,"matrix/linreg/unrescaled/",
                                   chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
                                   "melted_downsampled_linreg_unrescaled.RData"))))
       
-      load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/linreg/unrescaled/full/",
+      load( url(paste0(paste0(baseurl,"matrix/linreg/unrescaled/full/",
                               chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
                               "melted_full_linreg_max_cap_75.RData"))))
       #browser()
       downsample_factor<<-4
-      tryCatch(bin_data<-readRDS((url(paste0(baseurl,"plotly_dashboard_ext/bin_data.rds")))),error = function(e) NULL) 
-      tryCatch(bin_data<-readRDS((paste0(basefn,"plotly_dashboard_ext/bin_data.rds"))),error = function(e) NULL) 
+      tryCatch(bin_data<-readRDS((url(paste0(baseurl,"bin_data.rds")))),error = function(e) NULL) 
+      tryCatch(bin_data<-readRDS((paste0(basefn,"bin_data.rds"))),error = function(e) NULL) 
       
     }
     # 
     if(isolate(input$data_source)=="TCGA_SARC_SNP6")
     {
-      load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/TCGA_SARC/downsampled_factor_8/",
+      load( url(paste0(paste0(baseurl,"matrix/TCGA_SARC/downsampled_factor_8/",
                               chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
                               "melted_downsampled_TGCA_SARC_unrescaledv2.RData"))))
       
-      # load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/TCGA_SARC/full/",
+      # load( url(paste0(paste0(baseurl,"matrix/TCGA_SARC/full/",
       #                  chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
       #                  "melted_full_TGCA_SARC_unrescaled.RData"))))
       downsample_factor<<-8
@@ -182,7 +182,7 @@ CNVScopeserver<-function(session,input, output, debug=F) {
     {
       #
       sample_name<-"BRCA_output_matrix1e6"
-      load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/TCGA_low_pass/BRCA/",
+      load( url(paste0(paste0(baseurl,"matrix/TCGA_low_pass/BRCA/",
                               paste0(chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],"melted_downsampled_TGCA_",sample_name,"_unrescaled",".RData")
       ))))
       ggplotmatrix_full<-ggplotmatrix
@@ -190,7 +190,7 @@ CNVScopeserver<-function(session,input, output, debug=F) {
     if(isolate(input$data_source)=="TCGA_AML_low_pass")
     {
       sample_name<-"AML_output_matrix1e6"
-      load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/TCGA_low_pass/AML/",
+      load( url(paste0(paste0(baseurl,"matrix/TCGA_low_pass/AML/",
                               paste0(chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],"melted_downsampled_TGCA_",sample_name,"_unrescaled",".RData")
       ))))
       ggplotmatrix_full<-ggplotmatrix
@@ -198,7 +198,7 @@ CNVScopeserver<-function(session,input, output, debug=F) {
     if(isolate(input$data_source)=="TCGA_PRAD_low_pass")
     {
       sample_name<-"PRAD_output_matrix1e6"
-      load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/TCGA_low_pass/PRAD/",
+      load( url(paste0(paste0(baseurl,"matrix/TCGA_low_pass/PRAD/",
                               paste0(chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],"melted_downsampled_TGCA_",sample_name,"_unrescaled",".RData")
       ))))
       ggplotmatrix_full<-ggplotmatrix
@@ -206,14 +206,14 @@ CNVScopeserver<-function(session,input, output, debug=F) {
     if(isolate(input$data_source)=="TCGA_NBL_low_pass")
     {
       sample_name<-"NBL_output_matrix1e6"
-      load( paste0(paste0(basefn,"plotly_dashboard_ext/matrix/TCGA_low_pass/NBL/",
+      load( paste0(paste0(basefn,"matrix/TCGA_low_pass/NBL/",
                               paste0(isolate(input$chrom1),isolate(input$chrom2),"nbl_sample_matched_unrescaled.RData")
       )))
       #browser()
       #     ggplotmatrix
       ggplotmatrix_full<-ggplotmatrix
-      tryCatch(bin_data<<-readRDS((url(paste0(baseurl,"plotly_dashboard_ext/bin_data_nbl.rds")))),error = function(e) NULL) 
-      tryCatch(bin_data<<-readRDS((paste0(basefn,"plotly_dashboard_ext/bin_data_nbl.rds"))),error = function(e) NULL) 
+      tryCatch(bin_data<<-readRDS((url(paste0(baseurl,"bin_data_nbl.rds")))),error = function(e) NULL) 
+      tryCatch(bin_data<<-readRDS((paste0(basefn,"bin_data_nbl.rds"))),error = function(e) NULL) 
       
     }
     if(isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
@@ -221,10 +221,10 @@ CNVScopeserver<-function(session,input, output, debug=F) {
       #browser()
       subset_name<<-gsub("_subset","",gsub("TCGA_NBL_","",paste0(input$data_source)))
       sample_name<-"NBL_output_matrix1e6"
-      # load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/TCGA_low_pass/NBL/",subset_name,"/",
+      # load( url(paste0(paste0(baseurl,"matrix/TCGA_low_pass/NBL/",subset_name,"/",
       #                         paste0(chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],"melted_downsampled_TGCA_","NBLsample_matched","_unrescaled",subset_name,".RData")
       # ))))
-      load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/TCGA_low_pass/NBL/",subset_name,"/",
+      load( url(paste0(paste0(baseurl,"matrix/TCGA_low_pass/NBL/",subset_name,"/",
                               paste0(isolate(input$chrom1),isolate(input$chrom2),"melted_downsampled_TGCA_","NBLsample_matched","_unrescaled",subset_name,"pos_neg.RData")
       ))))
       if(length(bin_data$probe)==0)
@@ -238,17 +238,17 @@ CNVScopeserver<-function(session,input, output, debug=F) {
       
       #      ggplotmatrix
       ggplotmatrix_full<-ggplotmatrix
-      tryCatch(bin_data<<-readRDS((url(paste0(baseurl,"plotly_dashboard_ext/bin_data_nbl_",subset_name,".rds")))),error = function(e) NULL) 
-      tryCatch(bin_data<<-readRDS((paste0(basefn,"plotly_dashboard_ext/bin_data_nbl_",subset_name,".rds"))),error = function(e) NULL) 
+      tryCatch(bin_data<<-readRDS((url(paste0(baseurl,"bin_data_nbl_",subset_name,".rds")))),error = function(e) NULL) 
+      tryCatch(bin_data<<-readRDS((paste0(basefn,"bin_data_nbl_",subset_name,".rds"))),error = function(e) NULL) 
       #
-      tryCatch(expression_data_gr_nbl<<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/tcga_nbl_expression_",subset_name,"subset.rds"))),error = function(e) NULL)
-      tryCatch(expression_data_gr_nbl<<-readRDS(paste0(basefn,"plotly_dashboard_ext/tcga_nbl_expression_",subset_name,"subset.rds")),error = function(e) NULL)
+      tryCatch(expression_data_gr_nbl<<-readRDS(url(paste0(baseurl,"tcga_nbl_expression_",subset_name,"subset.rds"))),error = function(e) NULL)
+      tryCatch(expression_data_gr_nbl<<-readRDS(paste0(basefn,"tcga_nbl_expression_",subset_name,"subset.rds")),error = function(e) NULL)
       
       #server-side processing(disabled):
-      # tryCatch(tcga_gr<<-readRDS((url(paste0(baseurl,"plotly_dashboard_ext/tcga_gr_no_stats.rds")))),error = function(e) NULL) 
-      # tryCatch(tcga_gr<<-readRDS((paste0(basefn,"plotly_dashboard_ext/tcga_gr_no_stats.rds"))),error = function(e) NULL) 
-      # tryCatch(tcga_dfs_cbind_with_ensg_with_ensembl_fpkm<<-readRDS((url(paste0(baseurl,"plotly_dashboard_ext/tcga_dfs_cbind_with_ensg_with_ensembl_fpkm_caseid.rds")))),error = function(e) NULL) 
-      # tryCatch(tcga_dfs_cbind_with_ensg_with_ensembl_fpkm<<-readRDS((paste0(basefn,"plotly_dashboard_ext/tcga_dfs_cbind_with_ensg_with_ensembl_fpkm_caseid.rds"))),error = function(e) NULL) 
+      # tryCatch(tcga_gr<<-readRDS((url(paste0(baseurl,"tcga_gr_no_stats.rds")))),error = function(e) NULL) 
+      # tryCatch(tcga_gr<<-readRDS((paste0(basefn,"tcga_gr_no_stats.rds"))),error = function(e) NULL) 
+      # tryCatch(tcga_dfs_cbind_with_ensg_with_ensembl_fpkm<<-readRDS((url(paste0(baseurl,"tcga_dfs_cbind_with_ensg_with_ensembl_fpkm_caseid.rds")))),error = function(e) NULL) 
+      # tryCatch(tcga_dfs_cbind_with_ensg_with_ensembl_fpkm<<-readRDS((paste0(basefn,"tcga_dfs_cbind_with_ensg_with_ensembl_fpkm_caseid.rds"))),error = function(e) NULL) 
       # 
       # tcga_dfs_cbind_with_ensg_with_ensembl_fpkm_subset<-as.data.frame(tcga_dfs_cbind_with_ensg_with_ensembl_fpkm)[,na.omit(match(colnames(bin_data),colnames(tcga_dfs_cbind_with_ensg_with_ensembl_fpkm)))]
       # #dim(tcga_dfs_cbind_with_ensg_with_ensembl_fpkm_subset)
@@ -263,7 +263,7 @@ CNVScopeserver<-function(session,input, output, debug=F) {
     if(isolate(input$data_source)=="TCGA_OS_low_pass")
     {
       sample_name<-"OS_output_matrix1e6"
-      load( url(paste0(paste0(baseurl,"plotly_dashboard_ext/matrix/TCGA_low_pass/OS/",
+      load( url(paste0(paste0(baseurl,"matrix/TCGA_low_pass/OS/",
                               paste0(chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],"melted_downsampled_TGCA_",sample_name,"_unrescaled",".RData")
       ))))
       ggplotmatrix_full<-ggplotmatrix
@@ -339,11 +339,11 @@ CNVScopeserver<-function(session,input, output, debug=F) {
     {
       if(exists("basefn"))
       {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(basefn,"plotly_dashboard_ext/breakpoint_gint/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" )),error = function(e) NULL) 
-        tryCatch(lumpy_summarized_counts<-readRDS(paste0(basefn,"plotly_dashboard_ext/lumpy_sv/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" )),error = function(e) NULL)    
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(basefn,"breakpoint_gint/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" )),error = function(e) NULL) 
+        tryCatch(lumpy_summarized_counts<-readRDS(paste0(basefn,"lumpy_sv/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" )),error = function(e) NULL)    
       }else {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/breakpoint_gint/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" ))),error = function(e) NULL) 
-        tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/lumpy_sv/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" ))),error = function(e) NULL)   
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"breakpoint_gint/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" ))),error = function(e) NULL) 
+        tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"lumpy_sv/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" ))),error = function(e) NULL)   
       }
       
     }
@@ -351,16 +351,16 @@ CNVScopeserver<-function(session,input, output, debug=F) {
     {
       if(exists("basefn"))
       {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(basefn,"plotly_dashboard_ext/breakpoint_gint/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_common_coords.rds" )),error = function(e) NULL)
-        tryCatch(lumpy_summarized_counts<-readRDS(paste0(basefn,"plotly_dashboard_ext/lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" )),error = function(e) NULL)
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(basefn,"breakpoint_gint/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_common_coords.rds" )),error = function(e) NULL)
+        tryCatch(lumpy_summarized_counts<-readRDS(paste0(basefn,"lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" )),error = function(e) NULL)
         tcga_type<<-gsub("_low_pass","",gsub("TCGA_","",isolate(input$data_source)))
-        tryCatch(TCGA_low_pass_sample_info<<-readRDS(paste0(basefn,"plotly_dashboard_ext/sample_info/",tcga_type,"TCGA_merged_dtv2.rds" )),error = function(e) NULL)
+        tryCatch(TCGA_low_pass_sample_info<<-readRDS(paste0(basefn,"sample_info/",tcga_type,"TCGA_merged_dtv2.rds" )),error = function(e) NULL)
         if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<- tidyr::unite(TCGA_low_pass_sample_info,pos,bins.seqnames,bins.start,bins.end)$pos}
       } else {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/breakpoint_gint/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_common_coords.rds" ))),error = function(e) NULL)
-        tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" ))),error = function(e) NULL)
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"breakpoint_gint/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_common_coords.rds" ))),error = function(e) NULL)
+        tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" ))),error = function(e) NULL)
         tcga_type<<-gsub("_low_pass","",gsub("TCGA_","",isolate(input$data_source)))
-        tryCatch(TCGA_low_pass_sample_info<<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/sample_info/",tcga_type,"TCGA_merged_dtv2.rds" ))),error = function(e) NULL)
+        tryCatch(TCGA_low_pass_sample_info<<-readRDS(url(paste0(baseurl,"sample_info/",tcga_type,"TCGA_merged_dtv2.rds" ))),error = function(e) NULL)
         if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<- tidyr::unite(TCGA_low_pass_sample_info,pos,bins.seqnames,bins.start,bins.end)$pos}
       }
     }
@@ -369,16 +369,16 @@ CNVScopeserver<-function(session,input, output, debug=F) {
       subset_name<<-gsub("_subset","",gsub("TCGA_NBL_","",paste0(input$data_source)))
       if(exists("basefn"))
       {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(basefn,"plotly_dashboard_ext/breakpoint_gint/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_common_coords.rds" )),error = function(e) NULL)
-        tryCatch(lumpy_summarized_counts<-readRDS(paste0(basefn,"plotly_dashboard_ext/lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" )),error = function(e) NULL)
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(basefn,"breakpoint_gint/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_common_coords.rds" )),error = function(e) NULL)
+        tryCatch(lumpy_summarized_counts<-readRDS(paste0(basefn,"lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" )),error = function(e) NULL)
         tcga_type<<-gsub("_low_pass","",gsub("TCGA_","",isolate(input$data_source)))
-        tryCatch(TCGA_low_pass_sample_info<<-readRDS(paste0(basefn,"plotly_dashboard_ext/sample_info/",tcga_type,"TCGA_merged_dtv2.rds" )),error = function(e) NULL)
+        tryCatch(TCGA_low_pass_sample_info<<-readRDS(paste0(basefn,"sample_info/",tcga_type,"TCGA_merged_dtv2.rds" )),error = function(e) NULL)
         if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<- tidyr::unite(TCGA_low_pass_sample_info,pos,bins.seqnames,bins.start,bins.end)$pos}
       } else {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/breakpoint_gint/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_common_coords.rds" ))),error = function(e) NULL)
-        tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" ))),error = function(e) NULL)
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"breakpoint_gint/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_common_coords.rds" ))),error = function(e) NULL)
+        tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" ))),error = function(e) NULL)
         tcga_type<<-gsub("_low_pass","",gsub("TCGA_","",isolate(input$data_source)))
-        tryCatch(TCGA_low_pass_sample_info<<-readRDS(url(paste0(baseurl,"plotly_dashboard_ext/sample_info/",tcga_type,"TCGA_merged_dtv2.rds" ))),error = function(e) NULL)
+        tryCatch(TCGA_low_pass_sample_info<<-readRDS(url(paste0(baseurl,"sample_info/",tcga_type,"TCGA_merged_dtv2.rds" ))),error = function(e) NULL)
         if(exists("TCGA_low_pass_sample_info")){TCGA_low_pass_sample_info$pos<- tidyr::unite(TCGA_low_pass_sample_info,pos,bins.seqnames,bins.start,bins.end)$pos}
       }
     }
@@ -626,10 +626,10 @@ if(debug){browser()}
           rownames_gr_full<-get_rownames_gr_full()
           colnames_gr_full<-get_colnames_gr_full()
 #         if(!exists("expression_data_gr_nbl")){
-            tryCatch(expression_data_gr_nbl<-readRDS(paste0(get("basefn",.GlobalEnv),"plotly_dashboard_ext/tcga_nbl_expression.rds")),error = function(e) NULL)  
+            tryCatch(expression_data_gr_nbl<-readRDS(paste0(get("basefn",.GlobalEnv),"tcga_nbl_expression.rds")),error = function(e) NULL)  
  #         }
           if(length(expression_data_gr_nbl)==0){
-          tryCatch(expression_data_gr_nbl<-readRDS(paste0(get("basefn",.GlobalEnv),"plotly_dashboard_ext/tcga_nbl_expression.rds")),error = function(e) NULL)
+          tryCatch(expression_data_gr_nbl<-readRDS(paste0(get("basefn",.GlobalEnv),"tcga_nbl_expression.rds")),error = function(e) NULL)
             }
           #mcols(expression_data_gr_nbl)$SYMBOL<-expression_data_gr_nbl$....external_gene_name
          if(debug){browser()}
@@ -654,7 +654,7 @@ if(debug){browser()}
     #
     if(is.null(event_data("plotly_click"))){return(data.table())}
     recast_matrix<-get_recast_matrix()
-    if(length(intersect(ls(),"census_data_gr"))!=1) {    tryCatch(census_data_gr<-readRDS(paste0(basefn,"plotly_dashboard_ext/censushg19.rds")),error = function(e) NULL)}
+    if(length(intersect(ls(),"census_data_gr"))!=1) {    tryCatch(census_data_gr<-readRDS(paste0(basefn,"censushg19.rds")),error = function(e) NULL)}
     row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
     column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
     #row_point_gr<-underscored_pos_to_GRanges(row_label)
