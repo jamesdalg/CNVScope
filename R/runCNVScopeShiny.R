@@ -16,6 +16,7 @@
 #' @param baseurl the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.
 #' @param basefn the linux file path of the same source files.
 #' @param debug Enable debugging output.
+#' @param useCNVScopePublicData Use files from the CNVScopePublicData package.
 #' @return none. Runs the application if the correct files are present.
 #' @examples
 #' \dontrun{
@@ -29,8 +30,15 @@
 #globalVariables(c("common_coords_linreg","expression_data_gr","chrom.pairs","."), add=F)
 
 
-
-runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, debug=F) {
+runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, debug=F, useCNVScopePublicData=F) {
+  if(useCNVScopePublicData)
+{  if (!requireNamespace("CNVScopePublicData", quietly = TRUE)) {
+    cat("CNVScopeData package not detected. Install now?")
+    install <- menu(c("yes", "no"))
+    if(install==1){remotes::install_github("jamesdalg/CNVscope_public_data")}
+}
+    basefn=paste0(system.file("plotly_dashboard_ext/",package = "CNVScopePublicData"),"/")
+}
 chrom.pairs<-NULL  
 options(scipen=999)
 #if(getRversion() >= "2.15.1")  utils::globalVariables(c("."),add=F)
