@@ -3,8 +3,10 @@ title: "CNVScope"
 author: "James Dalgleish"
 date: "November 26, 2018"
 output: 
-     html_document: default
-     github_document: default
+     html_document:
+      toc: true
+     github_document: 
+      toc: true
 ---
 
 ```{r setup, include=FALSE}
