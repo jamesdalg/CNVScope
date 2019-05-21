@@ -5,8 +5,10 @@ date: "November 26, 2018"
 output: 
      html_document:
       toc: true
+      toc_float: true
      github_document: 
       toc: true
+      toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +18,7 @@ CNVScope is a visualization toolkit for seeing copy number data in a relationshi
 both utilizing tools that find regions of interest (much like domains in Hi-C terminology),
 visualize the relationships in vibrant color (blue for negative association, red for positive), and integrates several different relevant types of data (RNASeq, sample information, Cancer Gene Census data, and structural variants). Structural variants like rearrangements can be thought of as interactions between genomic regions, which is why it makes sense to build  GenomicInteractions objects and from this, interaction matrices that can be easily visualized.
 
-#Installation.
+#Installation
 To install, it is best to install the github version (this is the most updated) and the CNVScopePublicData package (the data package is fairly large, so be patient while it installs). This can all be done in one line with the dependencies flag turned on. The next line will have you up and running!
 ```{r echo=T, eval=F}
 remotes::install_github("jamesdalg/CNVScope",dependencies = T)
