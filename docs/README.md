@@ -49,4 +49,4 @@ The package focuses on methods of analyzing these matrices and constructing comp
 Video Tutorial
 ==============
 
-For a complete video tutorial (12 minutes in length), [click here](cnvscope_tutorial.mp4).
+For a complete video tutorial (12 minutes in length), [click here](https://github.com/jamesdalg/CNVScope/raw/master/docs/cnvscope_tutorial.mp4).
