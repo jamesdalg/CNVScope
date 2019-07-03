@@ -18,9 +18,10 @@
 #' system.file("extdata","somaticCnvSegmentsDiploidBeta_TARGET-30-PANRVJ_NormalVsPrimary.tsv",
 #' package = "CNVScope"))
 #' @export
-freadGDCfile<-function(file,fread_skip=NULL, format = "TARGET") {
 globalVariables(c('....uuid','barcode1','barcode2','current_gr.....Segment_Mean','fn', 'sep', 'uuid'))
-  
+#global variables calls were put in to make it pass CRAN checks. Feel free to disable as needed.  
+freadGDCfile<-function(file,fread_skip=NULL, format = "TARGET") {
+
 if(format=="TARGET"){
 if(is.null(fread_skip)){  fread_skip=14}
 input_tsv<-data.table::fread(file,skip=fread_skip)
