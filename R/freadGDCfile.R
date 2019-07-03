@@ -18,9 +18,11 @@
 #' system.file("extdata","somaticCnvSegmentsDiploidBeta_TARGET-30-PANRVJ_NormalVsPrimary.tsv",
 #' package = "CNVScope"))
 #' @export
-globalVariables(c('....uuid','barcode1','barcode2','current_gr.....Segment_Mean','fn', 'sep', 'uuid'))
+utils::globalVariables(c('....uuid','barcode1','barcode2','current_gr.....Segment_Mean','fn', 'sep', 'uuid'), add=F)
 #global variables calls were put in to make it pass CRAN checks. Feel free to disable as needed.  
-freadGDCfile<-function(file,fread_skip=NULL, format = "TARGET") {
+
+freadGDCfile<-function(file,fread_skip=NULL, format = "TARGET",CN_colname="log2",
+                       sample_pattern="[^_]+",sample_colname=NULL) {
 
 if(format=="TARGET"){
 if(is.null(fread_skip)){  fread_skip=14}
@@ -40,6 +42,22 @@ if(format=="TCGA")
     dplyr::mutate( uuid = dirname(file) %>% tibble::as.tibble() %>% tidyr::separate(value, sep="/",into=c("dir","uuid")) %>% dplyr::pull(uuid)) %>% 
     dplyr::select( -sep)
 }
+  if(format=="custom")
+  {
+    if(is.null(fread_skip)){  fread_skip=0}
+    #read data in
+    input_tsv_with_sample_info<-data.table::fread(file,skip=fread_skip) 
+    #get basename and extract sample information.
+    if(is.null(sample_colname))
+{    
+      input_tsv_with_sample_info$sample<-str_extract(string = basename(file),pattern=sample_pattern)
+    }
+    if(!is.null(sample_colname))
+    {      
+      input_tsv_with_sample_info$sample<-input_tsv_with_sample_info[,sample_colname]
+    }
+    input_tsv_with_sample_info$fn<-basename(file)
+  }
 return(input_tsv_with_sample_info)
 }
 #for reference, see TCGA barcode documentation.

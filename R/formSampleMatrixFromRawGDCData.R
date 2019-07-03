@@ -33,11 +33,15 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
   #                                       return(input_csv_with_sample_info)
   #                                       }
   # )
+  #creates chromosomes object. This is necessary to clean out 
+  #non-biological chromosomes of the form   chrUn_gl000211
+
   if(format=="TARGET")
   {
     if(is.null(freadskip)) {freadskip=14}
     TCGA_CNV_data_with_sample_info<-plyr::ldply(tcga_files,function(x) freadGDCfile(x,fread_skip=freadskip)) 
     #TCGA_CNV_data_with_sample_info <- tcga_files %>% purrr::map_dfr(freadGDCfile, format = "TCGA",fread_skip=freadskip)
+    #combines the files in a dataframe with ldply and a modified fread.
   }
   
   if(format=="TCGA"){
@@ -45,6 +49,7 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
     #TCGA_CNV_data_with_sample_info$....sample<-tcga_files
     #TCGA_CNV_data_with_sample_info <- tcga_files %>% purrr::map_dfr(freadGDCfile, format = "TCGA",fread_skip=freadskip)
     #return(TCGA_CNV_data_with_sample_info)
+    #combines the files in a dataframe with ldply and a modified fread.
   }
   
   #TCGA_CNV_data_with_sample_info_small<-ldply(tcga_files[1:100],freadGDCfile)  
