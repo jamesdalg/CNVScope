@@ -61,39 +61,3 @@ saveRDS(sample_aggregated_segvals_output_full,"NBL_sample_matched_input_matrix.r
 
 With this, your input matrix is complete. Next, please look at the [vignette that details recursive linear regression and postprocessing](https://cran.r-project.org/web/packages/CNVScope/vignettes/create_output_matrix.html).
 
-Additional examples:
-[TCGA-BLCA](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TCGA-BLCA%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
-[TARGET-AML](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TARGET-AML%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
-[TARGET-SKCM](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TCGA-SKCM%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
-
-There are fewer TARGET datasets available than TCGA. We'll do AML first. We've named our downloaded archive gdc_download_aml.tar.gz.
-
-```{r aml_files,eval=F,echo=T}
-if(!dir.exists("extracted_aml_data")){dir.create("extracted_aml_data")}
-untar("gdc_download_aml.tar.gz",exdir = "./extracted_aml_data")
-target_files_aml<-list.files(path = "extracted_aml_data",pattern=glob2rx("*NormalVsPrimary.tsv"),recursive=T,full.names = T)
-print(target_files_aml)
-```
-
-```{r,eval=F,echo=T}
-sample_aggregated_segvals_aml<-formSampleMatrixFromRawGDCData(tcga_files = target_files_aml,format = "TARGET")
-saveRDS(sample_aggregated_segvals_aml,"aml_sample_matched_input_matrix.rds")
-```
-
-Now that we've created and saved the AML matrix, let's visualize it with a quick correlation map of a single chromosome, chromosome 13, the location of the FLT3 gene. The FLT3 gene is a locus for recurrent copy number aberrations(reference: http://www.bloodjournal.org/content/130/Suppl_1/3800?sso-checked=true).
-```{r aml_plots, eval=F,echo=T}
-cor(t(sample_aggregated_segvals_aml))  %>% 
-  CNVScope::signedRescale(max_cap=75) %>%
-  reshape2::melt()  %>%
-  ggplot(aes(x=Var1,y=Var2,fill=value)) + geom_raster() +
-  theme(axis.text.x = element_blank(),axis.text.y=element_blank()) +
-  ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
-```
-
-Now for a TCGA set, let's try a bladder cancer dataset:
-```{r aml_files,eval=F,echo=T}
-if(!dir.exists("extracted_blca_data")){dir.create("extracted_blca_data")}
-untar("gdc_download_blca.tar.gz",exdir = "./extracted_blca_data")
-tcga_files_blca<-list.files(path = "extracted_blca_data",pattern=glob2rx("*.tsv"),recursive=T,full.names = T)
-print(tcga_files_blca)
-```
