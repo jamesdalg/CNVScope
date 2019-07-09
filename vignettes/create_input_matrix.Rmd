@@ -58,3 +58,5 @@ sample_aggregated_segvals_output_full<-formSampleMatrixFromRawGDCData(tcga_files
 saveRDS(sample_aggregated_segvals_output_full,"NBL_sample_matched_input_matrix.rds")
 
 ```
+
+With this, your input matrix is complete. Next, please look at the [vignette that details recursive linear regression and postprocessing](./vignettes/create_output_matrix.html). This vignette is also available [on the CRAN site](https://cran.r-project.org/web/packages/CNVScope/vignettes/create_output_matrix.html).
