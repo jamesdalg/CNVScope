@@ -76,23 +76,17 @@ print(target_files_aml)
 ```
 
 ```{r,eval=F,echo=T}
-sample_aggregated_segvals_output_full<-formSampleMatrixFromRawGDCData(tcga_files = target_files_aml,format = "TARGET")
-saveRDS(sample_aggregated_segvals_output_full,"aml_sample_matched_input_matrix.rds")
+sample_aggregated_segvals_aml<-formSampleMatrixFromRawGDCData(tcga_files = target_files_aml,format = "TARGET")
+saveRDS(sample_aggregated_segvals_aml,"aml_sample_matched_input_matrix.rds")
 ```
 
 Now that we've created and saved the AML matrix, let's visualize it with a quick correlation map of a single chromosome, chromosome 13, the location of the FLT3 gene. The FLT3 gene is a locus for recurrent copy number aberrations(reference: http://www.bloodjournal.org/content/130/Suppl_1/3800?sso-checked=true).
 ```{r aml_plots, eval=F,echo=T}
-cor(t(sample_aggregated_segvals_output_full))  %>% 
+cor(t(sample_aggregated_segvals_aml))  %>% 
   CNVScope::signedRescale(max_cap=75) %>%
   reshape2::melt()  %>%
   ggplot(aes(x=Var1,y=Var2,fill=value)) + geom_raster() +
   theme(axis.text.x = element_blank(),axis.text.y=element_blank()) +
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
-```
-```{r eval=F}
-#ggplot(data = ggplotmatrix_minimap ) + #geom_tile() + theme_void()
-#        geom_raster(aes(x = Var2, y = Var1,fill=value,text=paste0("value:",value,"\nrow:",Var1,"\ncol:",Var2,"\n",value1))) + scale_x_discrete() +
-#        scale_y_discrete() + theme(axis.text.x = element_text(angle=60, hjust=1)) + 
-#        ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank())
 ```
 
