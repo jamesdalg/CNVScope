@@ -94,6 +94,6 @@ Now for a TCGA set, let's try a bladder cancer dataset:
 ```{r aml_files,eval=F,echo=T}
 if(!dir.exists("extracted_blca_data")){dir.create("extracted_blca_data")}
 untar("gdc_download_blca.tar.gz",exdir = "./extracted_blca_data")
-target_files_aml<-list.files(path = "extracted_blca_data",pattern=glob2rx("*.tsv"),recursive=T,full.names = T)
-print(target_files_aml)
+tcga_files_blca<-list.files(path = "extracted_blca_data",pattern=glob2rx("*.tsv"),recursive=T,full.names = T)
+print(tcga_files_blca)
 ```
