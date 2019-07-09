@@ -15,6 +15,7 @@
 #' @param format file format, TCGA or TARGET.
 #' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
 #' @param freadskip the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.
+#' @param debug debug mode enable (allows specific breakpoints to be checked).
 #' @return sample_aggregated_segvals A dataframe containing the aggregated segmentation values, based on the parameters provided.
 #' @examples 
 #' #Pipeline examples would be too large to include in package checks.
@@ -23,7 +24,7 @@
 #' @export
 globalVariables(c('begin','s',".","pos",'....relativeCvg','....sample','current_gr.....Segment_Mean','....uuid'),add=F)
 
-formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize=1e6,freadskip=NULL, parallel = F)
+formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize=1e6,freadskip=NULL, parallel = F,debug=F)
 {
   chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
   # TCGA_CNV_data_with_sample_info<-ldply(tcga_files,
@@ -70,7 +71,8 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
   #creates GRanges object with other columns appended. These can be accessed using mcols()
   bins<-GenomicRanges::tileGenome(seqinfo(BSgenome.Hsapiens.UCSC.hg19::Hsapiens),tilewidth=binsize,cut.last.tile.in.chrom = T)
   #creates bins using the tileGenome function.
-  bins<-bins[bins@seqnames %in% gsub("_","",chromosomes)]
+  if(debug){browser()}
+  bins<-bins[as.character(seqnames(bins)) %in% gsub("_","",chromosomes)]
   #removes Y and junk chromosomes. #modify chromosomes object at the top to add a Y if needed.
   #Y is best removed unless ALL of the participants are male, e.g. prostate cancer.
   rownames_gr = bins

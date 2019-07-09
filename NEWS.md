@@ -5,4 +5,5 @@ Changes:
 
 * Added a power analysis vignette
 * Fixed issues with formSampleMatrixFromRawGDCData
-* 
+** These issues arose from changing types with underlying Bioconductor dependencies from character to factor Rle.
+* Updated the build for R-base v3.6.1
