@@ -24,7 +24,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,cache = T)
 
 knitr::opts_knit$set(root.dir = '.')
 library(CNVScope)
@@ -122,13 +122,9 @@ chr_7_probdist %>%
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 
 ```
-```{r}
-
-census_data[census_data@seqnames %in% "chr7"] %>% sort() %>% tibble::as_tibble() %>% janitor::clean_names() %>% dplyr::select(seqnames,start,end,gene_symbol,tumour_types_germline) %>% dplyr::filter(start>60e6,stringr::str_detect(string = tumour_types_germline,pattern="AML"))
-```
 Using the below code, we can find a few more genes to explore that are known to be associated with AML in the COSMIC cancer gene census. this requires the CNVScope Public Data package to be installed properly.
 
-```{r,eval=F}
+```{r census_data,eval=F}
 census_data <- readRDS(system.file("plotly_dashboard_ext","censushg19.rds",package = "CNVScopePublicData"))
 census_data[census_data@seqnames %in% "chr7"] %>% sort() %>% tibble::as_tibble() %>% janitor::clean_names() %>% dplyr::select(seqnames,start,end,gene_symbol,tumour_types_somatic,tumour_types_germline) %>% dplyr::filter(start>60e6,stringr::str_detect(string = tumour_types_somatic,pattern="AML") | stringr::str_detect(string = tumour_types_germline,pattern="AML"))
 ```
