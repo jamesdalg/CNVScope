@@ -72,7 +72,7 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
   bins<-GenomicRanges::tileGenome(seqinfo(BSgenome.Hsapiens.UCSC.hg19::Hsapiens),tilewidth=binsize,cut.last.tile.in.chrom = T)
   #creates bins using the tileGenome function.
   if(debug){browser()}
-  bins<-bins[as.character(seqnames(bins)) %in% gsub("_","",chromosomes)]
+  bins<-bins[as.character(bins@seqnames) %in% gsub("_","",chromosomes)]
   #removes Y and junk chromosomes. #modify chromosomes object at the top to add a Y if needed.
   #Y is best removed unless ALL of the participants are male, e.g. prostate cancer.
   rownames_gr = bins
