@@ -28,7 +28,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 knitr::opts_knit$set(root.dir = '.')
 library(CNVScope)
+options(scipen=999)
+library(magrittr)
 ```
+This vignette was created to showcase additional cancers and also to highlight additional, less-known features of the package.
 Additional examples:
 [TCGA-BLCA](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TCGA-BLCA%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
 [TARGET-AML](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TARGET-AML%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
@@ -48,29 +51,90 @@ sample_aggregated_segvals_aml<-formSampleMatrixFromRawGDCData(tcga_files = targe
 saveRDS(sample_aggregated_segvals_aml,"aml_sample_matched_input_matrix.rds")
 ```
 
-Now that we've created and saved the AML matrix, let's visualize it with a quick correlation map of a single chromosome, chromosome 13, the location of the FLT3 gene. The FLT3 gene is a locus for recurrent copy number aberrations(reference: http://www.bloodjournal.org/content/130/Suppl_1/3800?sso-checked=true).
+Now that we've created and saved the AML matrix, let's visualize it with a quick correlation map of a single chromosome, chromosome 7, the location of the BRAF gene and nearby EZH2 gene(. The BRAF gene (chr7:140419127-140624564) is a locus for recurrent copy number aberrations(reference: http://www.bloodjournal.org/content/130/Suppl_1/3800?sso-checked=true).
 
 Some of the bins are invariant and correlation requires that the standard deviation be a value other than zero (otherwise correlation cannot be calculated). We will remove them in a couple steps and transpose the matrix, making the columns the bins and the samples the rows.
-```{r aml_plots, eval=F,echo=T}
-invariant_bins<-which((sample_aggregated_segvals_aml[stringr::str_detect(rownames(sample_aggregated_segvals_aml),"chr13"),] %>% t() %>% as.data.frame() %>% sapply(sd))==0)
-chr_13_mat<-sample_aggregated_segvals_aml[(stringr::str_detect(rownames(sample_aggregated_segvals_aml),"chr13") & rownames(sample_aggregated_segvals_aml) %in% setdiff(rownames(sample_aggregated_segvals_aml),names(invariant_bins))),] %>% t()
+```{r aml_plots, eval=T,echo=T}
+sample_aggregated_segvals_aml<-readRDS("aml_sample_matched_input_matrix.rds")
+invariant_bins<-which((sample_aggregated_segvals_aml[stringr::str_detect(rownames(sample_aggregated_segvals_aml),"chr7"),] %>% t() %>% as.data.frame() %>% sapply(sd))==0)
+chr_7_mat<-sample_aggregated_segvals_aml[(stringr::str_detect(rownames(sample_aggregated_segvals_aml),"chr7") & rownames(sample_aggregated_segvals_aml) %in% setdiff(rownames(sample_aggregated_segvals_aml),names(invariant_bins))),] %>% t()
 ```
 Now we'll perform correlation on the plot.
-```{r chr13_cor}
-chr_13_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>% 
-  CNVScope::signedRescale(max_cap=75) %>%
+```{r chr7_cor}
+chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>% 
+  CNVScope::signedRescale(max_cap=1) %>%
   reshape2::melt()  %>%
-  ggplot(aes(x=Var1,y=Var2,fill=value)) + geom_raster() +
+  ggplot(aes(x=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start,
+             y=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
+             fill=value)) + geom_raster() +
   theme(axis.text.x = element_blank(),axis.text.y=element_blank(),axis.title = element_blank()) +
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 ```
 We could then utilize our domain finding function to find the borders of domains in the matrix. There's an obvious distruption near the left center of the matrix (see the blue streaks of anticorrelation?).
+```{r breakpoints}
+colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]
+breakpoints<-colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))] %>% stringr::str_split_fixed(string = .,pattern="_",n=3) %>% as.matrix() %>% .[,2] %>% as.numeric()
+breakpoint_labels <- colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]
+breakpoint_labels
+```
+Now, we'll make another plot, only labeling the breakpoints.
+
+```{r breakpoint_plot}
+chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>% 
+    CNVScope::signedRescale(max_cap=1) %>%
+    reshape2::melt()  %>%
+    ggplot(aes(x=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start,
+               y=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
+               fill=value)) + geom_raster() +
+    theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank(),axis.title = element_blank()) +
+    scale_x_continuous(breaks=breakpoints,labels=breakpoint_labels) +
+    ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
+
+```
+Finally, let's try our probability weighting function for the matrix and see if we can find clearer regions of association. We'll also try another segmentation algorithm with the jointseg package.
+```{r probdist}
+chr_7_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_7_mat,use="pairwise.complete.obs"))$percentile_matrix
+js_breakpoints<-jointseg::jointSeg(chr_7_probdist,K=20)$bestBkp
+js_breakpoint_labels<-colnames(chr_7_mat)[js_breakpoints]
+
+```
+We'll notice that using this combination of techniques, we've managed to pick up an AML driver between domain endpoints, in a large region where the association is less than expected (as determined by the calcCNVprobdist function). Within the region of 115 and 120Mb lies the MET gene, where an LOH was detected in the paper. It's a pretty obvious signature, perhaps the most obvious in the whole plot.
+
+ Further, we suggest that there is an minor signal off the diagonal in the region of this and the location of BRAF (chr7:140419127-140624564, another recurrent CNV in the paper), associated with the border of a region near 16-24Mb.Within this area are the PMS(a tumor suppressor), RAC1 (oncogene), and ETV1 (oncogene). PMS2 alteration has been implicated in AML previously (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3734905/).
+
+We don't suggest that this tool is perfect and will rapidly make clear all cancer drivers associated with CNVs, but we suggest that it can, with other tools, add to your investigative toolbox to substantiate known drivers and to elucidate new ones.
+```{r plot_probdist}
+chr_7_probdist %>%  
+#  CNVScope::signedRescale(max_cap=1) %>%
+  reshape2::melt()  %>%
+  ggplot(aes(x=Var1,
+             y=Var2,
+             fill=value)) + geom_tile() +
+#  theme(axis.title = element_blank()) + #axis.text.x = element_blank(),axis.text.y=element_blank(),
+    theme(axis.text.x = element_text(angle=90, hjust=1),
+          axis.text.y = element_text(angle=0, hjust=1)
+          ,axis.title = element_blank()) +
+#    scale_x_continuous(breaks=js_breakpoints,labels=js_breakpoint_labels) +
+#      scale_y_continuous(breaks=js_breakpoints,labels=js_breakpoint_labels) +
+      scale_x_continuous(breaks=js_breakpoints,labels=js_breakpoint_labels) +
+      scale_y_continuous(breaks=js_breakpoints,labels=js_breakpoint_labels) +
+
+  ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
+
+```
 ```{r}
-CNVScope::getAsymmetricBlockIndices(cor(chr_13_mat,use="pairwise.complete.obs"))
+
+census_data[census_data@seqnames %in% "chr7"] %>% sort() %>% tibble::as_tibble() %>% janitor::clean_names() %>% dplyr::select(seqnames,start,end,gene_symbol,tumour_types_germline) %>% dplyr::filter(start>60e6,stringr::str_detect(string = tumour_types_germline,pattern="AML"))
+```
+Using the below code, we can find a few more genes to explore that are known to be associated with AML in the COSMIC cancer gene census. this requires the CNVScope Public Data package to be installed properly.
+
+```{r,eval=F}
+census_data <- readRDS(system.file("plotly_dashboard_ext","censushg19.rds",package = "CNVScopePublicData"))
+census_data[census_data@seqnames %in% "chr7"] %>% sort() %>% tibble::as_tibble() %>% janitor::clean_names() %>% dplyr::select(seqnames,start,end,gene_symbol,tumour_types_somatic,tumour_types_germline) %>% dplyr::filter(start>60e6,stringr::str_detect(string = tumour_types_somatic,pattern="AML") | stringr::str_detect(string = tumour_types_germline,pattern="AML"))
 ```
 
 Now for a TCGA set, let's try a bladder cancer dataset:
-```{r aml_files,eval=F,echo=T}
+```{r blca_files,eval=F,echo=T}
 if(!dir.exists("extracted_blca_data")){dir.create("extracted_blca_data")}
 untar("gdc_download_blca.tar.gz",exdir = "./extracted_blca_data")
 tcga_files_blca<-list.files(path = "extracted_blca_data",pattern=glob2rx("*.tsv"),recursive=T,full.names = T)
