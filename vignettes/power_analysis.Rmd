@@ -19,12 +19,14 @@ date: "7/8/2019"
 output: rmarkdown::html_vignette
 vignette: >
  %\VignetteEngine{knitr::rmarkdown}
- %\VignetteIndexEntry{Creating the TARGET Input matrix from public data}
+ %\VignetteIndexEntry{Power Analysis}
  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(CNVScope)
+library(pwr)
 ```
 
 Power Analysis:
@@ -36,7 +38,7 @@ large.effect.size<-pwr::cohen.ES(test="f2",size="large")$effect.size
 large.effect.size
 f2.res<-pwr::pwr.f2.test(u = 1, f2 = large.effect.size/(1 - large.effect.size), sig.level = 0.05, power = 0.8)
 f2.res
-n<-ceiling(f2$v+f2$u+1)
+n<-ceiling(f2.res$v+f2.res$u+1)
 n
 ```
 
