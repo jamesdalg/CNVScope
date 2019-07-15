@@ -166,17 +166,22 @@ chr_17_js_breakpoint_labels<-colnames(cor(chr_17_mat))[chr_17_js_breakpoints]
 chr_17_js_breakpoint_labels
 
 ```
-With the coordinates for erbb2 at chr17:37844167-37886679, we find a precise match in the second breakpoint. It lies exactly within it.
+With the coordinates for *ERBB2* at chr17:37844167-37886679, we find a precise match in the second breakpoint. It lies exactly within it. All the breakpoints are plotted in the plot below. Beyond that, the centromere point is precisely identifyable. It not only shows pathophysiology, but illustrates clearly the position of the chromosomal landmark as the border between the largest domains.
 
 ```{r breakpoint_plot}
-chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>% 
-    CNVScope::signedRescale(max_cap=1) %>%
-    reshape2::melt()  %>%
-    ggplot(aes(x=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start,
-               y=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
-               fill=value)) + geom_raster() +
-    theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank(),axis.title = element_blank()) +
-    scale_x_continuous(breaks=chr_17_js_breakpoints,labels=chr_17_js_breakpoint_labels) +
-    ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 
+breakpoint_plot <- chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>% 
+    CNVScope::signedRescale(max_cap=1) %>%
+    reshape2::melt()  %>% 
+  dplyr::mutate(col_pos=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start, 
+         row_pos=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
+         correlation=value) %>% 
+    ggplot(aes(x=col_pos,
+               y=row_pos,
+               fill=correlation)) + geom_raster() +
+    theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank(),axis.title = element_blank()) +
+    scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
+    ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
+  labs(x="col_pos",y="row_pos",value="Pearson Correlation:")
+breakpoint_plot %>% plotly::ggplotly()
 ```
