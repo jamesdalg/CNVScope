@@ -179,7 +179,7 @@ breakpoint_plot <- chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pears
     ggplot(aes(x=col_pos,
                y=row_pos,
                fill=correlation)) + geom_raster() +
-    theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank(),axis.title = element_blank()) +
+    theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank()) +
     scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
     ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
   labs(x="col_pos",y="row_pos",value="Pearson Correlation:")
