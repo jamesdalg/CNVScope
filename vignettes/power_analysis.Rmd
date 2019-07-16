@@ -27,6 +27,7 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 library(CNVScope)
 library(pwr)
+library(magrittr)
 ```
 
 Power Analysis:

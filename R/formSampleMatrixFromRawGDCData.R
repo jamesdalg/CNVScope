@@ -16,6 +16,9 @@
 #' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
 #' @param freadskip the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.
 #' @param debug debug mode enable (allows specific breakpoints to be checked).
+#' @param chromosomes A vector of chromosomes to be used. Defaults to chr1-chrX,
+#'  but others can be added e.g. chrY or chrM for Y chromosome or mitochondrial DNA.
+#'   Format expected is a character vector, e.g. c("chr1", "chr2", "chr3").
 #' @return sample_aggregated_segvals A dataframe containing the aggregated segmentation values, based on the parameters provided.
 #' @examples 
 #' #Pipeline examples would be too large to include in package checks.
@@ -24,9 +27,9 @@
 #' @export
 globalVariables(c('begin','s',".","pos",'....relativeCvg','....sample','current_gr.....Segment_Mean','....uuid'),add=F)
 
-formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize=1e6,freadskip=NULL, parallel = F,debug=F)
+formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize=1e6,freadskip=NULL, parallel = F,debug=F,chromosomes=paste0("chr",c(seq(1:22),"X"),"_"))
 {
-  chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
+  #chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
   # TCGA_CNV_data_with_sample_info<-ldply(tcga_files,
   #                                       function(x) {input_csv<-fread(x,skip=freadskip)
   #                                       sample_info_colsplit<-reshape2::colsplit(basename(x),"_|-|\\.",c("pre","project","num","sample","comparison","fn_ext"))
@@ -62,7 +65,7 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
     }
     colnames(TCGA_CNV_data)<-gsub("Chromosome",">chr",gsub("End","end",gsub("Start","begin",colnames(TCGA_CNV_data)))) #adds >chr, begin, and end columns if they come in a different form.
   }
-  
+  if(debug){browser()}
   TCGA_CNV_data_range_filtered<-TCGA_CNV_data %>% tidyr::drop_na(begin,end) 
   #drops those with a missing begin and end.
   TCGA_CNV_data_dt<-data.table::as.data.table(TCGA_CNV_data_range_filtered)

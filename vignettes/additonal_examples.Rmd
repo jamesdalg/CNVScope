@@ -24,7 +24,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,cache = T)
+knitr::opts_chunk$set(echo = TRUE)
 
 knitr::opts_knit$set(root.dir = '.')
 library(CNVScope)
@@ -37,6 +37,7 @@ Additional examples:
 [TARGET-AML](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TARGET-AML%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
 [TARGET-SKCM](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TCGA-SKCM%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
 
+#Acute Myeloid Leukemia (AML)
 There are fewer TARGET datasets available than TCGA. We'll do AML first. We've named our downloaded archive gdc_download_aml.tar.gz.
 
 ```{r aml_files,eval=F,echo=T}
@@ -129,6 +130,9 @@ census_data <- readRDS(system.file("plotly_dashboard_ext","censushg19.rds",packa
 census_data[census_data@seqnames %in% "chr7"] %>% sort() %>% tibble::as_tibble() %>% janitor::clean_names() %>% dplyr::select(seqnames,start,end,gene_symbol,tumour_types_somatic,tumour_types_germline) %>% dplyr::filter(start>60e6,stringr::str_detect(string = tumour_types_somatic,pattern="AML") | stringr::str_detect(string = tumour_types_germline,pattern="AML"))
 ```
 
+
+#TCGA Bladder Cancer (BLCA)
+
 Now for a TCGA set, let's try a bladder cancer dataset:
 ```{r blca_files,eval=F,echo=T}
 if(!dir.exists("extracted_blca_data")){dir.create("extracted_blca_data")
@@ -148,7 +152,7 @@ invariant_bins<-which((sample_aggregated_segvals_blca[stringr::str_detect(rownam
 chr_17_mat<-sample_aggregated_segvals_blca[(stringr::str_detect(rownames(sample_aggregated_segvals_blca),"chr17") & rownames(sample_aggregated_segvals_blca) %in% setdiff(rownames(sample_aggregated_segvals_blca),names(invariant_bins))),] %>% t()
 ```
 Now we'll perform correlation on the plot.
-```{r chr7_cor}
+```{r chr17_cor}
 chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>% 
   CNVScope::signedRescale(max_cap=1) %>%
   reshape2::melt()  %>%
@@ -159,16 +163,16 @@ chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 ```
 We can follow the same procedure with this case, but it may not yield precisely the same dramatic result. We expect with most investigative tools this is the case and do not guarantee a winning result each time. In this case, we are attempting to show that the tool DOES work on TCGA data. We can confidently say that we created a matched sample matrix with the TCGA format as well as the TARGET format.
-```{r probdist}
+```{r probdist_chr17}
 chr_17_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_17_mat,use="pairwise.complete.obs"))$percentile_matrix
 chr_17_js_breakpoints<-jointseg::jointSeg(chr_17_probdist,K=40)$bestBkp
 chr_17_js_breakpoint_labels<-colnames(cor(chr_17_mat))[chr_17_js_breakpoints]
 chr_17_js_breakpoint_labels
 
 ```
-With the coordinates for *ERBB2* at chr17:37844167-37886679, we find a precise match in the second breakpoint. It lies exactly within it. All the breakpoints are plotted in the plot below. Beyond that, the centromere point is precisely identifyable. It not only shows pathophysiology, but illustrates clearly the position of the chromosomal landmark as the border between the largest domains.
+With the coordinates for *ERBB2* at chr17:37844167-37886679, we find a precise match in the second breakpoint. It lies exactly within it. All the breakpoints are plotted in the plot below. Beyond that, the centromere point is precisely identifyable. It not only shows pathophysiology, but illustrates clearly the position of the chromosomal landmark as the border between the largest domains. [Click here](https://grch37.ensembl.org/Homo_sapiens/Location/View?r=17:23000001-25000000) to view the ensembl-75 view of this position. It is clear that it precisely matches the location of the centromere.
 
-```{r breakpoint_plot}
+```{r breakpoint_plot_chr17}
 
 breakpoint_plot <- chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>% 
     CNVScope::signedRescale(max_cap=1) %>%
@@ -183,5 +187,21 @@ breakpoint_plot <- chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pears
     scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
     ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
   labs(x="col_pos",y="row_pos",value="Pearson Correlation:")
-breakpoint_plot %>% plotly::ggplotly()
+breakpoint_plot
+#For an interactive plot of the bladder cancer interactome, try the following:
+#breakpoint_plot %>% plotly::ggplotly()
+```
+
+```{r skcm_files,eval=F,echo=T}
+if(!dir.exists("extracted_skcm_data")){dir.create("extracted_skcm_data")}
+untar("gdc_download_skcm.tar.gz",exdir = "./extracted_skcm_data")
+tcga_files_skcm<-list.files(path = "extracted_skcm_data",pattern=glob2rx("*.tsv"),recursive=T,full.names = T)
+print(tcga_files_skcm)
+```
+
+```{r,eval=F,echo=T}
+#ptm <- proc.time()
+sample_aggregated_segvals_skcm<-formSampleMatrixFromRawGDCData(tcga_files = tcga_files_skcm,format = "TCGA")
+#proc.time() - ptm
+saveRDS(sample_aggregated_segvals_skcm,"skcm_sample_matched_input_matrix.rds")
 ```
