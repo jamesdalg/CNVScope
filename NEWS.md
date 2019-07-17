@@ -1,4 +1,4 @@
-CNVScope v2.4.6 (Release date: 2019-07-15)
+CNVScope v2.4.7 (Release date: 2019-07-16)
 ==============
 *Minor fix to freadGDCfile documentation
 
