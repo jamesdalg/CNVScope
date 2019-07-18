@@ -81,9 +81,17 @@ Regression/Postprocess](https://cran.r-project.org/web/packages/CNVScope/vignett
 
 \#Video Tutorial
 
-For a complete video tutorial (12 minutes in length), [click
+For a complete video tutorial (16 minutes in length), [click
 here](cnvscope_tutorial.mp4).
 
-<iframe src="blca3d.html">
+\#Additional Examples
 
-</iframe>
+Feel free to look at the additional examples vignette. We have several
+GDC datasets that demonstrate that our package is a versatile toolkit
+that is useful for NBL, as well as SKCM (Skin Cancer), BLCA (bladder
+cancer), AML (Acute Myleoid Leukemia), and PRAD (Prostate Cancer). We
+also demonstrate our copy number relationship weighting function as well
+as contour and 3D representations. An example is detailed below. [Click
+here for an interactive version.](./blca3d.html)
+
+![3D BLCA, chromosome 17](./blca_3D.png)
