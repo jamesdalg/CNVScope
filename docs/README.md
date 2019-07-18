@@ -92,7 +92,7 @@ that is useful for NBL, as well as SKCM (Skin Cancer), BLCA (bladder
 cancer), AML (Acute Myleoid Leukemia), and PRAD (Prostate Cancer). We
 also demonstrate our copy number relationship weighting function as well
 as contour and 3D representations. The final example, of BLCA chr17, is
-shown below. [Click here for a downloadable interactive
-version.](./blca3d.html)
+shown below. [Click here for a downloadable HTML interactive plot is
+available here.](./blca3d.html)
 
 ![3D BLCA, chromosome 17](./blca_3D.png)
