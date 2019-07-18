@@ -54,3 +54,5 @@ The package focuses on methods of analyzing these matrices and constructing comp
 #Video Tutorial
 
 For a complete video tutorial (12 minutes in length), [click here](cnvscope_tutorial.mp4).
+
+<iframe src="blca3d.html"></iframe>
