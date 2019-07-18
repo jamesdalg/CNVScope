@@ -53,7 +53,8 @@ if(format=="TCGA")
     #get basename and extract sample information.
     if(is.null(sample_colname))
 {    
-      input_tsv_with_sample_info$sample<-stringr::str_extract(string = basename(file),pattern=sample_pattern)
+      input_tsv_with_sample_info$sample<-stringr::str_extract(string = basename(file),
+                                                              pattern=sample_pattern)
     }
     if(!is.null(sample_colname))
     {      
