@@ -91,7 +91,8 @@ GDC datasets that demonstrate that our package is a versatile toolkit
 that is useful for NBL, as well as SKCM (Skin Cancer), BLCA (bladder
 cancer), AML (Acute Myleoid Leukemia), and PRAD (Prostate Cancer). We
 also demonstrate our copy number relationship weighting function as well
-as contour and 3D representations. An example is detailed below. [Click
-here for an interactive version.](./blca3d.html)
+as contour and 3D representations. The final example, of BLCA chr17, is
+shown below. [Click here for a downloadable interactive
+version.](./blca3d.html)
 
 ![3D BLCA, chromosome 17](./blca_3D.png)
