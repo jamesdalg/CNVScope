@@ -50,7 +50,7 @@ chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
 
 
 ## ----probdist------------------------------------------------------------
-chr_7_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_7_mat,use="pairwise.complete.obs"))$percentile_matrix
+chr_7_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_7_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
 js_breakpoints<-jointseg::jointSeg(chr_7_probdist,K=20)$bestBkp
 js_breakpoint_labels<-colnames(chr_7_mat)[js_breakpoints]
 
@@ -104,7 +104,9 @@ chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 
 ## ----probdist_chr17------------------------------------------------------
-chr_17_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_17_mat,use="pairwise.complete.obs"))$percentile_matrix
+chr_17_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_17_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
+colnames(chr_17_probdist)<-colnames(chr_17_mat)
+rownames(chr_17_probdist)<-colnames(chr_17_mat)
 chr_17_js_breakpoints<-jointseg::jointSeg(chr_17_probdist,K=40)$bestBkp
 chr_17_js_breakpoint_labels<-colnames(cor(chr_17_mat))[chr_17_js_breakpoints]
 chr_17_js_breakpoint_labels
@@ -112,7 +114,21 @@ chr_17_js_breakpoint_labels
 
 ## ----breakpoint_plot_chr17-----------------------------------------------
 
-breakpoint_plot <- chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>% 
+breakpoint_plot_probdist <- chr_17_probdist %>% #  cor(use="pairwise.complete.obs",method="pearson") %>% 
+    CNVScope::signedRescale(max_cap=1) %>%
+    reshape2::melt()  %>% 
+  dplyr::mutate(col_pos=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start, 
+         row_pos=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
+         rel_prob=value) %>% 
+    ggplot(aes(x=col_pos,
+               y=row_pos,
+               fill=rel_prob)) + geom_raster() +
+    theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank()) +
+    scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
+    ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
+  labs(x="col_pos",y="row_pos",value="Pearson Correlation:") + ggtitle("Chromosome 17 relationship probability") +
+  geom_contour(binwidth = .395, aes(z = value)) 
+breakpoint_plot <- chr_17_mat %>%   cor(use="pairwise.complete.obs",method="pearson") %>% 
     CNVScope::signedRescale(max_cap=1) %>%
     reshape2::melt()  %>% 
   dplyr::mutate(col_pos=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start, 
@@ -124,10 +140,40 @@ breakpoint_plot <- chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pears
     theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank()) +
     scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
     ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
-  labs(x="col_pos",y="row_pos",value="Pearson Correlation:")
+  labs(x="col_pos",y="row_pos",value="Pearson Correlation:") + ggtitle("Chromosome 17 linear relationship domains") + 
+  geom_contour(binwidth = .395, aes(z = value)) 
+breakpoint_plot_corr_diff <- ((chr_17_mat %>%   cor(use="pairwise.complete.obs",method="spearman"))-(chr_17_mat %>%   cor(use="pairwise.complete.obs",method="pearson"))) %>% 
+    CNVScope::signedRescale(max_cap=1) %>%
+    reshape2::melt()  %>% 
+  dplyr::mutate(col_pos=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start, 
+         row_pos=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
+         corr_diff=value) %>% 
+    ggplot(aes(x=col_pos,
+               y=row_pos,
+               fill=corr_diff)) + geom_raster() +
+    theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank()) +
+    scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
+    ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
+  labs(x="col_pos",y="row_pos",value="Pearson Correlation:") + ggtitle("Chromosome 17 nonlinear (red) relationship regions, inferred by nonlinear-linear correlation difference") + 
+  geom_contour(binwidth = .395, aes(z = value)) 
+
 breakpoint_plot
-#For an interactive plot of the bladder cancer interactome, try the following:
-#breakpoint_plot %>% plotly::ggplotly()
+breakpoint_plot_probdist
+breakpoint_plot_corr_diff
+
+
+## ----plotly_blca,eval=F--------------------------------------------------
+#  library(plotly)
+#  breakpoint_plot %>% plotly::ggplotly()
+
+## ----3D_blca,eval=F------------------------------------------------------
+#  chr_17_long <- chr_17_mat %>%   cor(use="pairwise.complete.obs",method="pearson") %>%
+#      CNVScope::signedRescale(max_cap=1) %>%
+#      reshape2::melt()  %>%
+#    dplyr::mutate(col_pos=as.numeric(reshape2::colsplit(Var1,"_",c("chr","start","end"))$start),
+#           row_pos=as.numeric(reshape2::colsplit(Var2,"_",c("chr","start","end"))$start),
+#           correlation=value) %>% dplyr::select(col_pos,row_pos,correlation)
+#  plot_ly(data = chr_17_long, x=chr_17_long$col_pos,y=chr_17_long$row_pos,z=chr_17_long$correlation,color=c(0,0.5,1),colors=colorRamp(c("blue","white","red")),intensity=chr_17_long$correlation,type = "mesh3d")
 
 ## ----skcm_files,eval=F,echo=T--------------------------------------------
 #  if(!dir.exists("extracted_skcm_data")){dir.create("extracted_skcm_data")}
@@ -137,7 +183,9 @@ breakpoint_plot
 
 ## ----eval=F,echo=T-------------------------------------------------------
 #  #ptm <- proc.time()
-#  sample_aggregated_segvals_skcm<-formSampleMatrixFromRawGDCData(tcga_files = tcga_files_skcm,format = "TCGA")
+#  #doMC::registerDoMC()
+#  #doParallel::registerDoParallel()
+#  sample_aggregated_segvals_skcm<-formSampleMatrixFromRawGDCData(tcga_files = tcga_files_skcm,format = "TCGA",parallel = T)
 #  #proc.time() - ptm
 #  saveRDS(sample_aggregated_segvals_skcm,"skcm_sample_matched_input_matrix.rds")
 
