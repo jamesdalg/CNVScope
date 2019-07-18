@@ -1,3 +1,7 @@
+CNVScope v2.4.8 (Release date: 2019-07-17)
+==============
+*Small changes to dependencies (including pwr package) and vignettes.
+
 CNVScope v2.4.7 (Release date: 2019-07-16)
 ==============
 *Minor fix to freadGDCfile documentation

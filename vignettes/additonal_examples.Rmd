@@ -92,9 +92,9 @@ chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
     ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 
 ```
-Finally, let's try our probability weighting function for the matrix and see if we can find clearer regions of association. We'll also try another segmentation algorithm with the jointseg package.
+Finally, let's try our probability weighting function for the matrix and see if we can find clearer regions of association. We'll also try another segmentation algorithm with the jointseg package. In most cases, you can achieve a definite speed increase using the parallel=T option. We have disabled it to build the vignette without warnings.
 ```{r probdist}
-chr_7_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_7_mat,use="pairwise.complete.obs"))$percentile_matrix
+chr_7_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_7_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
 js_breakpoints<-jointseg::jointSeg(chr_7_probdist,K=20)$bestBkp
 js_breakpoint_labels<-colnames(chr_7_mat)[js_breakpoints]
 
@@ -162,9 +162,9 @@ chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
   theme(axis.text.x = element_blank(),axis.text.y=element_blank(),axis.title = element_blank()) +
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 ```
-We can follow the same procedure with this case, but it may not yield precisely the same dramatic result. We expect with most investigative tools this is the case and do not guarantee a winning result each time. In this case, we are attempting to show that the tool DOES work on TCGA data. We can confidently say that we created a matched sample matrix with the TCGA format as well as the TARGET format.
+We can follow the same procedure with this case, but it may not yield precisely the same dramatic result. We expect with most investigative tools this is the case and do not guarantee a winning result each time. In this case, we are attempting to show that the tool DOES work on TCGA data. We can confidently say that we created a matched sample matrix with the TCGA format as well as the TARGET format. We recommend setting parallel=T on the next line for speed, but for the purposes of compatibility with all systems, we have set the code to run without additional cores in this example.
 ```{r probdist_chr17}
-chr_17_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_17_mat,use="pairwise.complete.obs"))$percentile_matrix
+chr_17_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_17_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
 colnames(chr_17_probdist)<-colnames(chr_17_mat)
 rownames(chr_17_probdist)<-colnames(chr_17_mat)
 chr_17_js_breakpoints<-jointseg::jointSeg(chr_17_probdist,K=40)$bestBkp

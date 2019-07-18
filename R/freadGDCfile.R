@@ -9,7 +9,10 @@
 #' @importFrom tibble as.tibble
 #' @param file GDC file to be read
 #' @param fread_skip The number of metadata lines to be skipped(typically 14)
-#' @param format The format of the files (TCGA or TARGET)
+#' @param format The format of the files (TCGA,TARGET, or custom).
+#' @param CN_colname The name of the column containing the copy number values.
+#' @param sample_pattern Regex pattern to obtain the sample ID from the filename.
+#' @param sample_colname Alternatively, a column can be specified with the sample ID on each line.
 #' @references https://docs.gdc.cancer.gov/Encyclopedia/pages/TCGA_Barcode/
 #' @return input_tsv_with_sample_info A data frame containing the sample information extracted
 #'  from the filename, including sample name & comparison type.

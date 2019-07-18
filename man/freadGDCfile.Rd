@@ -13,7 +13,13 @@ freadGDCfile(file, fread_skip = NULL, format = "TARGET",
 
 \item{fread_skip}{The number of metadata lines to be skipped(typically 14)}
 
-\item{format}{The format of the files (TCGA or TARGET)}
+\item{format}{The format of the files (TCGA,TARGET, or custom).}
+
+\item{CN_colname}{The name of the column containing the copy number values.}
+
+\item{sample_pattern}{Regex pattern to obtain the sample ID from the filename.}
+
+\item{sample_colname}{Alternatively, a column can be specified with the sample ID on each line.}
 }
 \value{
 input_tsv_with_sample_info A data frame containing the sample information extracted
