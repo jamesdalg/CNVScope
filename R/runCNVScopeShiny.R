@@ -31,6 +31,8 @@
 
 
 runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, debug=F, useCNVScopePublicData=F) {
+  menu <- if(exists("menu")){get("menu")} else {NULL}
+  browse <- if(exists("browse")){get("browse")} else {NULL}
   if(useCNVScopePublicData)
 {  if (!requireNamespace("CNVScopePublicData", quietly = TRUE)) {
     cat("CNVScopeData package not detected. Install now?")

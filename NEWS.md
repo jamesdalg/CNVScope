@@ -1,3 +1,7 @@
+CNVScope v2.5.0 (Release date: 2019-07-18)
+==============
+*Small changes in 2.4.9 to the README, for publicity.
+*Major changes to many functions to pass CRAN checks (global variable issues).
 CNVScope v2.4.8 (Release date: 2019-07-17)
 ==============
 *Small changes to dependencies (including pwr package) and vignettes.

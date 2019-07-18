@@ -23,6 +23,7 @@
 globalVariables(c('chromosomes'))
 getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
 {
+  i <- if(exists("i")){get("i")} else {NULL}
   #if(rownames(whole_matrix)==colnames(whole_matrix))
   chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
     submatrix<-whole_matrix[grep(chromosomes[chrom1],rownames(whole_matrix)),grep(chromosomes[chrom2],colnames(whole_matrix))]

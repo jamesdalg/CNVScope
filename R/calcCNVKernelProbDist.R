@@ -22,6 +22,8 @@
 globalVariables(c("x","y"))
 calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores=1)
 {
+  x <- if(exists("x")){get("x")} else {NULL}
+  y <- if(exists("y")){get("y")} else {NULL}
   submatrix<-as.matrix(submatrix)
   #win<-5
   #library(spatialfil)

@@ -26,7 +26,12 @@
 
 freadGDCfile<-function(file,fread_skip=NULL, format = "TARGET",CN_colname="log2",
                        sample_pattern="[^_]+",sample_colname=NULL) {
-
+  fn <- if(exists("fn")){get("fn")} else {NULL}
+  barcode1 <- if(exists("barcode1")){get("barcode1")} else {NULL}
+  barcode2 <- if(exists("barcode2")){get("barcode2")} else {NULL}
+  value <- if(exists("value")){get("value")} else {NULL}
+  uuid <- if(exists("uuid")){get("uuid")} else {NULL}
+  sep <- if(exists("sep")){get("sep")} else {NULL}
 if(format=="TARGET"){
 if(is.null(fread_skip)){  fread_skip=14}
 input_tsv<-data.table::fread(file,skip=fread_skip)

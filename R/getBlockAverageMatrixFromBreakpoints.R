@@ -62,6 +62,7 @@
 globalVariables(c("j"))
 getBlockAverageMatrixFromBreakpoints<-function(whole_matrix,breakpoints_col,breakpoints_row,outputs=c("blockaverages_reformatted_by_index","blockaverages_reformatted_by_label","blockaverages_matrix_idx_area","blockaverages_matrix_idx_avg","blockaverages_matrix_label_avg","blockaverages_matrix_label_area"))
 {
+  i <- if(exists("i")){get("i")} else {NULL}
   breakpoints_col<-as.integer(unique(
     gsub("^0$",1,c(0,breakpoints_col,ncol(whole_matrix)))
   ))
