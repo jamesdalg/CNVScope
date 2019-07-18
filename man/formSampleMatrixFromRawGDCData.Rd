@@ -11,6 +11,12 @@
 \item{binsize}{the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.}
 
 \item{freadskip}{the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.}
+
+\item{debug}{debug mode enable (allows specific breakpoints to be checked).}
+
+\item{chromosomes}{A vector of chromosomes to be used. Defaults to chr1-chrX,
+but others can be added e.g. chrY or chrM for Y chromosome or mitochondrial DNA.
+ Format expected is a character vector, e.g. c("chr1", "chr2", "chr3").}
 }
 \value{
 sample_aggregated_segvals A dataframe containing the aggregated segmentation values, based on the parameters provided.

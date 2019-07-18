@@ -9,7 +9,10 @@
 #' @importFrom tibble as.tibble
 #' @param file GDC file to be read
 #' @param fread_skip The number of metadata lines to be skipped(typically 14)
-#' @param format The format of the files (TCGA or TARGET)
+#' @param format The format of the files (TCGA,TARGET, or custom).
+#' @param CN_colname The name of the column containing the copy number values.
+#' @param sample_pattern Regex pattern to obtain the sample ID from the filename.
+#' @param sample_colname Alternatively, a column can be specified with the sample ID on each line.
 #' @references https://docs.gdc.cancer.gov/Encyclopedia/pages/TCGA_Barcode/
 #' @return input_tsv_with_sample_info A data frame containing the sample information extracted
 #'  from the filename, including sample name & comparison type.
@@ -18,9 +21,12 @@
 #' system.file("extdata","somaticCnvSegmentsDiploidBeta_TARGET-30-PANRVJ_NormalVsPrimary.tsv",
 #' package = "CNVScope"))
 #' @export
-freadGDCfile<-function(file,fread_skip=NULL, format = "TARGET") {
-globalVariables(c('....uuid','barcode1','barcode2','current_gr.....Segment_Mean','fn', 'sep', 'uuid'))
-  
+#utils::globalVariables(c('....uuid','barcode1','barcode2','current_gr.....Segment_Mean','fn', 'sep', 'uuid'), add=F)
+#global variables calls were put in to make it pass CRAN checks. Feel free to disable as needed.  
+
+freadGDCfile<-function(file,fread_skip=NULL, format = "TARGET",CN_colname="log2",
+                       sample_pattern="[^_]+",sample_colname=NULL) {
+
 if(format=="TARGET"){
 if(is.null(fread_skip)){  fread_skip=14}
 input_tsv<-data.table::fread(file,skip=fread_skip)
@@ -39,6 +45,23 @@ if(format=="TCGA")
     dplyr::mutate( uuid = dirname(file) %>% tibble::as.tibble() %>% tidyr::separate(value, sep="/",into=c("dir","uuid")) %>% dplyr::pull(uuid)) %>% 
     dplyr::select( -sep)
 }
+  if(format=="custom")
+  {
+    if(is.null(fread_skip)){  fread_skip=0}
+    #read data in
+    input_tsv_with_sample_info<-data.table::fread(file,skip=fread_skip) 
+    #get basename and extract sample information.
+    if(is.null(sample_colname))
+{    
+      input_tsv_with_sample_info$sample<-stringr::str_extract(string = basename(file),
+                                                              pattern=sample_pattern)
+    }
+    if(!is.null(sample_colname))
+    {      
+      input_tsv_with_sample_info$sample<-input_tsv_with_sample_info[,sample_colname]
+    }
+    input_tsv_with_sample_info$fn<-basename(file)
+  }
 return(input_tsv_with_sample_info)
 }
 #for reference, see TCGA barcode documentation.
