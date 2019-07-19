@@ -4,12 +4,14 @@
 \alias{getAsymmetricBlockIndices}
 \title{Get Block Indices from an asymmetric (or symmetric) matrix.}
 \usage{
-getAsymmetricBlockIndices(genomicmatrix = NULL, nb_change_max = 100,
-  distrib = "G", model = "D", MI_strategy = "average",
-  transpose = T)
+getAsymmetricBlockIndices(genomicmatrix = NULL, algorithm = "HiCseg",
+  nb_change_max = 100, distrib = "G", model = "D",
+  MI_strategy = "average", transpose = T)
 }
 \arguments{
 \item{genomicmatrix}{the large, whole matrix from which blocks are taken}
+
+\item{algorithm}{Algorithm to be used: HiCseg, jointSeg, or blockseg.}
 
 \item{nb_change_max}{the maximal number of changepoints, passed to HiCseg (if this algorithm is used). Note: HiCseg doesn't actually obey this limit. Rather, use it as a parameter to increase/decrease segmentation extent.}
 
@@ -42,7 +44,7 @@ submatrix_tiny<-nbl_result_matrix_sign_small
 tiny_test<-getAsymmetricBlockIndices(submatrix_tiny)
 \dontrun{
 submatrix_wide<-submatrix_tiny[1:5,]
-submatrix_narrow<-submatrix_tiny[.1:5]
+submatrix_narrow<-submatrix_tiny[,1:5]
 wide_test<-getAsymmetricBlockIndices(submatrix_wide,distrib = "G",model = "Dplus",
  nb_change_max = 1e4)
  #the below work, but the time to run all of these would be greater than 10 seconds..

@@ -41,6 +41,7 @@ load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScop
 load(system.file("extdata","ensembl_gene_tx_table_prot.rda",package = "CNVScope"))
 writeMeltedChromosomalMatrixToDisk(whole_genome_matrix = nbl_result_matrix_sign_small,
 chrom1 = 1,chrom2 = 1,desired_range_start = 25, desired_range_end = 25)
+file.remove("chr1_chr1_melted.RData")
 }
 \keyword{genomic}
 \keyword{ggiraph}
