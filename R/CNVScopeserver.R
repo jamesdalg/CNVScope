@@ -354,7 +354,8 @@ freq_data <- if(exists("freq_data")){get("freq_data")} else {NULL}
                       fill=value,text=paste0("value:",value,"\nrow:",Var1,"\ncol:",Var2,"\n",value1))) +
       scale_x_continuous(breaks = reshape2::colsplit(block_index_labels_col,"_",c("chr","start","end"))$start,labels = block_index_labels_col) +
       scale_y_continuous(breaks = reshape2::colsplit(block_index_labels_row,"_",c("chr","start","end"))$start,labels = block_index_labels_row) + theme(axis.text.x = element_text(angle=60, hjust=1)) +  
-      ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank()) #+ coord_flip() #+ scale_y_reverse(breaks=block_indices)
+      ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank()) #+ geom_contour(binwidth = .395,aes(z=value))
+    #+ coord_flip() #+ scale_y_reverse(breaks=block_indices)
     #p
     #lumpy_points_toggle
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
