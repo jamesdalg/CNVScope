@@ -31,11 +31,13 @@
 #                  'genev','delete.isolates','freq_data'),add = F)
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 CNVScopeserver<-function(session,input, output, debug=F) {
+ensembl_gene_tx_data_gr <- if(exists("ensembl_gene_tx_data_gr")){get("ensembl_gene_tx_data_gr")} else {NULL}
 baseurl <- if(exists("baseurl")){get("baseurl")} else {NULL}
 basefn <- if(exists("basefn")){get("basefn")} else {NULL}
 start1 <- if(exists("start1")){get("start1")} else {NULL}
 start2 <- if(exists("start2")){get("start2")} else {NULL}
 value <- if(exists("value")){get("value")} else {NULL}
+value1 <- if(exists("value1")){get("value1")} else {NULL}
 Var1 <- if(exists("Var1")){get("Var1")} else {NULL}
 Var2 <- if(exists("Var2")){get("Var2")} else {NULL}
 bins.seqnames <- if(exists("bins.seqnames")){get("bins.seqnames")} else {NULL}

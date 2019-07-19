@@ -4,7 +4,8 @@
 \alias{createChromosomalMatrixSet}
 \title{Create chromosomal interaction matrices for CNVScope shiny application.}
 \usage{
-createChromosomalMatrixSet(whole_genome_mat, output_dir, prefix = "nbl_")
+createChromosomalMatrixSet(whole_genome_mat, output_dir = NULL,
+  prefix = "nbl_")
 }
 \arguments{
 \item{whole_genome_mat}{The matrix containing all of the data, from which the individual matrices will be split.}
