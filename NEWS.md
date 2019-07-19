@@ -1,3 +1,7 @@
+CNVScope v2.5.4 (Release date: 2019-07-19)
+==============
+*Minor changes to package dependency CNVScopePublicData.
+
 CNVScope v2.5.2 (Release date: 2019-07-18)
 ==============
 *Another minor cran fix to CNVScopeserver.
