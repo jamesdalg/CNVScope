@@ -32,6 +32,7 @@
 globalVariables("mcols")
 rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_gr=NULL,colnames_gr=NULL,rownames_mat=NULL,colnames_mat=NULL,method="nearest")
 {
+  i <- if(exists("i")){get("i")} else {NULL}
   if(is.null(gint)){return("No GenomicInteractions to rebin!")}
   if(!is.null(whole_genome_matrix)){
     rownames_mat<-rownames(whole_genome_matrix)

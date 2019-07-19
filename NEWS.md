@@ -1,3 +1,19 @@
+CNVScope v2.5.4 (Release date: 2019-07-19)
+==============
+*Minor changes to package dependency CNVScopePublicData.
+
+CNVScope v2.5.2 (Release date: 2019-07-18)
+==============
+*Another minor cran fix to CNVScopeserver.
+
+CNVScope v2.5.1 (Release date: 2019-07-18)
+==============
+*Small changes to CNVScopeserver to fix a CRAN check.
+
+CNVScope v2.5.0 (Release date: 2019-07-18)
+==============
+*Small changes in 2.4.9 to the README, for publicity.
+*Major changes to many functions to pass CRAN checks (global variable issues).
 CNVScope v2.4.8 (Release date: 2019-07-17)
 ==============
 *Small changes to dependencies (including pwr package) and vignettes.
@@ -27,3 +43,5 @@ Changes:
 * Fixed issues with formSampleMatrixFromRawGDCData
 ** These issues arose from changing types with underlying Bioconductor dependencies from character to factor Rle.
 * Updated the build for R-base v3.6.1
+*prior to this, this package now works with CNVScopePublicData, a large package containing
+*all that is requisite to run the server locally.

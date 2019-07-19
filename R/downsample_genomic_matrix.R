@@ -18,6 +18,7 @@ globalVariables("i")
 dontCheck('i')
 downsample_genomic_matrix<-function(whole_matrix,downsamplefactor,singlechromosome=T)
 {
+  i <- if(exists("i")){get("i")} else {NULL}
   if(singlechromosome)
 {  if(nrow(whole_matrix)%%downsamplefactor==0 & ncol(whole_matrix)%%downsamplefactor==0 )
   {

@@ -16,9 +16,10 @@
 #' # The function is intended to be run on a whole interactome matrix (chr1-X).
 #' @return The list of files already written to disk, with full filenames and paths.
 #' @export
-createChromosomalMatrixSet<-function(whole_genome_mat,output_dir,prefix="nbl_")
+createChromosomalMatrixSet<-function(whole_genome_mat,output_dir=NULL,prefix="nbl_")
 {
   original_dir<-getwd()
+  if(is.null(output_dir)){output_dir<-getwd()}
   if(!dir.exists(output_dir)){dir.create(output_dir)}
   setwd(output_dir)
   chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")

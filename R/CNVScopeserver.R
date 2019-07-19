@@ -31,6 +31,28 @@
 #                  'genev','delete.isolates','freq_data'),add = F)
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 CNVScopeserver<-function(session,input, output, debug=F) {
+ensembl_gene_tx_data_gr <- if(exists("ensembl_gene_tx_data_gr")){get("ensembl_gene_tx_data_gr")} else {NULL}
+baseurl <- if(exists("baseurl")){get("baseurl")} else {NULL}
+basefn <- if(exists("basefn")){get("basefn")} else {NULL}
+start1 <- if(exists("start1")){get("start1")} else {NULL}
+start2 <- if(exists("start2")){get("start2")} else {NULL}
+value <- if(exists("value")){get("value")} else {NULL}
+value1 <- if(exists("value1")){get("value1")} else {NULL}
+Var1 <- if(exists("Var1")){get("Var1")} else {NULL}
+Var2 <- if(exists("Var2")){get("Var2")} else {NULL}
+bins.seqnames <- if(exists("bins.seqnames")){get("bins.seqnames")} else {NULL}
+bins.start <- if(exists("bins.start")){get("bins.start")} else {NULL}
+bins.end <- if(exists("bins.end")){get("bins.end")} else {NULL}
+expression_data_gr <- if(exists("expression_data_gr")){get("expression_data_gr")} else {NULL}
+common_coords <- if(exists("common_coords")){get("common_coords")} else {NULL}
+myReactives <- if(exists("myReactives")){get("myReactives")} else {NULL}
+genev <- if(exists("genev")){get("genev")} else {NULL}
+delete.isolates <- function(graph, mode = 'all') {
+  isolates <- which(igraph::degree(graph, mode = mode) == 0) 
+  delete.vertices(graph, isolates)
+}
+freq_data <- if(exists("freq_data")){get("freq_data")} else {NULL}
+
   privpolurl <- a("NCI Privacy Policy", href="https://www.cancer.gov/policies/privacy-security",target="_blank")
   output$privpol <- renderUI({
     tagList(privpolurl)})
