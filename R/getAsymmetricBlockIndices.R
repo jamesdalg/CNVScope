@@ -4,7 +4,9 @@
 #' 
 #' @keywords HiCseg MI multiple imputation Hi-C CNV breakpoints blockseg jointseg
 #' @importFrom HiCseg HiCseg_linkC_R
+#' @importFrom utils tail
 #' @param genomicmatrix the large, whole matrix from which blocks are taken
+#' @param algorithm Algorithm to be used: HiCseg, jointSeg, or blockseg.
 #' @param nb_change_max the maximal number of changepoints, passed to HiCseg (if this algorithm is used). Note: HiCseg doesn't actually obey this limit. Rather, use it as a parameter to increase/decrease segmentation extent.
 #' @param distrib Passed to Hicseg_linkC_R, from their documentation: Distribution of the data: "B" is for Negative Binomial distribution, "P" is for the Poisson distribution and "G" is for the Gaussian distribution."
 #' @param model Passed on to HiCseg_linkC_R: "Type of model: "D" for block-diagonal and "Dplus" for the extended block-diagonal model."
@@ -22,7 +24,7 @@
 #' tiny_test<-getAsymmetricBlockIndices(submatrix_tiny)
 #' \dontrun{
 #' submatrix_wide<-submatrix_tiny[1:5,]
-#' submatrix_narrow<-submatrix_tiny[.1:5]
+#' submatrix_narrow<-submatrix_tiny[,1:5]
 #' wide_test<-getAsymmetricBlockIndices(submatrix_wide,distrib = "G",model = "Dplus",
 #'  nb_change_max = 1e4)
 #'  #the below work, but the time to run all of these would be greater than 10 seconds..
@@ -81,9 +83,33 @@
 #'  random_wide_test_copy_with_transpose$t_breakpoints_col)
 #' }
 #' @export
-getAsymmetricBlockIndices<-function(genomicmatrix=NULL,nb_change_max=100,distrib = "G",model = "D",MI_strategy="average",transpose=T)
+getAsymmetricBlockIndices<-function(genomicmatrix=NULL,algorithm="HiCseg",nb_change_max=100,distrib = "G",model = "D",MI_strategy="average",transpose=T)
 {
-  
+  if(algorithm=="jointSeg"){
+    breakpoints_col<-jointseg::jointSeg(genomicmatrix,K=nb_change_max)$bestBkp
+    breakpoints_row<-jointseg::jointSeg(genomicmatrix,K=nb_change_max)$bestBkp
+    if(transpose) {output_list<-list(breakpoints_col,breakpoints_row,t_breakpoints_col,t_breakpoints_row)
+    t_breakpoints_col<-jointseg::jointSeg(t(genomicmatrix),K=nb_change_max)$bestBkp
+    t_breakpoints_row<-jointseg::jointSeg(t(genomicmatrix),K=nb_change_max)$bestBkp
+    output_list<-list(breakpoints_col,breakpoints_row,t_breakpoints_col,t_breakpoints_row)
+    names(output_list)<-c("breakpoints_col","breakpoints_row","t_breakpoints_col","t_breakpoints_row")
+    }
+    return(output_list)}
+  if(algorithm=="blockseg"){
+    results<-blockseg::blockSeg(genomicmatrix,max.break = min(dim(genomicmatrix),nb_change_max))
+    breakpoints_col<-unlist(tail(results@ColBreaks,n=1))
+    breakpoints_row<-unlist(tail(results@RowBreaks,n=1))
+    output_list<-list(breakpoints_col,breakpoints_row) #it's computationally more efficient to return these as a pair as they will almost always be needed in pairs.
+    names(output_list)<-c("breakpoints_col","breakpoints_row")
+    if(transpose) {
+      results_t<-blockseg::blockSeg(t(genomicmatrix),max.break = min(dim(genomicmatrix),nb_change_max))
+      t_breakpoints_col<-unlist(tail(results_t@ColBreaks,n=1))
+      t_breakpoints_row<-unlist(tail(results_t@RowBreaks,n=1))
+      output_list<-list(breakpoints_col,breakpoints_row,t_breakpoints_col,t_breakpoints_row)
+    output_list<-list(breakpoints_col,breakpoints_row,t_breakpoints_col,t_breakpoints_row)
+    names(output_list)<-c("breakpoints_col","breakpoints_row","t_breakpoints_col","t_breakpoints_row")}
+    return(output_list)
+    }
   #converting from Asymmetric to symmetric
   if(nrow(genomicmatrix)==ncol(genomicmatrix))
   { 

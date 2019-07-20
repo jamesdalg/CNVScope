@@ -1,14 +1,14 @@
 Package: CNVScope
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
-Version: 2.5.4
-Date: 2019-07-18
+Version: 2.5.9
+Date: 2019-07-19
 Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
 BugReports: https://github.com/jamesdalg/CNVScope/issues/
 Depends: ggplot2
-Imports: readr,DT,InteractionSet,BiocManager,tidyr,S4Vectors,circlize,igraph,visNetwork,reshape2,magrittr,htmltools,htmlwidgets,jointseg,plotly,shinyjs,logging,shiny,RCurl,foreach,GenomicFeatures,GenomicInteractions,HiCseg,IRanges,Matrix,OpenImageR,biomaRt,blockseg,heatmaply,matrixStats,shinythemes,shinycssloaders,spatialfil,ComplexHeatmap,GenomicRanges,plyr,data.table,rslurm,dplyr,numbers,rtracklayer,BSgenome.Hsapiens.UCSC.hg19,doParallel,stringr,tibble
-Suggests: knitr, rmarkdown,remotes,CNVScopePublicData,pwr
+Imports: InteractionSet,BiocManager,tidyr,S4Vectors,circlize,igraph,visNetwork,reshape2,magrittr,htmltools,htmlwidgets,jointseg,plotly,shinyjs,logging,shiny,RCurl,foreach,GenomicFeatures,GenomicInteractions,HiCseg,IRanges,Matrix,OpenImageR,biomaRt,blockseg,heatmaply,matrixStats,shinythemes,shinycssloaders,spatialfil,GenomicRanges,plyr,data.table,rslurm,dplyr,numbers,rtracklayer,BSgenome.Hsapiens.UCSC.hg19,doParallel,stringr,tibble
+Suggests: knitr, rmarkdown,remotes,CNVScopePublicData,pwr,ComplexHeatmap
 VignetteBuilder: knitr
 URL: https://github.com/jamesdalg/CNVScope/
 biocViews: 
