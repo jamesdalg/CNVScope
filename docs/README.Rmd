@@ -3,12 +3,13 @@ title: "CNVScope"
 author: "James Dalgleish"
 date: "November 26, 2018"
 output: 
-     github_document: 
-      toc: true
      html_document:
       toc: true
       toc_float: true
+     github_document: 
+      toc: true
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -60,6 +61,7 @@ For a complete video tutorial (16 minutes in length), [click here](cnvscope_tuto
 Feel free to look at the additional examples vignette. We have several GDC datasets that demonstrate that our package is a versatile toolkit that is useful for NBL, as well as SKCM (Skin Cancer), BLCA (bladder cancer),
 AML (Acute Myleoid Leukemia), and PRAD (Prostate Cancer). We also demonstrate our copy number relationship weighting function as well as contour and 3D representations. The final example, of BLCA chr17, is shown below. [Click here to download an interactive HTML version.](./blca3d.html)
 
-![3D BLCA, chromosome 17](./blca_3D.png)
-
 ![3D BLCA, chromosome 17, interactive](./3D_BLCAv2.gif)
+![BLCA, chromosome 17, with contours](./chr17_contour_blca.png)
+![BLCA, chromosome 17, probdist](./chr17_probdist_blca.png)
+![3D BLCA, chromosome 17, nonlinear-linear relationship differences](./chr17_corr_diff_blca.png)

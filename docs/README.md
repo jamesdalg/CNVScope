@@ -3,6 +3,13 @@ CNVScope
 James Dalgleish
 November 26, 2018
 
+-   [Installation](#installation)
+-   [App](#app)
+-   [Package](#package)
+-   [Video Tutorial](#video-tutorial)
+-   [Additional Examples](#additional-examples)
+
+
 CNVScope is a visualization toolkit for seeing copy number data in a
 relationship fashion, both utilizing tools that find regions of interest
 (much like domains in Hi-C terminology), visualize the relationships in
@@ -14,7 +21,10 @@ interactions between genomic regions, which is why it makes sense to
 build GenomicInteractions objects and from this, interaction matrices
 that can be easily visualized.
 
-\#Installation To install, it is best to install the github version
+Installation
+============
+
+To install, it is best to install the github version
 (this is the most updated) and the CNVScopePublicData package (the data
 package is fairly large, so be patient while it installs). The next line
 will have you up and running\!
@@ -24,7 +34,8 @@ remotes::install_github("jamesdalg/CNVScope")
 CNVScope::runCNVScopeLocal()
 ```
 
-\#App
+App
+===
 
 The app includes several components and starts with a customizable
 control panel. As an example, we’ll search for TERT and TP53.
@@ -67,7 +78,8 @@ would be invisible due to the high values on the diagonal.
 
 ![tert-tp53 walkthrough](./tp53_tert_walkthrough.gif)
 
-\#Package
+Package
+===
 
 The package focuses on methods of analyzing these matrices and
 constructing components for app use. See the following vignettes for
@@ -79,12 +91,16 @@ data](https://cran.r-project.org/web/packages/CNVScope/vignettes/create_input_ma
 [Linear
 Regression/Postprocess](https://cran.r-project.org/web/packages/CNVScope/vignettes/create_output_matrix.html)
 
-\#Video Tutorial
+Video Tutorial
+===
+
 
 For a complete video tutorial (16 minutes in length), [click
 here](cnvscope_tutorial.mp4).
 
-\#Additional Examples
+Additional Examples
+===
+
 
 Feel free to look at the additional examples vignette. We have several
 GDC datasets that demonstrate that our package is a versatile toolkit
@@ -95,6 +111,8 @@ as contour and 3D representations. The final example, of BLCA chr17, is
 shown below. [Click here to download an interactive HTML
 version.](./blca3d.html)
 
-![3D BLCA, chromosome 17](./blca_3D.png)
 
 ![3D BLCA, chromosome 17, interactive](./3D_BLCAv2.gif)
+![BLCA, chromosome 17, with contours](./chr17_contour_blca.png)
+![BLCA, chromosome 17, probdist](./chr17_probdist_blca.png)
+![3D BLCA, chromosome 17, nonlinear-linear relationship differences](./chr17_corr_diff_blca.png)
