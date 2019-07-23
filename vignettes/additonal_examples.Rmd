@@ -36,6 +36,7 @@ Additional examples:
 [TCGA-BLCA](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TCGA-BLCA%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
 [TARGET-AML](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TARGET-AML%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
 [TARGET-SKCM](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TCGA-SKCM%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
+[TCGA-PRAD](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TCGA-PRAD%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
 
 #Acute Myeloid Leukemia (AML)
 There are fewer TARGET datasets available than TCGA. We'll do AML first. We've named our downloaded archive gdc_download_aml.tar.gz.
@@ -123,6 +124,10 @@ chr_7_probdist %>%
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 
 ```
+
+
+
+
 Using the below code, we can find a few more genes to explore that are known to be associated with AML in the COSMIC cancer gene census. this requires the CNVScope Public Data package to be installed properly.
 
 ```{r census_data,eval=F}
@@ -162,6 +167,10 @@ chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
   theme(axis.text.x = element_blank(),axis.text.y=element_blank(),axis.title = element_blank()) +
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 ```
+
+
+
+
 We can follow the same procedure with this case, but it may not yield precisely the same dramatic result. We expect with most investigative tools this is the case and do not guarantee a winning result each time. In this case, we are attempting to show that the tool DOES work on TCGA data. We can confidently say that we created a matched sample matrix with the TCGA format as well as the TARGET format. We recommend setting parallel=T on the next line for speed, but for the purposes of compatibility with all systems, we have set the code to run without additional cores in this example.
 ```{r probdist_chr17}
 chr_17_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_17_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
@@ -176,7 +185,7 @@ With the coordinates for *ERBB2* at chr17:37844167-37886679, we find a precise m
 The contours have been added to highlight the domains. We have also plotted the weighted probability of relationships.
 Finally, we took an approach of investigating correlation differences between spearman (nonlinear) and pearson (linear) correlation. This tends to highlight a specific region in the 37Mb area of the chromosome (near ERBB2).
 
-```{r breakpoint_plot_chr17}
+```{r breakpoint_plot_chr17,eval=F}
 
 breakpoint_plot_probdist <- chr_17_probdist %>% #  cor(use="pairwise.complete.obs",method="pearson") %>% 
     CNVScope::signedRescale(max_cap=1) %>%
@@ -226,6 +235,12 @@ breakpoint_plot_probdist
 breakpoint_plot_corr_diff
 
 ```
+![BLCA, chromosome 17, with contours](./chr17_contour_blca.png)
+![BLCA, chromosome 17, probdist](./chr17_probdist_blca.png)
+![3D BLCA, chromosome 17, nonlinear-linear relationship differences](./chr17_corr_diff_blca.png)
+
+
+
 For an interactive plot of the bladder cancer interactome (in contour and 3D), try the following.  WebGL is required for this exercise. Enable it under the general->advanced RStudio options if you have not already (see https://community.rstudio.com/t/webgl-is-not-supported-by-your-browser-plotly/13962/7).
 ```{r plotly_blca,eval=F}
 library(plotly)
@@ -241,7 +256,7 @@ chr_17_long <- chr_17_mat %>%   cor(use="pairwise.complete.obs",method="pearson"
 plot_ly(data = chr_17_long, x=chr_17_long$col_pos,y=chr_17_long$row_pos,z=chr_17_long$correlation,color=c(0,0.5,1),colors=colorRamp(c("blue","white","red")),intensity=chr_17_long$correlation,type = "mesh3d")
 ```
 
-Finally, we'll briefly demonstrate that SKCM also works with our relationship modeling toolkit.
+We'll briefly demonstrate that SKCM also works with our relationship modeling toolkit.
 ```{r skcm_files,eval=F,echo=T}
 if(!dir.exists("extracted_skcm_data")){dir.create("extracted_skcm_data")}
 untar("gdc_download_skcm.tar.gz",exdir = "./extracted_skcm_data")
@@ -258,3 +273,18 @@ sample_aggregated_segvals_skcm<-formSampleMatrixFromRawGDCData(tcga_files = tcga
 saveRDS(sample_aggregated_segvals_skcm,"skcm_sample_matched_input_matrix.rds")
 ```
 We have timed this as 142 seconds on a dual core i7, even with the recent performance-reducing patches. The parallel flag will automatically register the parallel backend for you using the DoParallel framework and use the maximum amount of cores.
+
+We will also show another TCGA example for PRAD:
+```{r,eval=F,echo=T}
+if(!dir.exists("extracted_prad_data")){dir.create("extracted_prad_data")
+untar("gdc_download_prad.tar.gz",exdir = "extracted_prad_data")}
+tcga_files_prad<-list.files(path = "extracted_prad_data",pattern=glob2rx("*.tsv"),recursive=T,full.names = T)
+print(tcga_files_prad)
+
+```
+With the full list of input files from the GDC, these can then be simply loaded into a function that will read all of them, sample match them, and aggregate the data into a bin-sample matrix. This matrix can then be saved into the fast, space efficient, RDS filetype.
+```{r,eval=F,echo=T}
+sample_aggregated_segvals_output_full_prad<-formSampleMatrixFromRawGDCData(tcga_files = tcga_files_prad,format = "TCGA",binsize=1e6)
+saveRDS(sample_aggregated_segvals_output_full_prad,"PRAD_sample_matched_input_matrix.rds")
+
+```

@@ -1,8 +1,8 @@
 Package: CNVScope
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
-Version: 2.5.9
-Date: 2019-07-19
+Version: 2.6.1
+Date: 2019-07-23
 Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
 BugReports: https://github.com/jamesdalg/CNVScope/issues/
@@ -16,3 +16,4 @@ Description: Provides the ability to create interaction maps, discover CNV map d
 License: BSD_3_clause + file LICENSE
 RoxygenNote: 6.1.1
 LazyData: true
+Additional_repositories: https://github.com/jamesdalg/drat/
