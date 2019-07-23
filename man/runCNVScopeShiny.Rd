@@ -21,6 +21,14 @@ none. Runs the application if the correct files are present.
 }
 \description{
 Runs the interactive suite of tools locally or on a server if called in a script file (e.g. App.R).
+Data sources are required.
+For a simple installation, please use the runCNVScopeLocal function.
+}
+\examples{
+#see runCNVScopeLocal(useCNVScopePublicData=T).
+\dontrun{
+runCNVScopeShiny(useCNVScopePublicData=T)
+}
 }
 \keyword{CNV}
 \keyword{heatmap}
