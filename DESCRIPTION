@@ -1,12 +1,13 @@
 Package: CNVScope
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
-Version: 2.6.1
+Version: 2.6.6
 Date: 2019-07-23
 Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
 BugReports: https://github.com/jamesdalg/CNVScope/issues/
-Depends: ggplot2
+Depends: R (>= 3.5.0),ggplot2
+Additional_repositories: https://jamesdalg.github.io/drat/
 Imports: InteractionSet,BiocManager,tidyr,S4Vectors,circlize,igraph,visNetwork,reshape2,magrittr,htmltools,htmlwidgets,jointseg,plotly,shinyjs,logging,shiny,RCurl,foreach,GenomicFeatures,GenomicInteractions,HiCseg,IRanges,Matrix,OpenImageR,biomaRt,blockseg,heatmaply,matrixStats,shinythemes,shinycssloaders,spatialfil,GenomicRanges,plyr,data.table,rslurm,dplyr,numbers,rtracklayer,BSgenome.Hsapiens.UCSC.hg19,doParallel,stringr,tibble
 Suggests: knitr, rmarkdown,remotes,CNVScopePublicData,pwr,ComplexHeatmap
 VignetteBuilder: knitr
@@ -16,4 +17,3 @@ Description: Provides the ability to create interaction maps, discover CNV map d
 License: BSD_3_clause + file LICENSE
 RoxygenNote: 6.1.1
 LazyData: true
-Additional_repositories: https://github.com/jamesdalg/drat/
