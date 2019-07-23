@@ -1,6 +1,8 @@
 #' Runs the CNVScope plotly shiny application.
 #'
 #' Runs the interactive suite of tools locally or on a server if called in a script file (e.g. App.R).
+#' Data sources are required.
+#' For a simple installation, please use the runCNVScopeLocal function.
 #' @name runCNVScopeShiny
 #' @keywords CNV heatmap shiny plotly
 #' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
@@ -19,12 +21,9 @@
 #' @param useCNVScopePublicData Use files from the CNVScopePublicData package.
 #' @return none. Runs the application if the correct files are present.
 #' @examples
+#' #see runCNVScopeLocal(useCNVScopePublicData=T).
 #' \dontrun{
-#' runCNVScopeShiny()
-#' #to install everything with the matrices, please do the following and run using third line:
-#' install_github("jamesdalg/CNVScope")
-#' install_github("jamesdalg/CNVscope_public_data)
-#' CNVScope::runCNVScopeShiny(basefn=paste0(system.file("plotly_dashboard_ext/",package = "CNVScopePublicData"),"/"))
+#' runCNVScopeShiny(useCNVScopePublicData=T)
 #' }
 #' @export
 #globalVariables(c("common_coords_linreg","expression_data_gr","chrom.pairs","."), add=F)
@@ -34,7 +33,10 @@ runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, debug=F, useCNVScopePublicD
   menu <- if(exists("menu")){get("menu")} else {NULL}
   browse <- if(exists("browse")){get("browse")} else {NULL}
   if(useCNVScopePublicData)
-{  if (!requireNamespace("CNVScopePublicData", quietly = TRUE)) {
+{
+if (!file.exists(system.file("plotly_dashboard_ext","censushg19.rds",
+                            package = "CNVScopePublicData"))
+    ) {
     cat("CNVScopeData package not detected. Install now?")
     install <- menu(c("yes", "no"))
     if(install==1){remotes::install_github("jamesdalg/CNVscope_public_data")}

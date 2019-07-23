@@ -75,7 +75,7 @@ chr_7_probdist %>%
 
 
 ## ----census_data,eval=F--------------------------------------------------
-#  census_data <- readRDS(system.file("plotly_dashboard_ext","censushg19.rds",package = "CNVScopePublicData"))
+#  census_data <- readRDS(system.file("censushg19.rds",package = "CNVScope"))
 #  census_data[census_data@seqnames %in% "chr7"] %>% sort() %>% tibble::as_tibble() %>% janitor::clean_names() %>% dplyr::select(seqnames,start,end,gene_symbol,tumour_types_somatic,tumour_types_germline) %>% dplyr::filter(start>60e6,stringr::str_detect(string = tumour_types_somatic,pattern="AML") | stringr::str_detect(string = tumour_types_germline,pattern="AML"))
 
 ## ----blca_files,eval=F,echo=T--------------------------------------------
