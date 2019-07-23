@@ -112,55 +112,55 @@ chr_17_js_breakpoint_labels<-colnames(cor(chr_17_mat))[chr_17_js_breakpoints]
 chr_17_js_breakpoint_labels
 
 
-## ----breakpoint_plot_chr17-----------------------------------------------
-
-breakpoint_plot_probdist <- chr_17_probdist %>% #  cor(use="pairwise.complete.obs",method="pearson") %>% 
-    CNVScope::signedRescale(max_cap=1) %>%
-    reshape2::melt()  %>% 
-  dplyr::mutate(col_pos=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start, 
-         row_pos=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
-         rel_prob=value) %>% 
-    ggplot(aes(x=col_pos,
-               y=row_pos,
-               fill=rel_prob)) + geom_raster() +
-    theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank()) +
-    scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
-    ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
-  labs(x="col_pos",y="row_pos",value="Pearson Correlation:") + ggtitle("Chromosome 17 relationship probability") +
-  geom_contour(binwidth = .395, aes(z = value)) 
-breakpoint_plot <- chr_17_mat %>%   cor(use="pairwise.complete.obs",method="pearson") %>% 
-    CNVScope::signedRescale(max_cap=1) %>%
-    reshape2::melt()  %>% 
-  dplyr::mutate(col_pos=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start, 
-         row_pos=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
-         correlation=value) %>% 
-    ggplot(aes(x=col_pos,
-               y=row_pos,
-               fill=correlation)) + geom_raster() +
-    theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank()) +
-    scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
-    ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
-  labs(x="col_pos",y="row_pos",value="Pearson Correlation:") + ggtitle("Chromosome 17 linear relationship domains") + 
-  geom_contour(binwidth = .395, aes(z = value)) 
-breakpoint_plot_corr_diff <- ((chr_17_mat %>%   cor(use="pairwise.complete.obs",method="spearman"))-(chr_17_mat %>%   cor(use="pairwise.complete.obs",method="pearson"))) %>% 
-    CNVScope::signedRescale(max_cap=1) %>%
-    reshape2::melt()  %>% 
-  dplyr::mutate(col_pos=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start, 
-         row_pos=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
-         corr_diff=value) %>% 
-    ggplot(aes(x=col_pos,
-               y=row_pos,
-               fill=corr_diff)) + geom_raster() +
-    theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank()) +
-    scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
-    ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
-  labs(x="col_pos",y="row_pos",value="Pearson Correlation:") + ggtitle("Chromosome 17 nonlinear (red) relationship regions, inferred by nonlinear-linear correlation difference") + 
-  geom_contour(binwidth = .395, aes(z = value)) 
-
-breakpoint_plot
-breakpoint_plot_probdist
-breakpoint_plot_corr_diff
-
+## ----breakpoint_plot_chr17,eval=F----------------------------------------
+#  
+#  breakpoint_plot_probdist <- chr_17_probdist %>% #  cor(use="pairwise.complete.obs",method="pearson") %>%
+#      CNVScope::signedRescale(max_cap=1) %>%
+#      reshape2::melt()  %>%
+#    dplyr::mutate(col_pos=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start,
+#           row_pos=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
+#           rel_prob=value) %>%
+#      ggplot(aes(x=col_pos,
+#                 y=row_pos,
+#                 fill=rel_prob)) + geom_raster() +
+#      theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank()) +
+#      scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
+#      ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
+#    labs(x="col_pos",y="row_pos",value="Pearson Correlation:") + ggtitle("Chromosome 17 relationship probability") +
+#    geom_contour(binwidth = .395, aes(z = value))
+#  breakpoint_plot <- chr_17_mat %>%   cor(use="pairwise.complete.obs",method="pearson") %>%
+#      CNVScope::signedRescale(max_cap=1) %>%
+#      reshape2::melt()  %>%
+#    dplyr::mutate(col_pos=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start,
+#           row_pos=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
+#           correlation=value) %>%
+#      ggplot(aes(x=col_pos,
+#                 y=row_pos,
+#                 fill=correlation)) + geom_raster() +
+#      theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank()) +
+#      scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
+#      ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
+#    labs(x="col_pos",y="row_pos",value="Pearson Correlation:") + ggtitle("Chromosome 17 linear relationship domains") +
+#    geom_contour(binwidth = .395, aes(z = value))
+#  breakpoint_plot_corr_diff <- ((chr_17_mat %>%   cor(use="pairwise.complete.obs",method="spearman"))-(chr_17_mat %>%   cor(use="pairwise.complete.obs",method="pearson"))) %>%
+#      CNVScope::signedRescale(max_cap=1) %>%
+#      reshape2::melt()  %>%
+#    dplyr::mutate(col_pos=reshape2::colsplit(Var1,"_",c("chr","start","end"))$start,
+#           row_pos=reshape2::colsplit(Var2,"_",c("chr","start","end"))$start,
+#           corr_diff=value) %>%
+#      ggplot(aes(x=col_pos,
+#                 y=row_pos,
+#                 fill=corr_diff)) + geom_raster() +
+#      theme(axis.text.x = element_text(angle=90, hjust=1),axis.text.y=element_blank()) +
+#      scale_x_continuous(breaks=reshape2::colsplit(chr_17_js_breakpoint_labels,"_",c("chr","start","end"))$start,labels=chr_17_js_breakpoint_labels) +
+#      ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +
+#    labs(x="col_pos",y="row_pos",value="Pearson Correlation:") + ggtitle("Chromosome 17 nonlinear (red) relationship regions, inferred by nonlinear-linear correlation difference") +
+#    geom_contour(binwidth = .395, aes(z = value))
+#  
+#  breakpoint_plot
+#  breakpoint_plot_probdist
+#  breakpoint_plot_corr_diff
+#  
 
 ## ----plotly_blca,eval=F--------------------------------------------------
 #  library(plotly)
@@ -188,4 +188,16 @@ breakpoint_plot_corr_diff
 #  sample_aggregated_segvals_skcm<-formSampleMatrixFromRawGDCData(tcga_files = tcga_files_skcm,format = "TCGA",parallel = T)
 #  #proc.time() - ptm
 #  saveRDS(sample_aggregated_segvals_skcm,"skcm_sample_matched_input_matrix.rds")
+
+## ----eval=F,echo=T-------------------------------------------------------
+#  if(!dir.exists("extracted_prad_data")){dir.create("extracted_prad_data")
+#  untar("gdc_download_prad.tar.gz",exdir = "extracted_prad_data")}
+#  tcga_files_prad<-list.files(path = "extracted_prad_data",pattern=glob2rx("*.tsv"),recursive=T,full.names = T)
+#  print(tcga_files_prad)
+#  
+
+## ----eval=F,echo=T-------------------------------------------------------
+#  sample_aggregated_segvals_output_full_prad<-formSampleMatrixFromRawGDCData(tcga_files = tcga_files_prad,format = "TCGA",binsize=1e6)
+#  saveRDS(sample_aggregated_segvals_output_full_prad,"PRAD_sample_matched_input_matrix.rds")
+#  
 
