@@ -49,7 +49,7 @@ sample_col="sample",chrlabel=">chr", startlabel="begin", endlabel="end",cnlabel=
   # )
   #creates chromosomes object. This is necessary to clean out 
   #non-biological chromosomes of the form   chrUn_gl000211
-
+  if(format=="TARGET" | format=="TCGA"){
   if(format=="TARGET")
   {
     if(is.null(freadskip)) {freadskip=14}
@@ -198,6 +198,7 @@ sample_col="sample",chrlabel=">chr", startlabel="begin", endlabel="end",cnlabel=
   #each round of the loop gives each CN mean for each bin in a single sample
   #foreach combines the samples into a dataframe with cbind.
   #the column names are the samples and the rownames are the bin positions.
+}
   if(format=="custom")
 {
     #read in the files
@@ -255,6 +256,7 @@ if(!parallel){foreach::registerDoSEQ()}
 #be sure that your sample includes the comparison, if each sample has multiple comparison types
 #e.g. IF PALGGG has a NormalVsPrimary and another comparison, be sure to only include one or the 
 #other.
+if(debug){browser()}
 sample_aggregated_segvals<-foreach(s=1:length(samples),.combine="cbind",.errorhandling = "stop",.export=ls(),.packages=c("magrittr","GenomicRanges","plyr","CNVScope")) %dopar% {
   #Grab the sth sample.
   current_gr<-TCGA_CNV_data_gr[mcols(TCGA_CNV_data_gr)[,paste0("....",sample_col),drop=T] %in% samples[s]]
@@ -271,19 +273,26 @@ sample_aggregated_segvals<-foreach(s=1:length(samples),.combine="cbind",.errorha
   current_merged_df_bins_vals[,paste0("....",cnlabel)]<-as.numeric(as.character(current_merged_df_bins_vals[,paste0("....",cnlabel),drop=T])) #converts the CN from factor to character to numeric.
 current_merged_df_bins_vals<-na.omit(current_merged_df_bins_vals) #removes NAs
 
-#NEED TO GENERALIZE THE COLUMN.  
-  current_merged_df_bins_aggregated<-na.omit(plyr::ddply(current_merged_df_bins_vals,plyr::.(pos),summarise,cn=mean(current_merged_df_bins_vals[,paste0("....",cnlabel)]),samples=paste0(unique(current_merged_df_bins_vals[,paste0("....",sample_col)]),collapse=",")))
+  # current_merged_df_bins_aggregated<-na.omit(plyr::ddply(current_merged_df_bins_vals,plyr::.(pos),summarise,cn=mean(current_merged_df_bins_vals[,paste0("....",cnlabel)]),samples=paste0(unique(current_merged_df_bins_vals[,paste0("....",sample_col)]),collapse=",")))
+cnlabel_with_dots<-sym(paste0("....",cnlabel))
+sample_with_dots<-sym(paste0("....",sample_col))
+sample_with_dots_q<-enquo(sample_with_dots)
+# current_merged_df_bins_aggregated<-na.omit(plyr::ddply(current_merged_df_bins_vals,plyr::.(pos),summarise,cn=mean(rlang::sym(paste0("....",cnlabel))),samples=paste0(unique(current_merged_df_bins_vals[,paste0("....",sample_col)]),collapse=",")))
   # current_merged_df_bins_aggregated<-plyr::ddply(na.omit(current_merged_df_bins_vals),.(pos),summarise,meanrelcvg=mean(....relativeCvg),samples=paste0(unique(....sample),collapse=","))
   #removes NAs from the merged by overlaps df, grabs the position, mean copy number, and concatenated samples for each bin like "NAKKEF,PALHRL,ABCABC". #note that it removes nonunique samples from this new string of samples for each bin.
-
+current_merged_df_bins_aggregated <- current_merged_df_bins_vals %>% dplyr::group_by(pos,!! sample_with_dots_q) %>% dplyr::summarize(cn :=mean(!!as.name(paste0("....",cnlabel)))) %>%  na.omit() %>% as.data.frame()
 #insert bins that are not represented.
 unused_bins<-bins_underscored[!(bins_underscored %in% current_merged_df_bins_aggregated$pos)]
-unused_bins_rows<-as.data.frame(cbind(unused_bins,rep(0,length(unused_bins)),rep(samples[s],length(unused_bins)))) #sets the unused bins to have zero CN.
-colnames(unused_bins_rows)<-c("pos",cnlabel,"samples")  
+options(stringsAsFactors = F)
+unused_bins_rows<-as.data.frame(cbind(as.character(unused_bins),
+                                      as.character(rep(samples[s],length(unused_bins))),
+                                      rep(1,length(unused_bins))
+                                      )) #sets the unused bins to have zero CN.
+colnames(unused_bins_rows)<-c("pos","samples",paste0(cnlabel))  
 unused_bins_rows[,cnlabel]<-as.numeric(as.character(unused_bins_rows[,cnlabel]))
 #converts CN to numeric.
-colnames(current_merged_df_bins_aggregated)<-c("pos",cnlabel,"samples")  
-current_merged_df_bins_aggregated_with_unused<-rbind(current_merged_df_bins_aggregated[,c("pos",cnlabel,"samples")],unused_bins_rows[,c("pos",cnlabel,"samples")])
+colnames(current_merged_df_bins_aggregated)<-c("pos","samples",cnlabel)  
+current_merged_df_bins_aggregated_with_unused<-rbind(current_merged_df_bins_aggregated[,c("pos","samples",cnlabel)],unused_bins_rows[,c("pos","samples",cnlabel)])
 #combines the empty bins with the rest.
 current_merged_df_bins_aggregated_with_unused<-current_merged_df_bins_aggregated_with_unused[order(underscored_pos_to_GRanges(current_merged_df_bins_aggregated_with_unused$pos)),]
 #orders the combined bins once more.
@@ -292,8 +301,11 @@ cn_df<-as.data.frame(current_merged_df_bins_aggregated_with_unused[,cnlabel])
 rownames(cn_df)<-current_merged_df_bins_aggregated_with_unused$pos
 colnames(cn_df)<-samples[s]
 print(paste0(samples[s]," complete"))
-return(segmentmean_df)
+return(cn_df)
 
 }
-}  
+
+return(sample_aggregated_segvals)
+  }
+
 }
