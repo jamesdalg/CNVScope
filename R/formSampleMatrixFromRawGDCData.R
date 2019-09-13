@@ -286,7 +286,7 @@ unused_bins<-bins_underscored[!(bins_underscored %in% current_merged_df_bins_agg
 options(stringsAsFactors = F)
 unused_bins_rows<-as.data.frame(cbind(as.character(unused_bins),
                                       as.character(rep(samples[s],length(unused_bins))),
-                                      rep(1,length(unused_bins))
+                                      rep(0,length(unused_bins))
                                       )) #sets the unused bins to have zero CN.
 colnames(unused_bins_rows)<-c("pos","samples",paste0(cnlabel))  
 unused_bins_rows[,cnlabel]<-as.numeric(as.character(unused_bins_rows[,cnlabel]))
