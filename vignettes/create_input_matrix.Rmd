@@ -59,5 +59,24 @@ saveRDS(sample_aggregated_segvals_output_full,"NBL_sample_matched_input_matrix.r
 
 ```
 
+#Custom Data
+For those who have a desire to add custom data, we have provided a series of options that allow
+custom data, provided that a CSV file has a single column with copy number values.
+We will show that the same result can be obtained with the correct options,
+specifying the column of interest, using a completely different section of the function.
+Use the format="custom" option and be sure to specify the names following columns in your text file:
+*copy number column
+*chromosome, 
+*start position
+*end position.
+In this case, we have also selected freadskip=14 as there are 14 lines before the tabular data
+begins. The sample pattern is a regular expression set to grab the sample name within the filename,
+setting sample_pat="" will grab the complete filename and let this denote unique samples.
+We suggest shorter filenames than this, which can also be specified with 
+
+```{r, eval=F,echo=T}
+nbl_custom_input_matrix<-formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,format = "custom",binsize = 1e6,freadskip = 14,parallel=F,debug=T,sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")
+```
+
 With this, your input matrix is complete. Next, please look at the [next vignette that details recursive linear regression and postprocessing.](create_output_matrix.html)
 
