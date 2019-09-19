@@ -1,4 +1,4 @@
-#' Form sample matrix from GDC low-pass segmentation datafiles.
+#' Form sample matrix from GDC copy number data files.
 #'
 #' Reads a GDC segmetnation files, adds sample information, and forms a data matrix of samples and bins of a specified size.
 #' @name formSampleMatrixFromRawGDCData
@@ -20,13 +20,13 @@
 #' @param chromosomes A vector of chromosomes to be used. Defaults to chr1-chrX,
 #'  but others can be added e.g. chrY or chrM for Y chromosome or mitochondrial DNA.
 #'   Format expected is a character vector, e.g. c("chr1", "chr2", "chr3").
-#'  @param sample_pat Pattern used to extract sample name from filename.
+#' @param sample_pat Pattern used to extract sample name from filename.
 #'   Use "" to use the filename.
-#'  @param sample_col The name of the sample column (for custom format input).
-#'  @param chrlabel The name of the chromosome column (for custom format input).
-#'  @param startlabel The name of the start column (for custom format input).
-#'  @param endlabel The name of the end column (for custom format input).
-#' @return sample_aggregated_segvals A dataframe containing the aggregated segmentation values,
+#' @param sample_col The name of the sample column (for custom format input).
+#' @param chrlabel The name of the chromosome column (for custom format input).
+#' @param startlabel The name of the start column (for custom format input).
+#' @param endlabel The name of the end column (for custom format input).
+#' @return  A dataframe containing the aggregated copy number values,
 #'  based on the parameters provided.
 #' @examples 
 #' #Pipeline examples would be too large to include in package checks.
