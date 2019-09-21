@@ -72,11 +72,66 @@ Use the format="custom" option and be sure to specify the names following column
 In this case, we have also selected freadskip=14 as there are 14 lines before the tabular data
 begins. The sample pattern is a regular expression set to grab the sample name within the filename,
 setting sample_pat="" will grab the complete filename and let this denote unique samples.
-We suggest shorter filenames than this, which can also be specified with 
+We suggest shorter sample than this, however.
+A sample column name (sample_col) can also be specified
+to specify samples on each line of the input files
+instead of using the filename or a portion thereof. 
+
+For further information, please review the help files by typing:
+help("CNVScope::formSampleMatrixFromRawGDCData")
 
 ```{r, eval=F,echo=T}
-nbl_custom_input_matrix<-formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,format = "custom",binsize = 1e6,freadskip = 14,parallel=F,debug=T,sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")
+nbl_custom_input_matrix<-formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,
+format = "custom",binsize = 1e6,freadskip = 14,parallel=F,debug=F,
+sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",
+startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")
+saveRDS(nbl_custom_input_matrix,"NBL_custom_sample_matched_input_matrix.rds")
+
 ```
 
-With this, your input matrix is complete. Next, please look at the [next vignette that details recursive linear regression and postprocessing.](create_output_matrix.html)
+With this, your input matrix is complete.
+
+Next, please look at the [next vignette that details recursive linear regression and postprocessing.](create_output_matrix.html)
+
+
+Optional example for advanced Use: 
+A high definition version is quite simple to do, using the above options,
+on TARGET, TCGA, or custom format data. Simply decrease the binsize to increase the resolution.
+
+
+In chromosome 2, we have found that the median bin size is 731069 and that smaller chromosomes
+benefit from binsize reduction more than larger chromosomes (except for chromosome 1). 
+In this case, we decrease our binsize by a factor of 4, making the total number of values 
+in the matrix increase by a factor of 16. It will take longer than the typical time.
+```{r, echo=T,eval=F}
+nbl_custom_input_matrix_hd<-formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,
+format = "custom",binsize = 2.5e5,freadskip = 14,parallel=F,debug=F,
+sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",
+startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")
+saveRDS(nbl_custom_input_matrix_hd,"NBL_custom_sample_matched_input_matrix_hd.rds")
+
+```
+In the opposite manner, if you wanted to quickly create a low density version,
+this would be the way to go about it. It will make the input matrix creation process proceed a 
+great deal faster and will require less RAM to display an interactive map.
+
+```{r, echo=T,eval=F}
+nbl_custom_input_matrix_ld<-formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,
+format = "custom",binsize = 1e8,freadskip = 14,parallel=F,debug=F,
+sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",
+startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")
+saveRDS(nbl_custom_input_matrix,"NBL_custom_sample_matched_input_matrix_ld.rds")
+
+```
+
+A note on the resolution-performance/stability trade-off:
+We would recommend not decreasing the bin size below the mean width of the region for which you 
+hope to gain sharper images. Further, increasing higher resolution beyond what the program was
+designed may result in instability.
+We chose the 1MB bin size because, after many iterations, it creates maps that
+enable visual appreciation of copy number regions,
+but is reasonably responsive and stable for both client and server.
+Higher dimension matrices were attempted in earlier versions of development, but would cause
+browser crashes in larger chromosomal maps. Further, higher dimension maps limit usage on 
+multi-user shiny servers. So, we still recommend the 1MB binsize for the aforementioned reasons.
 
