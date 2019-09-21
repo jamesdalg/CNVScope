@@ -52,7 +52,14 @@ delete.isolates <- function(graph, mode = 'all') {
   delete.vertices(graph, isolates)
 }
 freq_data <- if(exists("freq_data")){get("freq_data")} else {NULL}
-
+#adjpvalue chr cn correlation genes_text probe visval
+adjpvalue <- if(exists("adjpvalue")){get("adjpvalue")} else {NULL}
+chr <- if(exists("chr")){get("chr")} else {NULL}
+cn <- if(exists("cn")){get("cn")} else {NULL}
+correlation <- if(exists("correlation")){get("correlation")} else {NULL}
+genes_text <- if(exists("genes_text")){get("genes_text")} else {NULL}
+probe <- if(exists("probe")){get("probe")} else {NULL}
+visval <- if(exists("visval")){get("visval")} else {NULL}
   privpolurl <- a("NCI Privacy Policy", href="https://www.cancer.gov/policies/privacy-security",target="_blank")
   output$privpol <- renderUI({
     tagList(privpolurl)})
@@ -382,9 +389,6 @@ ggplotmatrix_joined$adjpvalue<-ggplotmatrix_joined$adjpvaluegenome
 }
 }
 ggplotmatrix_joined<<-ggplotmatrix_joined
-browser()
-browser()
-browser()
 if(isolate(input$visval)=="Correlation") {
   ggplotmatrix_joined$visval<-ggplotmatrix_joined$correlation
 } else {

@@ -12,6 +12,7 @@
 #' @importFrom stringr str_detect
 #' @importFrom plyr ddply
 #' @importFrom dplyr select mutate everything
+#' @importFrom GenomeInfoDb seqinfo
 #' @param tcga_files GDC files to be read
 #' @param format file format, TCGA or TARGET.
 #' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
