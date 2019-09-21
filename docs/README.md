@@ -70,7 +70,7 @@ of the Neuroblastoma Data and may take some time.
 In the meantime, feel free to browse our public server:
 https://cnvscope.nci.nih.gov
 
-1.
+App
 ===
 
 The app includes several components and starts with a customizable
