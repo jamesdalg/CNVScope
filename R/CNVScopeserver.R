@@ -382,9 +382,6 @@ ggplotmatrix_joined$adjpvalue<-ggplotmatrix_joined$adjpvaluegenome
 }
 }
 ggplotmatrix_joined<<-ggplotmatrix_joined
-browser()
-browser()
-browser()
 if(isolate(input$visval)=="Correlation") {
   ggplotmatrix_joined$visval<-ggplotmatrix_joined$correlation
 } else {
