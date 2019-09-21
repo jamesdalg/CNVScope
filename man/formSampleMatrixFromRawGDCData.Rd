@@ -31,6 +31,7 @@ Use "" to use the filename.}
 }
 \value{
 A dataframe containing the aggregated copy number values,
+
  based on the parameters provided.
 }
 \description{
