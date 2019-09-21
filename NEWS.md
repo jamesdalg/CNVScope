@@ -1,3 +1,10 @@
+CNVScope v2.7.2.5 (Release Date 2019-09-21)
+==============
+*Added P-value filter
+*Added correlatoin options
+*Added additional app visualization options.
+*Added material on how to make higher resolution maps.
+
 CNVScope v2.5.4 (Release date: 2019-07-19)
 ==============
 *Minor changes to package dependency CNVScopePublicData.

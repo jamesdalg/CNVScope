@@ -40,6 +40,9 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
 freadskip=NULL, parallel = F,debug=F,
 chromosomes=paste0("chr",c(seq(1:22),"X"),"_"),sample_pat="",
 sample_col="sample",chrlabel=">chr", startlabel="begin", endlabel="end",cnlabel="log2") {
+chr <- if(exists("chr")){get("chr")} else {NULL}
+cn <- if(exists("cn")){get("cn")} else {NULL}
+  
   #chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
   # TCGA_CNV_data_with_sample_info<-ldply(tcga_files,
   #                                       function(x) {input_csv<-fread(x,skip=freadskip)
