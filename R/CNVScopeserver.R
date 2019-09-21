@@ -262,6 +262,8 @@ freq_data <- if(exists("freq_data")){get("freq_data")} else {NULL}
       ggplotmatrix_full<-ggplotmatrix
       tryCatch(bin_data<<-readRDS((url(paste0(baseurl,"bin_data_nbl_",subset_name,".rds")))),error = function(e) NULL) 
       tryCatch(bin_data<<-readRDS((paste0(basefn,"bin_data_nbl_",subset_name,".rds"))),error = function(e) NULL) 
+      input_mat<-bin_data %>% dplyr::select(-probe)
+      rownames(input_mat)<-bin_data$probe
       #
       tryCatch(expression_data_gr_nbl<<-readRDS(url(paste0(baseurl,"tcga_nbl_expression_",subset_name,"subset.rds"))),error = function(e) NULL)
       tryCatch(expression_data_gr_nbl<<-readRDS(paste0(basefn,"tcga_nbl_expression_",subset_name,"subset.rds")),error = function(e) NULL)
@@ -345,13 +347,66 @@ freq_data <- if(exists("freq_data")){get("freq_data")} else {NULL}
     #   scale_y_discrete(breaks = block_index_labels_row) + theme(axis.text.x = element_text(angle=60, hjust=1)) +  
     #   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank()) + coord_flip() #+ scale_y_reverse(breaks=block_indices)
     # 
-    rownames_ordered<-GRanges_to_underscored_pos(rownames_gr[order(rownames_gr)])
-    colnames_ordered<-GRanges_to_underscored_pos(colnames_gr[order(colnames_gr)])
+
+#recreate input matrix, add rownames.
+    options(stringsAsFactors = F)
+input_mat<-bin_data %>% dplyr::select(-probe) %>% as.data.frame()
+rownames(input_mat)<-bin_data$probe
+#correlate input matrix
+if(isolate(input$cor_method)!="spearman - pearson"){
+input_mat_cor<-cor(t(input_mat),method=isolate(input$cor_method))
+} else {
+  input_mat_cor<-cor(t(input_mat),method="spearman")-cor(t(input_mat),method="pearson")
+}
+#wide to long
+input_mat_cor_flat<-input_mat_cor %>% reshape2::melt()
+#grab ggplotmatrix and add correlation values.
+#if(!isolate(input$genes_toggle)){ggplotmatrix$value1<-NULL}
+ggplotmatrix_joined<- dplyr::inner_join(x=ggplotmatrix,y=input_mat_cor_flat,by=c("Var1"="Var1","Var2"="Var2"))
+colnames(ggplotmatrix_joined) <- ggplotmatrix_joined %>% colnames() %>%
+  gsub(pattern = "value.x",replacement = "linregval") %>%
+  gsub(pattern = "value.y",replacement = "correlation")
+#convert the negative log p-values to p-values and apply two kinds of FDR correction.
+
+ggplotmatrix_joined$pvalue<-exp(-(abs(ggplotmatrix_joined$orig_value)))
+ggplotmatrix_joined$adjpvaluechr<-p.adjust(p = ggplotmatrix_joined$pvalue,method = "fdr")
+ggplotmatrix_joined$adjpvaluegenome<-p.adjust(p = ggplotmatrix_joined$pvalue,method = "fdr",n = dim(input_mat)[1]*dim(input_mat)[2])
+ggplotmatrix_joined<<-ggplotmatrix_joined
+rownames_ordered<-GRanges_to_underscored_pos(rownames_gr[order(rownames_gr)])
+colnames_ordered<-GRanges_to_underscored_pos(colnames_gr[order(colnames_gr)])
+if(isolate(input$fdr_correction)=="chromosome_pair"){
+  ggplotmatrix_joined$adjpvalue<-ggplotmatrix_joined$adjpvaluechr    
+} else {
+  if(isolate(input$fdr_correction)=="genome"){
+ggplotmatrix_joined$adjpvalue<-ggplotmatrix_joined$adjpvaluegenome  
+}
+}
+ggplotmatrix_joined<<-ggplotmatrix_joined
+browser()
+browser()
+browser()
+if(isolate(input$visval)=="Correlation") {
+  ggplotmatrix_joined$visval<-ggplotmatrix_joined$correlation
+} else {
+  if(isolate(input$visval)=="-log(Linear Regression P-value) * correlation sign") {
+  ggplotmatrix_joined$visval<-ggplotmatrix_joined$linregval
+  }
+}
+if(isolate(input$pval_filter_toggle)){
+ggplotmatrix_joined$visval<-ifelse(ggplotmatrix_joined$adjpvalue<0.05,ggplotmatrix_joined$linregval,0.5)
+} else {
+  ggplotmatrix_joined$visval<-ggplotmatrix_joined$linregval
+}
+if(!isolate(input$genes_toggle)){
+  ggplotmatrix_joined$genes_text<-rep("",nrow(ggplotmatrix_joined))
+} else {
+  ggplotmatrix_joined$genes_text<-ggplotmatrix_joined$value1
+}
     #as.integer(as.character(reshape2::colsplit(ggplotmatrix$Var2,"_",c("chr2","start2","end2"))$start2))
-    p <- ggplot(data = ggplotmatrix ) + #geom_tile() + theme_void()
-      geom_raster(aes(x =      as.numeric(start2),
+    p <- ggplot(data = ggplotmatrix_joined ) + #geom_tile() + theme_void()
+      geom_tile(aes(x =      as.numeric(start2),
                       y =      as.numeric(start1),
-                      fill=value,text=paste0("value:",value,"\nrow:",Var1,"\ncol:",Var2,"\n",value1))) +
+                      fill=visval,text=paste0("value:",visval,"\nrow:",Var1,"\ncol:",Var2,"\n",genes_text,"\nFDR p=",adjpvalue,"\n",isolate(input$cor_method)," Correlation=",correlation)),alpha=ifelse(ggplotmatrix_joined$adjpvaluechr<0.05,1.0,0.1)) + #
       scale_x_continuous(breaks = reshape2::colsplit(block_index_labels_col,"_",c("chr","start","end"))$start,labels = block_index_labels_col) +
       scale_y_continuous(breaks = reshape2::colsplit(block_index_labels_row,"_",c("chr","start","end"))$start,labels = block_index_labels_row) + theme(axis.text.x = element_text(angle=60, hjust=1)) +  
       ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank()) #+ geom_contour(binwidth = .395,aes(z=value))

@@ -2,7 +2,7 @@
 % Please edit documentation in R/formSampleMatrixFromRawGDCData.R
 \name{formSampleMatrixFromRawGDCData}
 \alias{formSampleMatrixFromRawGDCData}
-\title{Form sample matrix from GDC low-pass segmentation datafiles.}
+\title{Form sample matrix from GDC copy number data files.}
 \arguments{
 \item{tcga_files}{GDC files to be read}
 
@@ -16,16 +16,22 @@
 
 \item{chromosomes}{A vector of chromosomes to be used. Defaults to chr1-chrX,
 but others can be added e.g. chrY or chrM for Y chromosome or mitochondrial DNA.
- Format expected is a character vector, e.g. c("chr1", "chr2", "chr3").
-@param sample_pat Pattern used to extract sample name from filename.
- Use "" to use the filename.
-@param sample_col The name of the sample column (for custom format input).
-@param chrlabel The name of the chromosome column (for custom format input).
-@param startlabel The name of the start column (for custom format input).
-@param endlabel The name of the end column (for custom format input).}
+ Format expected is a character vector, e.g. c("chr1", "chr2", "chr3").}
+
+\item{sample_pat}{Pattern used to extract sample name from filename.
+Use "" to use the filename.}
+
+\item{sample_col}{The name of the sample column (for custom format input).}
+
+\item{chrlabel}{The name of the chromosome column (for custom format input).}
+
+\item{startlabel}{The name of the start column (for custom format input).}
+
+\item{endlabel}{The name of the end column (for custom format input).}
 }
 \value{
-sample_aggregated_segvals A dataframe containing the aggregated segmentation values,
+A dataframe containing the aggregated copy number values,
+
  based on the parameters provided.
 }
 \description{

@@ -24,17 +24,53 @@ that can be easily visualized.
 Installation
 ============
 
-To install, it is best to install the github version
-(this is the most updated) and the CNVScopePublicData package (the data
-package is fairly large, so be patient while it installs). The next line
-will have you up and running\!
+The package is intended for users with experience in the R programming language.
+Non-R users should use the public site:
+http://cnvscope.nci.nih.gov
 
+The program will install typically using the following code:
+``` r
+install.packages("CNVScope")
+```
+To install the development version (may more features), please use:
 ``` r
 remotes::install_github("jamesdalg/CNVScope")
 CNVScope::runCNVScopeLocal()
 ```
+For those having difficulty, we provide more detailed instructions below:
 
-App
+Installation works best if base R and R tools are up to date.
+1. install R directly from the Comprehensive R Archive Network (CRAN):
+https://cran.r-project.org/index.html
+Windows:https://cran.r-project.org/bin/windows/base/
+Macintosh: https://cran.r-project.org/bin/macosx/
+2. Install the appropriate compilation tools for your operating system:
+a. For windows, please download & install the latest version of RTools:
+https://cran.r-project.org/bin/windows/Rtools/
+b. For macintosh, be sure to install the latest version of gfortran and clang:
+https://cran.r-project.org/bin/macosx/tools/
+3. Install Bioconductor Dependencies, set allowed repositories, and install the package:
+Run the following on the R command line:
+``` r
+install.packages(“BiocManager”)
+BiocManager::install(c(“DNAcopy”,”GenomeInfoDb”,”BSgenome.Hsapiens.UCSC.hg19”))
+setRepositories(ind=c(1:2))
+install.packages(“CNVScope”)
+```
+
+The package is now installed and should contain the vignettes, functions, and help files.
+``` r
+To install the app data (several GB), use the following lines:
+install.packages(“remotes”)
+CNVScope::runCNVScopeLocal()
+```
+
+Please wait for the package to finish downloading. It is a large package that contains all
+of the Neuroblastoma Data and may take some time.
+In the meantime, feel free to browse our public server:
+https://cnvscope.nci.nih.gov
+
+1.
 ===
 
 The app includes several components and starts with a customizable
