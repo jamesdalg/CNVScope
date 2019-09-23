@@ -28,11 +28,11 @@ The package is intended for users with experience in the R programming language.
 Non-R users should use the public site:
 http://cnvscope.nci.nih.gov
 
-The program will install typically using the following code:
+The program should install using the following code:
 ``` r
 install.packages("CNVScope")
 ```
-To install the development version (may more features), please use:
+To install the development version (may have more features), use:
 ``` r
 remotes::install_github("jamesdalg/CNVScope")
 CNVScope::runCNVScopeLocal()
