@@ -52,16 +52,16 @@ https://cran.r-project.org/bin/macosx/tools/
 3. Install Bioconductor Dependencies, set allowed repositories, and install the package:
 Run the following on the R command line:
 ``` r
-install.packages(“BiocManager”)
-BiocManager::install(c(“DNAcopy”,”GenomeInfoDb”,”BSgenome.Hsapiens.UCSC.hg19”))
+install.packages("BiocManager")
+BiocManager::install(c("DNAcopy","GenomeInfoDb","BSgenome.Hsapiens.UCSC.hg19"))
 setRepositories(ind=c(1:2))
-install.packages(“CNVScope”)
+install.packages("CNVScope")
 ```
 
 The package is now installed and should contain the vignettes, functions, and help files.
 ``` r
 To install the app data (several GB), use the following lines:
-install.packages(“remotes”)
+install.packages("remotes")
 CNVScope::runCNVScopeLocal()
 ```
 
