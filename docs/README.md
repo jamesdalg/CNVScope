@@ -59,8 +59,8 @@ install.packages("CNVScope")
 ```
 
 The package is now installed and should contain the vignettes, functions, and help files.
-``` r
 To install the app data (several GB), use the following lines:
+``` r
 install.packages("remotes")
 CNVScope::runCNVScopeLocal()
 ```
