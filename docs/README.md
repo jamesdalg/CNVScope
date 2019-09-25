@@ -44,12 +44,13 @@ Installation works best if base R and R tools are up to date.
 https://cran.r-project.org/index.html
 Windows:https://cran.r-project.org/bin/windows/base/
 Macintosh: https://cran.r-project.org/bin/macosx/
-2. Install the appropriate compilation tools for your operating system:
+2. Install RStudio. If running macintosh, install Xcode when prompted.
+3. Install the appropriate compilation tools for your operating system:
 a. For windows, please download & install the latest version of RTools:
 https://cran.r-project.org/bin/windows/Rtools/
-b. For macintosh, be sure to install the latest version of gfortran and clang:
+b. For macintosh, be sure to install the latest version of gfortran and clang (make sure these install AFTER Xcode, so that it overwrites the existing clang installation):
 https://cran.r-project.org/bin/macosx/tools/
-3. Install Bioconductor Dependencies, set allowed repositories, and install the package:
+4. Install Bioconductor Dependencies, set allowed repositories, and install the package:
 Run the following on the R command line:
 ``` r
 install.packages("BiocManager")
@@ -59,7 +60,8 @@ install.packages("CNVScope")
 ```
 
 The package is now installed and should contain the vignettes, functions, and help files.
-To install the app data (several GB), use the following lines:
+
+5. To install the app data (several GB), use the following lines:
 ``` r
 install.packages("remotes")
 CNVScope::runCNVScopeLocal()
