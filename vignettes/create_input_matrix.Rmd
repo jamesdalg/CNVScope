@@ -26,6 +26,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 knitr::opts_knit$set(root.dir = '.')
 library(CNVScope)
+library(magrittr)
 ```
 We have to begin our work by loading the library:
 ```{r,eval=F,echo=T}
@@ -105,10 +106,10 @@ In this case, we decrease our binsize by a factor of 4, making the total number 
 in the matrix increase by a factor of 16. It will take longer than the typical time.
 ```{r, echo=T,eval=F}
 nbl_custom_input_matrix_hd<-formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,
-format = "custom",binsize = 2.5e5,freadskip = 14,parallel=F,debug=F,
+format = "custom",binsize = 2.5e5,freadskip = 14,parallel=T,debug=F,
 sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",
 startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")
-saveRDS(nbl_custom_input_matrix_hd,"NBL_custom_sample_matched_input_matrix_hd.rds")
+saveRDS(nbl_custom_input_matrix_hd,"NBL_custom_sample_matched_input_matrix_2.5e5binsize_parallel.rds")
 
 ```
 In the opposite manner, if you wanted to quickly create a low density version,
@@ -120,10 +121,23 @@ nbl_custom_input_matrix_ld<-formSampleMatrixFromRawGDCData(tcga_files = target_f
 format = "custom",binsize = 1e8,freadskip = 14,parallel=F,debug=F,
 sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",
 startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")
-saveRDS(nbl_custom_input_matrix,"NBL_custom_sample_matched_input_matrix_ld.rds")
+saveRDS(nbl_custom_input_matrix,"NBL_custom_sample_matched_input_matrix_1e8binsize.rds")
 
 ```
+A demonstration is below of varying resolutions, using correlation based maps (for space reasons):
+Examples of chr11 are shown below, in increasing order of resolution (1e8,1e7,1e6,2.5e5,1e5 binsize).
+Note that the resolution doesn't dramatically improve after 1e6, despite the time and
+computational effort required to generate it.
+![chr11_1e8](chr11_1e8_nbl.jpg)
 
+
+![chr11_1e7](chr11_1e7_nbl.jpg)
+
+
+![chr11_1e6](chr11_1e6_nbl.jpg)
+
+![chr11_2.5e5](chr11_2.5e5_nbl.jpg)
+![chr11_1e5](chr11_1e5_nbl.jpg)
 A note on the resolution-performance/stability trade-off:
 We would recommend not decreasing the bin size below the mean width of the region for which you 
 hope to gain sharper images. Further, increasing higher resolution beyond what the program was
