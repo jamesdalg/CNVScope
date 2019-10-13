@@ -377,7 +377,8 @@ colnames(ggplotmatrix_joined) <- ggplotmatrix_joined %>% colnames() %>%
 
 ggplotmatrix_joined$pvalue<-exp(-(abs(ggplotmatrix_joined$orig_value)))
 ggplotmatrix_joined$adjpvaluechr<-p.adjust(p = ggplotmatrix_joined$pvalue,method = "fdr")
-ggplotmatrix_joined$adjpvaluegenome<-p.adjust(p = ggplotmatrix_joined$pvalue,method = "fdr",n = dim(input_mat)[1]*dim(input_mat)[2])
+ggplotmatrix_joined$adjpvaluegenome<-p.adjust(p = ggplotmatrix_joined$pvalue,method = "fdr",
+                                              n = dim(input_mat)[1]*dim(input_mat)[2])
 ggplotmatrix_joined<<-ggplotmatrix_joined
 rownames_ordered<-GRanges_to_underscored_pos(rownames_gr[order(rownames_gr)])
 colnames_ordered<-GRanges_to_underscored_pos(colnames_gr[order(colnames_gr)])
@@ -414,6 +415,7 @@ if(!isolate(input$genes_toggle)){
       scale_x_continuous(breaks = reshape2::colsplit(block_index_labels_col,"_",c("chr","start","end"))$start,labels = block_index_labels_col) +
       scale_y_continuous(breaks = reshape2::colsplit(block_index_labels_row,"_",c("chr","start","end"))$start,labels = block_index_labels_row) + theme(axis.text.x = element_text(angle=60, hjust=1)) +  
       ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank()) #+ geom_contour(binwidth = .395,aes(z=value))
+###    browser()
     #+ coord_flip() #+ scale_y_reverse(breaks=block_indices)
     #p
     #lumpy_points_toggle
@@ -626,6 +628,7 @@ if(!isolate(input$genes_toggle)){
       } else {
         if(exists("p"))
         {
+
           plotly_output<-plotly::ggplotly(p,tooltip="text") %>% layout(margin=list(r=0, l=200, t=0, b=200),width=isolate(input$heatmapHeight),height=round(isolate(input$heatmapHeight)/1.25),xaxis=list(range=c(xmin,xmax),autorange=F), yaxis=list(range=c(ymin,ymax),autorange=F))
         }
       }
