@@ -53,7 +53,7 @@ sample_aggregated_segvals_aml<-formSampleMatrixFromRawGDCData(tcga_files = targe
 saveRDS(sample_aggregated_segvals_aml,"aml_sample_matched_input_matrix.rds")
 ```
 
-Now that we've created and saved the AML matrix, let's visualize it with a quick correlation map of a single chromosome, chromosome 7, the location of the BRAF gene and nearby EZH2 gene(. The BRAF gene (chr7:140419127-140624564) is a locus for recurrent copy number aberrations(reference: http://www.bloodjournal.org/content/130/Suppl_1/3800?sso-checked=true).
+Now that we've created and saved the AML matrix, let's visualize it with a quick correlation map of a single chromosome, chromosome 7, the location of the BRAF gene and nearby EZH2 gene(. The BRAF gene (chr7:140419127-140624564) is a locus for recurrent copy number aberrations(reference: http://www.bloodjournal.org/blood/article/130/Supplement%201/3800/71708/Recurrent-Copy-Number-Variants-Are-Highly?searchresult=1).
 
 Some of the bins are invariant and correlation requires that the standard deviation be a value other than zero (otherwise correlation cannot be calculated). We will remove them in a couple steps and transpose the matrix, making the columns the bins and the samples the rows.
 ```{r aml_plots, eval=T,echo=T}
