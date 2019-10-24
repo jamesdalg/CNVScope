@@ -3,6 +3,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 knitr::opts_knit$set(root.dir = '.')
 library(CNVScope)
+library(magrittr)
 
 ## ----eval=F,echo=T-------------------------------------------------------
 #  library(CNVScope)
@@ -29,10 +30,10 @@ library(CNVScope)
 
 ## ---- echo=T,eval=F------------------------------------------------------
 #  nbl_custom_input_matrix_hd<-formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,
-#  format = "custom",binsize = 2.5e5,freadskip = 14,parallel=F,debug=F,
+#  format = "custom",binsize = 2.5e5,freadskip = 14,parallel=T,debug=F,
 #  sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",
 #  startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")
-#  saveRDS(nbl_custom_input_matrix_hd,"NBL_custom_sample_matched_input_matrix_hd.rds")
+#  saveRDS(nbl_custom_input_matrix_hd,"NBL_custom_sample_matched_input_matrix_2.5e5binsize_parallel.rds")
 #  
 
 ## ---- echo=T,eval=F------------------------------------------------------
@@ -40,6 +41,6 @@ library(CNVScope)
 #  format = "custom",binsize = 1e8,freadskip = 14,parallel=F,debug=F,
 #  sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",
 #  startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")
-#  saveRDS(nbl_custom_input_matrix,"NBL_custom_sample_matched_input_matrix_ld.rds")
+#  saveRDS(nbl_custom_input_matrix,"NBL_custom_sample_matched_input_matrix_1e8binsize.rds")
 #  
 

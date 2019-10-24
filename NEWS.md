@@ -1,3 +1,21 @@
+CNVScope v2.8.1 (Release Date 2019-10-23)
+==============
+*Removed blockseg as a strong dependency, per CRAN.
+
+
+CNVScope v2.7.7 (Release Date 2019-10-18)
+==============
+*Updated documentation (some new images have been added to show the effect of bin sizes and resolution).
+*Fixed a broken URL that was causing a CRAN note.
+
+CNVScope v2.7.5 (Release Date 2019-10-12)
+==============
+*Updated documentation for finely binned matrices (see the input matrix vignette).
+*Several sizes of NBL whole genome matrices are available within the package (1e5,2.5e5,1e6,1e7,1e8).
+**These are for package use only. The HD matrices are not speed-optimal for app use.
+**Functionality of basic package functions remains the same as 2.7.2.5.
+*passes CRAN checks again with flying colors (no notes, warnings, or errors).
+
 CNVScope v2.7.2.5 (Release Date 2019-09-21)
 ==============
 *Added P-value filter
