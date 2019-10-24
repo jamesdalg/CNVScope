@@ -11,7 +11,7 @@ getAsymmetricBlockIndices(genomicmatrix = NULL, algorithm = "HiCseg",
 \arguments{
 \item{genomicmatrix}{the large, whole matrix from which blocks are taken}
 
-\item{algorithm}{Algorithm to be used: HiCseg, jointSeg, or blockseg.}
+\item{algorithm}{Algorithm to be used: HiCseg or jointSeg.}
 
 \item{nb_change_max}{the maximal number of changepoints, passed to HiCseg (if this algorithm is used). Note: HiCseg doesn't actually obey this limit. Rather, use it as a parameter to increase/decrease segmentation extent.}
 
@@ -106,7 +106,6 @@ conserved_breakpoints_row<-intersect(random_wide_test_copy_with_transpose$breakp
 \keyword{Hi-C}
 \keyword{HiCseg}
 \keyword{MI}
-\keyword{blockseg}
 \keyword{breakpoints}
 \keyword{imputation}
 \keyword{jointseg}

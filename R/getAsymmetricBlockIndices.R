@@ -2,11 +2,11 @@
 #' 
 #' This function segments a matrix, including asymmetric matrices using multiple imputation (MI) techniques and a segmentation algorithm to generate breakpoints for column and row.
 #' 
-#' @keywords HiCseg MI multiple imputation Hi-C CNV breakpoints blockseg jointseg
+#' @keywords HiCseg MI multiple imputation Hi-C CNV breakpoints jointseg
 #' @importFrom HiCseg HiCseg_linkC_R
 #' @importFrom utils tail
 #' @param genomicmatrix the large, whole matrix from which blocks are taken
-#' @param algorithm Algorithm to be used: HiCseg, jointSeg, or blockseg.
+#' @param algorithm Algorithm to be used: HiCseg or jointSeg.
 #' @param nb_change_max the maximal number of changepoints, passed to HiCseg (if this algorithm is used). Note: HiCseg doesn't actually obey this limit. Rather, use it as a parameter to increase/decrease segmentation extent.
 #' @param distrib Passed to Hicseg_linkC_R, from their documentation: Distribution of the data: "B" is for Negative Binomial distribution, "P" is for the Poisson distribution and "G" is for the Gaussian distribution."
 #' @param model Passed on to HiCseg_linkC_R: "Type of model: "D" for block-diagonal and "Dplus" for the extended block-diagonal model."
@@ -95,22 +95,6 @@ getAsymmetricBlockIndices<-function(genomicmatrix=NULL,algorithm="HiCseg",nb_cha
     names(output_list)<-c("breakpoints_col","breakpoints_row","t_breakpoints_col","t_breakpoints_row")
     }
     return(output_list)}
-  if(algorithm=="blockseg"){
-    results<-blockseg::blockSeg(genomicmatrix,max.break = min(dim(genomicmatrix),nb_change_max))
-    breakpoints_col<-unlist(tail(results@ColBreaks,n=1))
-    breakpoints_row<-unlist(tail(results@RowBreaks,n=1))
-    output_list<-list(breakpoints_col,breakpoints_row) #it's computationally more efficient to return these as a pair as they will almost always be needed in pairs.
-    names(output_list)<-c("breakpoints_col","breakpoints_row")
-    if(transpose) {
-      results_t<-blockseg::blockSeg(t(genomicmatrix),max.break = min(dim(genomicmatrix),nb_change_max))
-      t_breakpoints_col<-unlist(tail(results_t@ColBreaks,n=1))
-      t_breakpoints_row<-unlist(tail(results_t@RowBreaks,n=1))
-      output_list<-list(breakpoints_col,breakpoints_row,t_breakpoints_col,t_breakpoints_row)
-    output_list<-list(breakpoints_col,breakpoints_row,t_breakpoints_col,t_breakpoints_row)
-    names(output_list)<-c("breakpoints_col","breakpoints_row","t_breakpoints_col","t_breakpoints_row")}
-    return(output_list)
-    }
-  #converting from Asymmetric to symmetric
   if(nrow(genomicmatrix)==ncol(genomicmatrix))
   { 
     hicsegresults<-HiCseg::HiCseg_linkC_R(size_mat=dim(genomicmatrix)[1],nb_change_max = nb_change_max,distrib = distrib,mat_data = as.matrix(genomicmatrix),model = model)

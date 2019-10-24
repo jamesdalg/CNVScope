@@ -1,5 +1,9 @@
 CNVScope v2.8.1 (Release Date 2019-10-23)
 ==============
+*Removed all blockseg references in code. It was a nice feature to have a third algorithm, but blockseg will not be on CRAN shortly.
+
+CNVScope v2.8.1 (Release Date 2019-10-23)
+==============
 *Removed blockseg as a strong dependency, per CRAN.
 
 
