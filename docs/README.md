@@ -27,7 +27,7 @@ Installation
 The package is intended for users with experience in the R programming language.
 Non-R users should use the public site:
 http://cnvscope.nci.nih.gov
-**Please be aware that there will be scheduled downtime from 6:00am-11:59am EST 10/19/2019 for required CBIIT security patches. Feel free to use the service before or after this time.**
+**Please be aware that there will be scheduled downtime from 6:00am-11:59am EST 11/02/2019 for required CBIIT security patches. Feel free to use the service before or after this time.**
 
 The program should install using the following code:
 ``` r
