@@ -1,4 +1,10 @@
-CNVScope v2.8.1 (Release Date 2019-10-23)
+CNVScope v2.9.2 (Release Date 2019-12-5)
+==============
+*Added an explicit dependency, Biostrings to keep CRAN check errors on debian from occurring.
+*Made a small fix to rebinGenomicInteractions, fixing a check at the end to handle a vector input
+**This will make the package compatible with R 4.0.
+
+CNVScope v2.8.2 (Release Date 2019-10-23)
 ==============
 *Removed all blockseg references in code. It was a nice feature to have a third algorithm, but blockseg will not be on CRAN shortly.
 

@@ -63,10 +63,16 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
     names(outputline)<-outputnames
     outputline
   }
-  if(class(output)=="character" & is.null(nrow(output))){output_df<-as.data.frame(t(output))
-  #colnames(output_df)<-c("row_bin_index","col_bin_index","row_bin_label","col_bin_label",as.character(names(gint)))
-  } else {
+
+  if(class(output)[1]=="character" & is.null(nrow(output))){
+  output_df<-as.data.frame(t(output))
+  colnames(output_df)<-c("row_bin_index","col_bin_index","row_bin_label","col_bin_label",as.character(names(gint)))
+  
+    } else {
+    print("arrived in else condition")
   output_df<-as.data.frame(matrix(as.character(output),nrow=nrow(output)))
-  colnames(output_df)<-c("row_bin_index","col_bin_index","row_bin_label","col_bin_label",as.character(colnames(as.data.frame(gint[1]))))}
+  colnames(output_df)<-c("row_bin_index","col_bin_index","row_bin_label","col_bin_label",as.character(colnames(as.data.frame(gint[1]))))
+  }
+  
   return(output_df)
 }
