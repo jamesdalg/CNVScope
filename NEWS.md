@@ -1,3 +1,9 @@
+CNVScope v2.9.4 (Release Date 2019-12-7)
+==============
+*Removed Biostrings dependency to clear NOTE 
+(although packages that CNVScope depends on require it). The prior Biostrings issue has been
+fixed.
+
 CNVScope v2.9.2 (Release Date 2019-12-5)
 ==============
 *Added an explicit dependency, Biostrings to keep CRAN check errors on debian from occurring.
