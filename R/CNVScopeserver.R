@@ -643,7 +643,7 @@ if(!isolate(input$genes_toggle)){
     
     input$whole_genome_max_cap
     input$goButton
-    #browser()
+    browser()
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
     {
       data_prefix<-"osteo"
@@ -683,7 +683,7 @@ if(!isolate(input$genes_toggle)){
   get_colnames_gr_full<-function(){if(exists("colnames_gr_full")){return(colnames_gr_full)}else{return(NULL)}}
   
   # get_recast_matrix<-function(){return(recast_matrix)}
-  output$expression_data<-renderDataTable({
+  output$expression_data<-DT::renderDataTable({
     #browser()
     if(is.null(event_data("plotly_click"))){return(data.table())}
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
@@ -735,7 +735,7 @@ if(debug){browser()}
     outputexpression_df_sorted<-outputexpression_df[order(-outputexpression_df$rowVarPctl),]
     return(as.data.table(outputexpression_df_sorted))
   })
-  output$census_data<-renderDataTable({
+  output$census_data<-DT::renderDataTable({
     #
     if(is.null(event_data("plotly_click"))){return(data.table())}
     recast_matrix<-get_recast_matrix()
@@ -760,6 +760,7 @@ if(debug){browser()}
     # cat(file=stderr(),paste0("census_data"))
     # cat(file=stderr(),ls())
     #return(comb_census_df_t)
+    #browser()
     return(unique(as.data.table(comb_census_df))) #[,c("SYMBOL","seqnames","start","end","gene_type","rowMean","rowMeanPctl","rowVar","rowVarPctl")]
   })
   
@@ -834,7 +835,7 @@ if(debug){browser()}
                 ;}")
 })
   
-  output$shiny_return <- renderDataTable({
+  output$shiny_return <- DT::renderDataTable({
     input$current_node_id
     if(is.null(isolate(input$current_node_id))){return(data.table())}
     
@@ -1070,7 +1071,7 @@ if(debug){browser()}
       #d["TCGA_CNV_data_gr.....sample"
     }
   })
-  output$freq_table <- renderDataTable({
+  output$freq_table <- DT::renderDataTable({
     #if(isolate(is.null(input$subset))){selected_rows<-1:nrow(mappability_df)} 
     #textv_subset<-textv[selected_rows]
     #d<-as.character(names(event_data("plotly_hover")))

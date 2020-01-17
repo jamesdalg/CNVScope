@@ -165,9 +165,9 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                    #         )),
                    tabPanel("gain/loss frequency",
                             conditionalPanel("!is.null(event_data('plotly_click')) & is.null(output$freq_table)", fluidRow(h2("gain/loss frequency"), #
-                                                                                                                           withSpinner(dataTableOutput("freq_table"))))),
+                                                                                                                           withSpinner(DT::dataTableOutput("freq_table"))))),
                    tabPanel("COSMIC cancer gene census",h2("Cancer Gene Census Data"),
-                            fluidRow( withSpinner(dataTableOutput("census_data")))), #end tabpanel
+                            fluidRow( withSpinner(DT::dataTableOutput("census_data")))), #end tabpanel
                    tabPanel("sample info",
                             fluidRow(column(2,offset=1,h3("sample histogram for row and column values at clicked point"),sliderInput('sample_hist_alpha',"histogram opacity",min=0.1,max=1,value = 0.6), withSpinner(plotlyOutput("sample_info"))),
                                      column(2,offset=1,h3("sample scatterplot for row and column segmentation values at clicked point"),withSpinner(plotlyOutput("sample_info_scatter"))),
@@ -175,7 +175,7 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                    ),
                    tabPanel("expression_data",
                             h2("expression data table for clicked point"),
-                            fluidRow( withSpinner(dataTableOutput("expression_data")))
+                            fluidRow( withSpinner(DT::dataTableOutput("expression_data")))
                    ),
                    tabPanel("Whole Genome View",fluidRow(column(11,offset=2,conditionalPanel("input.data_source== 'linreg_osteosarcoma_CNVkit' | input.data_source=='TCGA_NBL_low_pass'",h2("whole genome view"),
                                                                                              sliderInput(inputId = "whole_genome_max_cap",label = "Whole Genome p-value Saturation Cap",value = 75, min = 5,max=75,step = 5),
