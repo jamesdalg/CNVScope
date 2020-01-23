@@ -17,6 +17,7 @@
 #' @rawNamespace import(GenomicFeatures ,except = show)
 #' @param baseurl the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.
 #' @param basefn the linux file path of the same source files.
+#' @param osteofn the linux file path of the OS files.
 #' @param debug Enable debugging output.
 #' @param useCNVScopePublicData Use files from the CNVScopePublicData package.
 #' @return none. Runs the application if the correct files are present.
@@ -29,7 +30,7 @@
 #globalVariables(c("common_coords_linreg","expression_data_gr","chrom.pairs","."), add=F)
 
 
-runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, debug=F, useCNVScopePublicData=F) {
+runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, osteofn=NULL,debug=F, useCNVScopePublicData=F) {
   menu <- if(exists("menu")){get("menu")} else {NULL}
   browse <- if(exists("browse")){get("browse")} else {NULL}
   if(useCNVScopePublicData)
@@ -75,11 +76,13 @@ if(Sys.info()["nodename"]=="NCI-02105037-L")
   baseurl<-"http://alps.nci.nih.gov/james/"
   #baseurl<-"file:///W:/dalgleishjl/hicnv/"
   basefn<-"W:/dalgleishjl/hicnv/"
+  #osteofn<-"W:/dalgleishjl/hicnv/"
 }
 }
    if(debug){browser()}
 baseurl<<-baseurl
 basefn<<-basefn
+osteofn<<-osteofn
 #tryCatch(bin_data<-readRDS((url(paste0(baseurl,"bin_data.rds")))),error = function(e) NULL) 
 #tryCatch(bin_data<-readRDS((paste0(basefn,"bin_data.rds"))),error = function(e) NULL) 
 chromosomes<<-paste0("chr",c(seq(1:22),"X"),"_")

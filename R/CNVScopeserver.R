@@ -34,6 +34,7 @@ CNVScopeserver<-function(session,input, output, debug=F) {
 ensembl_gene_tx_data_gr <- if(exists("ensembl_gene_tx_data_gr")){get("ensembl_gene_tx_data_gr")} else {NULL}
 baseurl <- if(exists("baseurl")){get("baseurl")} else {NULL}
 basefn <- if(exists("basefn")){get("basefn")} else {NULL}
+osteofn <- if(exists("osteofn")){get("osteofn")} else {NULL}
 start1 <- if(exists("start1")){get("start1")} else {NULL}
 start2 <- if(exists("start2")){get("start2")} else {NULL}
 value <- if(exists("value")){get("value")} else {NULL}
@@ -191,7 +192,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
       #browser()
       downsample_factor<<-4
       tryCatch(bin_data<-readRDS((url(paste0(baseurl,"bin_data.rds")))),error = function(e) NULL) 
-      tryCatch(bin_data<-readRDS((paste0(basefn,"bin_data.rds"))),error = function(e) NULL) 
+      tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) 
       
     }
     # 
@@ -421,10 +422,10 @@ if(!isolate(input$genes_toggle)){
     #lumpy_points_toggle
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
     {
-      if(exists("basefn"))
+      if(exists("osteofn"))
       {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(basefn,"breakpoint_gint/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" )),error = function(e) NULL) 
-        tryCatch(lumpy_summarized_counts<-readRDS(paste0(basefn,"lumpy_sv/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" )),error = function(e) NULL)    
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(osteofn,"breakpoint_gint/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" )),error = function(e) NULL) 
+        tryCatch(lumpy_summarized_counts<-readRDS(paste0(osteofn,"lumpy_sv/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" )),error = function(e) NULL)    
       }else {
         tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"breakpoint_gint/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" ))),error = function(e) NULL) 
         tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"lumpy_sv/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" ))),error = function(e) NULL)   
