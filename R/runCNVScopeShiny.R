@@ -75,8 +75,8 @@ if(Sys.info()["nodename"]=="NCI-02105037-L")
   #baseurl<-"ftp://helix.nih.gov/pub/dalgleishjl/"
   baseurl<-"http://alps.nci.nih.gov/james/"
   #baseurl<-"file:///W:/dalgleishjl/hicnv/"
-  basefn<-"W:/dalgleishjl/hicnv/"
-  #osteofn<-"W:/dalgleishjl/hicnv/"
+  #basefn<-"W:/dalgleishjl/hicnv/"
+  #osteofn<-"W:/dalgleishjl/hicnv/plotly_dashboard_ext/osteo/"
 }
 }
    if(debug){browser()}
@@ -128,7 +128,7 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                    titlePanel("CNVScope Interchromosomal Heatmaps"),
                    uiOutput("privpol"),
                    # Sidebar with a slider input for number of bins 
-                   tabsetPanel(id = "tabs",tabPanel("Controls",fluidRow(column(width=2,offset = 1,
+                   tabsetPanel(id = "tabs",tabPanel("Controls",fluidRow(column(width=2,offset = 0,
                                                                                #sidebarPanel(position="right",
                                                                                selectInput('data_source', 'data source', c("linreg_osteosarcoma_CNVkit","TCGA_NBL_low_pass","TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"), selected = "TCGA_NBL_low_pass"), #"TCGA_SARC_SNP6","TCGA_AML_low_pass","TCGA_BRCA_low_pass","TCGA_OS_low_pass" ,"TCGA_PRAD_low_pass"
                                                                                selectInput('chrom2', 'Chromosome (rows)', chromosomes, selected = "chr17_"),
@@ -142,20 +142,24 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                                                                                                 checkboxInput('lumpy_points_toggle',"Plot Lumpy SVs",value = FALSE)),
                                                                                conditionalPanel("input.data_source== 'TCGA_NBL_low_pass'",
                                                                                                 checkboxInput('pval_filter_toggle',"P-value filter",value = FALSE),
-                                                                                                checkboxInput("genes_toggle","Show Genes on Tooltip",value=TRUE),
-                                                                                                selectInput('fdr_correction', 'FDR p-value correction', c("chromosome_pair","genome"), selected = "chromosome_pair"),
-                                                                                                selectInput('cor_method', 'Correlation Method', c("pearson","spearman","kendall","spearman - pearson"), selected = "pearson"),
-                                                                                                selectInput('visval', 'Visualized Relationship Metric', c("-log(Linear Regression P-value) * correlation sign","Correlation"), selected = "Correlation")
-                                                                               ),
+                                                                                                checkboxInput("genes_toggle","Show Genes on Tooltip",value=TRUE)
+                                                                               )),column(width=2,offset = 0,conditionalPanel("input.data_source== 'TCGA_NBL_low_pass'",
+                                                                                                                             selectInput('fdr_correction', 'FDR p-value correction', c("chromosome_pair","genome"), selected = "chromosome_pair"),
+                                                                                                                             selectInput('cor_method', 'Correlation Method', c("pearson","spearman","kendall","spearman - pearson"), selected = "pearson"),
+                                                                                                                             selectInput('visval', 'Visualized Relationship Metric', c("-log(Linear Regression P-value) * correlation sign","Correlation"), selected = "Correlation")
+                                                                               ), #end conditional panel
                                                                                textInput('gene_input_row',"row_gene",NULL),
                                                                                textInput('loc_input_row',"row_location",NULL),
                                                                                textInput('gene_input_col',"col_gene",NULL),
-                                                                               textInput('loc_input_col',"col_location",NULL),
-                                                                               actionButton("geneSearch", "find genes"),
-                                                                               actionButton("goButton", "create plots")
+                                                                               textInput('loc_input_col',"col_location",NULL)
                                                                                
                                                                                
-                   ))),tabPanel("Plots",fluidRow(column(5,offset=2,
+                   )),fluidRow(column(width=4,offset=0,align="center",
+                                      
+                                      actionButton("geneSearch", "find genes"),
+                                      actionButton("goButton", "create plots")
+                                      
+                                      ))),tabPanel("Plots",fluidRow(column(5,offset=2,
                                                         h2("interactive chromosomal heatmap and minimap"),
                                                         withSpinner(plotlyOutput("plotlyChromosomalHeatmap",height = "100%"))#,
                                                         #               visNetwork::visNetworkOutput("network",height="1024")

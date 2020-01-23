@@ -644,7 +644,7 @@ if(!isolate(input$genes_toggle)){
     
     input$whole_genome_max_cap
     input$goButton
-    browser()
+    #browser()
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
     {
       data_prefix<-"osteo"
