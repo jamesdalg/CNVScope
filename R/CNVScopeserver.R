@@ -671,7 +671,7 @@ if(!isolate(input$genes_toggle)){
     return(plotly_output)
   })
   outputOptions(output,"plotlyChromosomalHeatmap",suspendWhenHidden=F)
-  output$whole_genome_image<-renderUI({
+  output$whole_genome_image<-renderImage({
     
     input$whole_genome_max_cap
     input$goButton
@@ -679,10 +679,12 @@ if(!isolate(input$genes_toggle)){
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
     {
       data_prefix<-"osteo"
+      pngfn <- osteofn
     }
     if(isolate(input$data_source)=="TCGA_NBL_low_pass")
     {
       data_prefix<-"nbl"
+      pngfn <- basefn
     }
     if(is.null(data_prefix)){return(NULL)}
     # list(src = paste0("http://alps.nci.nih.gov/james/plotly_dashboard/whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"),
@@ -691,13 +693,15 @@ if(!isolate(input$genes_toggle)){
     #      height = round(isolate(input$heatmapHeight)/1.25),
     #      alt = "This is alternate text")
     browser()
-    tags$img(src = paste0("http://alps.nci.nih.gov/james/plotly_dashboard/whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"),
-             #           contentType = 'image/png',
-             width = isolate(input$heatmapHeight),
-             height = round(isolate(input$heatmapHeight)/1.25),
-             alt = "whole genome png")
-    
-  }) 
+    # tags$img(src = paste0("http://alps.nci.nih.gov/james/plotly_dashboard/whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"),
+    #          #           contentType = 'image/png',
+    #          width = isolate(input$heatmapHeight),
+    #          height = round(isolate(input$heatmapHeight)/1.25),
+    #          alt = "whole genome png")
+    # 
+    list(src=paste0(pngfn,"whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"))
+  },deleteFile = F) 
+  
   
   # output$freq_table<-renderDataTable({
   # 

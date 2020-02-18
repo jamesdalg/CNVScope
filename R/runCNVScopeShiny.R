@@ -186,7 +186,7 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                    ),
                    tabPanel("Whole Genome View",fluidRow(column(11,offset=2,conditionalPanel("input.data_source== 'linreg_osteosarcoma_CNVkit' | input.data_source=='TCGA_NBL_low_pass'",h2("whole genome view"),
                                                                                              sliderInput(inputId = "whole_genome_max_cap",label = "Whole Genome p-value Saturation Cap",value = 75, min = 5,max=75,step = 5),
-                                                                                             withSpinner(htmlOutput("whole_genome_image")))
+                                                                                             withSpinner(plotOutput("whole_genome_image")))
                                                                 
                    )#end column
                    )#end fluidRow
