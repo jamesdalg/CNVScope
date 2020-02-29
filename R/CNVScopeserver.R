@@ -166,7 +166,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     if (input$goButton == 0) {return()}
     
     input$goButton
-    browser()
+    if(debug){browser()}
     # if(!file.exists(
     #   (
     #     paste0(getwd(),"/matrix/linreg/",
@@ -200,7 +200,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
                               "melted_full_linreg_max_cap_75.RData")))
       
       downsample_factor<<-4
-      browser()
+      if(debug){browser()}
       tryCatch(bin_data<-readRDS((url(paste0(baseurl,"bin_data.rds")))),error = function(e) NULL) 
       tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) 
       
@@ -371,7 +371,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
 input_mat<-bin_data %>% dplyr::select(-probe) %>% as.data.frame()
 rownames(input_mat)<-bin_data$probe
 #correlate input matrix
-browser()
+if(debug){browser()}
 if(isolate(input$visval)=="Correlation" & isolate(input$data_source)!="linreg_osteosarcoma_CNVkit") {
 if(isolate(input$cor_method)!="spearman - pearson"){
 input_mat_cor<-cor(t(input_mat),method=isolate(input$cor_method))
@@ -429,7 +429,7 @@ if(!isolate(input$genes_toggle)){
       scale_y_continuous(breaks = reshape2::colsplit(block_index_labels_row,"_",c("chr","start","end"))$start,labels = block_index_labels_row) + theme(axis.text.x = element_text(angle=60, hjust=1)) +  
       ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank())
 } else {
-  browser()
+  if(debug){browser()}
   ggplotmatrix$pvalue<-exp(-(abs(ggplotmatrix$value)))
   ggplotmatrix$adjpvaluechr<-p.adjust(p = ggplotmatrix$pvalue,method = "fdr")
   ggplotmatrix$adjpvaluegenome<-p.adjust(p = ggplotmatrix$pvalue,method = "fdr",
@@ -667,7 +667,7 @@ if(!isolate(input$genes_toggle)){
     
    if(debug){browser()}
     print(plotly_output)
-    browser()
+    if(debug){browser()}
     return(plotly_output)
   })
   outputOptions(output,"plotlyChromosomalHeatmap",suspendWhenHidden=F)
@@ -692,7 +692,7 @@ if(!isolate(input$genes_toggle)){
     #      width = isolate(input$heatmapHeight),
     #      height = round(isolate(input$heatmapHeight)/1.25),
     #      alt = "This is alternate text")
-    browser()
+    if(debug){browser()}
     # tags$img(src = paste0("http://alps.nci.nih.gov/james/plotly_dashboard/whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"),
     #          #           contentType = 'image/png',
     #          width = isolate(input$heatmapHeight),
@@ -919,7 +919,7 @@ if(debug){browser()}
           layout(barmode = "overlay")
         
         print(sample_info_p)
-        browser()
+        if(debug){browser()}
         return(sample_info_p)
       }
     } #end code for in-house data.
@@ -965,7 +965,7 @@ if(debug){browser()}
         add_trace(x = as.numeric(d[2,]),name=d[2,"probe"],y=seq(1:ncol(d)))# %>%
       # layout(barmode = "overlay")
       print(sample_info_p_scatter)
-      browser()
+      if(debug){browser()}
       return(sample_info_p_scatter)
     }
 
@@ -1015,12 +1015,12 @@ if(debug){browser()}
       #   add_trace(x = as.numeric(d[2,]),name=d[2,"probe"],y=seq(1:ncol(d)))# %>%
       # # layout(barmode = "overlay")
       # print(sample_info_p_scatter)
-      browser()
+      if(debug){browser()}
       return(plotly_output)
     }
   })
   output$sample_info_scatter2<-renderPlotly({
-    browser()
+    if(debug){browser()}
     req(event_data("plotly_click"))
     if (is.null(event_data("plotly_click"))) {return(NULL)}
     if(!exists("bin_data") & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
