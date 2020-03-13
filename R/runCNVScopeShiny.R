@@ -142,9 +142,9 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                                                                                                 checkboxInput('plot_points_toggle',"Plot Structural Variants",value = FALSE), 
                                                                                                 checkboxInput('lumpy_points_toggle',"Plot Lumpy SVs",value = FALSE)),
                                                                                conditionalPanel("input.data_source== 'TCGA_NBL_low_pass'",
-                                                                                                checkboxInput('pval_filter_toggle',"P-value filter",value = FALSE),
+                                                                                                checkboxInput('pval_filter_toggle',"P-value filter",value = FALSE)),
                                                                                                 checkboxInput("genes_toggle","Show Genes on Tooltip",value=TRUE)
-                                                                               )),column(width=2,offset = 0,conditionalPanel("input.data_source== 'TCGA_NBL_low_pass'",
+                                                                               ),column(width=2,offset = 0,conditionalPanel("input.data_source== 'TCGA_NBL_low_pass'",
                                                                                                                              selectInput('fdr_correction', 'FDR p-value correction', c("chromosome_pair","genome"), selected = "chromosome_pair"),
                                                                                                                              selectInput('cor_method', 'Correlation Method', c("pearson","spearman","kendall","spearman - pearson"), selected = "pearson"),
                                                                                                                              selectInput('visval', 'Visualized Relationship Metric', c("-log(Linear Regression P-value) * correlation sign","Correlation"), selected = "Correlation")
