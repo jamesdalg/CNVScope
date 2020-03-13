@@ -740,6 +740,8 @@ if(!isolate(input$genes_toggle)){
       #rowclick<-length(common_coords)-myReactives$currentClick$lat
       #colclick<-myReactives$currentClick$lng
      if(debug){browser()}
+      if(is.null(expression_data_gr)){tryCatch(expression_data_gr<-readRDS(paste0(get("osteofn",.GlobalEnv),"expression_data_gr.rds")),error = function(e) NULL) }
+      
       rowexpression<-as.data.table(subsetByOverlaps(expression_data_gr,get_rownames_gr_full()[seq(from=row_index_full,to=row_index_full+3)]))
       colexpression<-as.data.table(subsetByOverlaps(expression_data_gr,get_colnames_gr_full()[seq(from=col_index_full,to=col_index_full+3)]))} else {
         if(isolate(input$data_source)=="TCGA_NBL_low_pass" | isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
@@ -1134,6 +1136,7 @@ if(debug){browser()}
     #                            as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1
     #                          ]))
     # cat(file=stderr(),rownames(get_recast_matrix())[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1])
+    #browser()
     recast_matrix<-get_recast_matrix()
     #cat(file=stderr(),paste0(d))
     if(!is.null("recast_matrix")) {

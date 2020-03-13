@@ -99,7 +99,7 @@ chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
 if(exists("basefn")) {#local objects:
   # tryCatch(freq_data<-data.table::fread(paste0(basefn,"OS_freq_data.txt")),error = function(e) NULL)
 #  tryCatch(breakpoint_gint_full<-readRDS(paste0(basefn,"breakpoint_gint_full.rds")),error = function(e) NULL)
-#  tryCatch(expression_data_gr<-readRDS(paste0(basefn,"expression_data_gr.rds")),error = function(e) NULL)
+  tryCatch(expression_data_gr<-readRDS(paste0(osteofn,"expression_data_gr.rds")),error = function(e) NULL)
   tryCatch(expression_data_gr_nbl<-readRDS(paste0(basefn,"tcga_nbl_expression.rds")),error = function(e) NULL)
    if(debug){browser()}
   
@@ -111,7 +111,8 @@ if(exists("basefn")) {#local objects:
   if(exists("baseurl"))
   {tryCatch(freq_data<-data.table::fread(paste0(baseurl,"OS_freq_data.txt")),error = function(e) NULL)
     tryCatch(breakpoint_gint_full<-readRDS(url(paste0(baseurl,"breakpoint_gint_full.rds"))),error = function(e) NULL)
-    tryCatch(expression_data_gr<-readRDS(url(paste0(baseurl,"expression_data_gr.rds"))),error = function(e) NULL)
+    if(debug){browser()}
+    #tryCatch(expression_data_gr<-readRDS(url(paste0(baseurl,"expression_data_gr.rds"))),error = function(e) NULL)
     tryCatch(expression_data_gr_nbl<-readRDS(url(paste0(baseurl,"tcga_nbl_expression.rds"))),error = function(e) NULL)
     tryCatch(bin_data_gr<-readRDS(url(paste0(baseurl,"bin_data_gr.rds"))),error = function(e) NULL)
     #tryCatch(census_data_gr<-readRDS(url(paste0(baseurl,"census_data_gr.rds"))),error = function(e) NULL)
