@@ -1137,6 +1137,7 @@ if(debug){browser()}
     #                          ]))
     # cat(file=stderr(),rownames(get_recast_matrix())[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1])
     #browser()
+    if(is.null(freq_data)){   tryCatch(freq_data<-data.table::fread(paste0(osteofn,"OS_freq_data.txt")),error = function(e) NULL)}
     recast_matrix<-get_recast_matrix()
     #cat(file=stderr(),paste0(d))
     if(!is.null("recast_matrix")) {
