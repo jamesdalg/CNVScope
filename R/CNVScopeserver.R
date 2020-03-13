@@ -430,6 +430,12 @@ if(!isolate(input$genes_toggle)){
       ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank())
 } else {
   if(debug){browser()}
+  if(!isolate(input$genes_toggle)){
+    ggplotmatrix$genes_text<-rep("",nrow(ggplotmatrix))
+  } else {
+    ggplotmatrix$genes_text<-ggplotmatrix$value1
+  }
+  
   ggplotmatrix$pvalue<-exp(-(abs(ggplotmatrix$value)))
   ggplotmatrix$adjpvaluechr<-p.adjust(p = ggplotmatrix$pvalue,method = "fdr")
   ggplotmatrix$adjpvaluegenome<-p.adjust(p = ggplotmatrix$pvalue,method = "fdr",
