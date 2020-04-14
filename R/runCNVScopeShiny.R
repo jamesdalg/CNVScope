@@ -17,6 +17,7 @@
 #' @rawNamespace import(GenomicFeatures ,except = show)
 #' @param baseurl the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.
 #' @param basefn the linux file path of the same source files.
+#' @param osteofn the linux file path of the OS files.
 #' @param debug Enable debugging output.
 #' @param useCNVScopePublicData Use files from the CNVScopePublicData package.
 #' @return none. Runs the application if the correct files are present.
@@ -29,7 +30,7 @@
 #globalVariables(c("common_coords_linreg","expression_data_gr","chrom.pairs","."), add=F)
 
 
-runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, debug=F, useCNVScopePublicData=F) {
+runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, osteofn=NULL,debug=F, useCNVScopePublicData=F) {
   menu <- if(exists("menu")){get("menu")} else {NULL}
   browse <- if(exists("browse")){get("browse")} else {NULL}
   if(useCNVScopePublicData)
@@ -74,12 +75,14 @@ if(Sys.info()["nodename"]=="NCI-02105037-L")
   #baseurl<-"ftp://helix.nih.gov/pub/dalgleishjl/"
   baseurl<-"http://alps.nci.nih.gov/james/"
   #baseurl<-"file:///W:/dalgleishjl/hicnv/"
-  basefn<-"W:/dalgleishjl/hicnv/"
+  #basefn<-"W:/dalgleishjl/hicnv/"
+  #osteofn<-"W:/dalgleishjl/hicnv/plotly_dashboard_ext/osteo/"
 }
 }
    if(debug){browser()}
 baseurl<<-baseurl
 basefn<<-basefn
+osteofn<<-osteofn
 #tryCatch(bin_data<-readRDS((url(paste0(baseurl,"bin_data.rds")))),error = function(e) NULL) 
 #tryCatch(bin_data<-readRDS((paste0(basefn,"bin_data.rds"))),error = function(e) NULL) 
 chromosomes<<-paste0("chr",c(seq(1:22),"X"),"_")
@@ -94,9 +97,9 @@ chrom.pairs<<-expand.grid(1:length(chromosomes),1:length(chromosomes))
 chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
    if(debug){browser()}
 if(exists("basefn")) {#local objects:
-  # tryCatch(freq_data<-data.table::fread(paste0(basefn,"OS_freq_data.txt")),error = function(e) NULL)
+   tryCatch(freq_data<-data.table::fread(paste0(osteofn,"OS_freq_data.txt")),error = function(e) NULL)
 #  tryCatch(breakpoint_gint_full<-readRDS(paste0(basefn,"breakpoint_gint_full.rds")),error = function(e) NULL)
-#  tryCatch(expression_data_gr<-readRDS(paste0(basefn,"expression_data_gr.rds")),error = function(e) NULL)
+  tryCatch(expression_data_gr<-readRDS(paste0(osteofn,"expression_data_gr.rds")),error = function(e) NULL)
   tryCatch(expression_data_gr_nbl<-readRDS(paste0(basefn,"tcga_nbl_expression.rds")),error = function(e) NULL)
    if(debug){browser()}
   
@@ -108,7 +111,8 @@ if(exists("basefn")) {#local objects:
   if(exists("baseurl"))
   {tryCatch(freq_data<-data.table::fread(paste0(baseurl,"OS_freq_data.txt")),error = function(e) NULL)
     tryCatch(breakpoint_gint_full<-readRDS(url(paste0(baseurl,"breakpoint_gint_full.rds"))),error = function(e) NULL)
-    tryCatch(expression_data_gr<-readRDS(url(paste0(baseurl,"expression_data_gr.rds"))),error = function(e) NULL)
+    if(debug){browser()}
+    #tryCatch(expression_data_gr<-readRDS(url(paste0(baseurl,"expression_data_gr.rds"))),error = function(e) NULL)
     tryCatch(expression_data_gr_nbl<-readRDS(url(paste0(baseurl,"tcga_nbl_expression.rds"))),error = function(e) NULL)
     tryCatch(bin_data_gr<-readRDS(url(paste0(baseurl,"bin_data_gr.rds"))),error = function(e) NULL)
     #tryCatch(census_data_gr<-readRDS(url(paste0(baseurl,"census_data_gr.rds"))),error = function(e) NULL)
@@ -125,7 +129,7 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                    titlePanel("CNVScope Interchromosomal Heatmaps"),
                    uiOutput("privpol"),
                    # Sidebar with a slider input for number of bins 
-                   tabsetPanel(id = "tabs",tabPanel("Controls",fluidRow(column(width=2,offset = 1,
+                   tabsetPanel(id = "tabs",tabPanel("Controls",fluidRow(column(width=2,offset = 0,
                                                                                #sidebarPanel(position="right",
                                                                                selectInput('data_source', 'data source', c("linreg_osteosarcoma_CNVkit","TCGA_NBL_low_pass","TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"), selected = "TCGA_NBL_low_pass"), #"TCGA_SARC_SNP6","TCGA_AML_low_pass","TCGA_BRCA_low_pass","TCGA_OS_low_pass" ,"TCGA_PRAD_low_pass"
                                                                                selectInput('chrom2', 'Chromosome (rows)', chromosomes, selected = "chr17_"),
@@ -138,21 +142,25 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                                                                                                 checkboxInput('plot_points_toggle',"Plot Structural Variants",value = FALSE), 
                                                                                                 checkboxInput('lumpy_points_toggle',"Plot Lumpy SVs",value = FALSE)),
                                                                                conditionalPanel("input.data_source== 'TCGA_NBL_low_pass'",
-                                                                                                checkboxInput('pval_filter_toggle',"P-value filter",value = FALSE),
-                                                                                                checkboxInput("genes_toggle","Show Genes on Tooltip",value=TRUE),
-                                                                                                selectInput('fdr_correction', 'FDR p-value correction', c("chromosome_pair","genome"), selected = "chromosome_pair"),
-                                                                                                selectInput('cor_method', 'Correlation Method', c("pearson","spearman","kendall","spearman - pearson"), selected = "pearson"),
-                                                                                                selectInput('visval', 'Visualized Relationship Metric', c("-log(Linear Regression P-value) * correlation sign","Correlation"), selected = "Correlation")
-                                                                               ),
+                                                                                                checkboxInput('pval_filter_toggle',"P-value filter",value = FALSE)),
+                                                                                                checkboxInput("genes_toggle","Show Genes on Tooltip",value=TRUE)
+                                                                               ),column(width=2,offset = 0,conditionalPanel("input.data_source== 'TCGA_NBL_low_pass'",
+                                                                                                                             selectInput('fdr_correction', 'FDR p-value correction', c("chromosome_pair","genome"), selected = "chromosome_pair"),
+                                                                                                                             selectInput('cor_method', 'Correlation Method', c("pearson","spearman","kendall","spearman - pearson"), selected = "pearson"),
+                                                                                                                             selectInput('visval', 'Visualized Relationship Metric', c("-log(Linear Regression P-value) * correlation sign","Correlation"), selected = "Correlation")
+                                                                               ), #end conditional panel
                                                                                textInput('gene_input_row',"row_gene",NULL),
                                                                                textInput('loc_input_row',"row_location",NULL),
                                                                                textInput('gene_input_col',"col_gene",NULL),
-                                                                               textInput('loc_input_col',"col_location",NULL),
-                                                                               actionButton("geneSearch", "find genes"),
-                                                                               actionButton("goButton", "create plots")
+                                                                               textInput('loc_input_col',"col_location",NULL)
                                                                                
                                                                                
-                   ))),tabPanel("Plots",fluidRow(column(5,offset=2,
+                   )),fluidRow(column(width=4,offset=0,align="center",
+                                      
+                                      actionButton("geneSearch", "find genes"),
+                                      actionButton("goButton", "create plots")
+                                      
+                                      ))),tabPanel("Plots",fluidRow(column(5,offset=2,
                                                         h2("interactive chromosomal heatmap and minimap"),
                                                         withSpinner(plotlyOutput("plotlyChromosomalHeatmap",height = "100%"))#,
                                                         #               visNetwork::visNetworkOutput("network",height="1024")
@@ -165,9 +173,9 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                    #         )),
                    tabPanel("gain/loss frequency",
                             conditionalPanel("!is.null(event_data('plotly_click')) & is.null(output$freq_table)", fluidRow(h2("gain/loss frequency"), #
-                                                                                                                           withSpinner(dataTableOutput("freq_table"))))),
+                                                                                                                           withSpinner(DT::dataTableOutput("freq_table"))))),
                    tabPanel("COSMIC cancer gene census",h2("Cancer Gene Census Data"),
-                            fluidRow( withSpinner(dataTableOutput("census_data")))), #end tabpanel
+                            fluidRow( withSpinner(DT::dataTableOutput("census_data")))), #end tabpanel
                    tabPanel("sample info",
                             fluidRow(column(2,offset=1,h3("sample histogram for row and column values at clicked point"),sliderInput('sample_hist_alpha',"histogram opacity",min=0.1,max=1,value = 0.6), withSpinner(plotlyOutput("sample_info"))),
                                      column(2,offset=1,h3("sample scatterplot for row and column segmentation values at clicked point"),withSpinner(plotlyOutput("sample_info_scatter"))),
@@ -175,11 +183,11 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                    ),
                    tabPanel("expression_data",
                             h2("expression data table for clicked point"),
-                            fluidRow( withSpinner(dataTableOutput("expression_data")))
+                            fluidRow( withSpinner(DT::dataTableOutput("expression_data")))
                    ),
                    tabPanel("Whole Genome View",fluidRow(column(11,offset=2,conditionalPanel("input.data_source== 'linreg_osteosarcoma_CNVkit' | input.data_source=='TCGA_NBL_low_pass'",h2("whole genome view"),
                                                                                              sliderInput(inputId = "whole_genome_max_cap",label = "Whole Genome p-value Saturation Cap",value = 75, min = 5,max=75,step = 5),
-                                                                                             withSpinner(htmlOutput("whole_genome_image")))
+                                                                                             withSpinner(plotOutput("whole_genome_image")))
                                                                 
                    )#end column
                    )#end fluidRow

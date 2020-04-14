@@ -85,6 +85,7 @@
 #' @export
 getAsymmetricBlockIndices<-function(genomicmatrix=NULL,algorithm="HiCseg",nb_change_max=100,distrib = "G",model = "D",MI_strategy="average",transpose=T)
 {
+  if(Sys.info()["sysname"]=="Darwin"){algorithm="jointSeg"}
   if(algorithm=="jointSeg"){
     breakpoints_col<-jointseg::jointSeg(genomicmatrix,K=nb_change_max)$bestBkp
     breakpoints_row<-jointseg::jointSeg(genomicmatrix,K=nb_change_max)$bestBkp

@@ -34,6 +34,7 @@ CNVScopeserver<-function(session,input, output, debug=F) {
 ensembl_gene_tx_data_gr <- if(exists("ensembl_gene_tx_data_gr")){get("ensembl_gene_tx_data_gr")} else {NULL}
 baseurl <- if(exists("baseurl")){get("baseurl")} else {NULL}
 basefn <- if(exists("basefn")){get("basefn")} else {NULL}
+osteofn <- if(exists("osteofn")){get("osteofn")} else {NULL}
 start1 <- if(exists("start1")){get("start1")} else {NULL}
 start2 <- if(exists("start2")){get("start2")} else {NULL}
 value <- if(exists("value")){get("value")} else {NULL}
@@ -165,6 +166,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     if (input$goButton == 0) {return()}
     
     input$goButton
+    if(debug){browser()}
     # if(!file.exists(
     #   (
     #     paste0(getwd(),"/matrix/linreg/",
@@ -181,17 +183,26 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     
     
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
-    {     load( url(paste0(paste0(baseurl,"matrix/linreg/unrescaled/",
-                                  chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
-                                  "melted_downsampled_linreg_unrescaled.RData"))))
+    {
       
-      load( url(paste0(paste0(baseurl,"matrix/linreg/unrescaled/full/",
+      # load( url(paste0(paste0(baseurl,"matrix/linreg/unrescaled/",
+      #                             chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
+      #                             "melted_downsampled_linreg_unrescaled.RData"))))
+      load(paste0(paste0(osteofn,"matrix/linreg/unrescaled/",
+                         chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
+                         "melted_downsampled_linreg_unrescaled.RData")))
+      
+      # load( url(paste0(paste0(baseurl,"matrix/linreg/unrescaled/full/",
+      #                         chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
+      #                         "melted_full_linreg_max_cap_75.RData"))))
+      load( paste0(paste0(osteofn,"matrix/linreg/unrescaled/full/",
                               chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
-                              "melted_full_linreg_max_cap_75.RData"))))
-      #browser()
+                              "melted_full_linreg_max_cap_75.RData")))
+      
       downsample_factor<<-4
+      if(debug){browser()}
       tryCatch(bin_data<-readRDS((url(paste0(baseurl,"bin_data.rds")))),error = function(e) NULL) 
-      tryCatch(bin_data<-readRDS((paste0(basefn,"bin_data.rds"))),error = function(e) NULL) 
+      tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) 
       
     }
     # 
@@ -360,6 +371,8 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
 input_mat<-bin_data %>% dplyr::select(-probe) %>% as.data.frame()
 rownames(input_mat)<-bin_data$probe
 #correlate input matrix
+if(debug){browser()}
+if(isolate(input$visval)=="Correlation" & isolate(input$data_source)!="linreg_osteosarcoma_CNVkit") {
 if(isolate(input$cor_method)!="spearman - pearson"){
 input_mat_cor<-cor(t(input_mat),method=isolate(input$cor_method))
 } else {
@@ -414,17 +427,40 @@ if(!isolate(input$genes_toggle)){
                       fill=visval,text=paste0("value:",visval,"\nrow:",Var1,"\ncol:",Var2,"\n",genes_text,"\nFDR p=",adjpvalue,"\n",isolate(input$cor_method)," Correlation=",correlation)),alpha=ifelse(ggplotmatrix_joined$adjpvaluechr<0.05,1.0,0.1)) + #
       scale_x_continuous(breaks = reshape2::colsplit(block_index_labels_col,"_",c("chr","start","end"))$start,labels = block_index_labels_col) +
       scale_y_continuous(breaks = reshape2::colsplit(block_index_labels_row,"_",c("chr","start","end"))$start,labels = block_index_labels_row) + theme(axis.text.x = element_text(angle=60, hjust=1)) +  
-      ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank()) #+ geom_contour(binwidth = .395,aes(z=value))
+      ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank())
+} else {
+  if(debug){browser()}
+  if(!isolate(input$genes_toggle)){
+    ggplotmatrix$genes_text<-rep("",nrow(ggplotmatrix))
+  } else {
+    ggplotmatrix$genes_text<-ggplotmatrix$value1
+  }
+  
+  ggplotmatrix$pvalue<-exp(-(abs(ggplotmatrix$value)))
+  ggplotmatrix$adjpvaluechr<-p.adjust(p = ggplotmatrix$pvalue,method = "fdr")
+  ggplotmatrix$adjpvaluegenome<-p.adjust(p = ggplotmatrix$pvalue,method = "fdr",
+                                                n = dim(input_mat)[1]*dim(input_mat)[2])
+  
+  p <- ggplot(data = ggplotmatrix ) + #geom_tile() + theme_void()
+    geom_tile(aes(x =      as.numeric(start2),
+                  y =      as.numeric(start1),
+                  fill=value,text=paste0("value:",value,"\nrow:",Var1,"\ncol:",Var2,"\n",genes_text,"\nFDR p=",adjpvaluechr,"\n")),alpha=ifelse((ggplotmatrix$adjpvaluechr<0.05 | !input$pval_filter_toggle),1.0,0.1)) + #
+    scale_x_continuous(breaks = reshape2::colsplit(block_index_labels_col,"_",c("chr","start","end"))$start,labels = block_index_labels_col) +
+    scale_y_continuous(breaks = reshape2::colsplit(block_index_labels_row,"_",c("chr","start","end"))$start,labels = block_index_labels_row) + theme(axis.text.x = element_text(angle=60, hjust=1)) +  
+    ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank())
+} #end instructions done IF correlation is specified.
+
+    #+ geom_contour(binwidth = .395,aes(z=value))
 ###    browser()
     #+ coord_flip() #+ scale_y_reverse(breaks=block_indices)
     #p
     #lumpy_points_toggle
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
     {
-      if(exists("basefn"))
+      if(exists("osteofn"))
       {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(basefn,"breakpoint_gint/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" )),error = function(e) NULL) 
-        tryCatch(lumpy_summarized_counts<-readRDS(paste0(basefn,"lumpy_sv/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" )),error = function(e) NULL)    
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(osteofn,"breakpoint_gint/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" )),error = function(e) NULL) 
+        tryCatch(lumpy_summarized_counts<-readRDS(paste0(osteofn,"lumpy_sv/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" )),error = function(e) NULL)    
       }else {
         tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"breakpoint_gint/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" ))),error = function(e) NULL) 
         tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"lumpy_sv/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" ))),error = function(e) NULL)   
@@ -637,9 +673,11 @@ if(!isolate(input$genes_toggle)){
     
    if(debug){browser()}
     print(plotly_output)
+    if(debug){browser()}
+    return(plotly_output)
   })
   outputOptions(output,"plotlyChromosomalHeatmap",suspendWhenHidden=F)
-  output$whole_genome_image<-renderUI({
+  output$whole_genome_image<-renderImage({
     
     input$whole_genome_max_cap
     input$goButton
@@ -647,10 +685,12 @@ if(!isolate(input$genes_toggle)){
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
     {
       data_prefix<-"osteo"
+      pngfn <- osteofn
     }
     if(isolate(input$data_source)=="TCGA_NBL_low_pass")
     {
       data_prefix<-"nbl"
+      pngfn <- basefn
     }
     if(is.null(data_prefix)){return(NULL)}
     # list(src = paste0("http://alps.nci.nih.gov/james/plotly_dashboard/whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"),
@@ -658,12 +698,16 @@ if(!isolate(input$genes_toggle)){
     #      width = isolate(input$heatmapHeight),
     #      height = round(isolate(input$heatmapHeight)/1.25),
     #      alt = "This is alternate text")
-    tags$img(src = paste0("http://alps.nci.nih.gov/james/plotly_dashboard/whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"),
-             #           contentType = 'image/png',
-             width = isolate(input$heatmapHeight),
-             height = round(isolate(input$heatmapHeight)/1.25),
-             alt = "whole genome png")
-  }) 
+    if(debug){browser()}
+    # tags$img(src = paste0("http://alps.nci.nih.gov/james/plotly_dashboard/whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"),
+    #          #           contentType = 'image/png',
+    #          width = isolate(input$heatmapHeight),
+    #          height = round(isolate(input$heatmapHeight)/1.25),
+    #          alt = "whole genome png")
+    # 
+    list(src=paste0(pngfn,"whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_chrom_cent_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"))
+  },deleteFile = F) 
+  
   
   # output$freq_table<-renderDataTable({
   # 
@@ -683,7 +727,7 @@ if(!isolate(input$genes_toggle)){
   get_colnames_gr_full<-function(){if(exists("colnames_gr_full")){return(colnames_gr_full)}else{return(NULL)}}
   
   # get_recast_matrix<-function(){return(recast_matrix)}
-  output$expression_data<-renderDataTable({
+  output$expression_data<-DT::renderDataTable({
     #browser()
     if(is.null(event_data("plotly_click"))){return(data.table())}
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
@@ -702,6 +746,8 @@ if(!isolate(input$genes_toggle)){
       #rowclick<-length(common_coords)-myReactives$currentClick$lat
       #colclick<-myReactives$currentClick$lng
      if(debug){browser()}
+      if(is.null(expression_data_gr)){tryCatch(expression_data_gr<-readRDS(paste0(get("osteofn",.GlobalEnv),"expression_data_gr.rds")),error = function(e) NULL) }
+      
       rowexpression<-as.data.table(subsetByOverlaps(expression_data_gr,get_rownames_gr_full()[seq(from=row_index_full,to=row_index_full+3)]))
       colexpression<-as.data.table(subsetByOverlaps(expression_data_gr,get_colnames_gr_full()[seq(from=col_index_full,to=col_index_full+3)]))} else {
         if(isolate(input$data_source)=="TCGA_NBL_low_pass" | isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
@@ -735,7 +781,7 @@ if(debug){browser()}
     outputexpression_df_sorted<-outputexpression_df[order(-outputexpression_df$rowVarPctl),]
     return(as.data.table(outputexpression_df_sorted))
   })
-  output$census_data<-renderDataTable({
+  output$census_data<-DT::renderDataTable({
     #
     if(is.null(event_data("plotly_click"))){return(data.table())}
     recast_matrix<-get_recast_matrix()
@@ -760,6 +806,7 @@ if(debug){browser()}
     # cat(file=stderr(),paste0("census_data"))
     # cat(file=stderr(),ls())
     #return(comb_census_df_t)
+    #browser()
     return(unique(as.data.table(comb_census_df))) #[,c("SYMBOL","seqnames","start","end","gene_type","rowMean","rowMeanPctl","rowVar","rowVarPctl")]
   })
   
@@ -834,7 +881,7 @@ if(debug){browser()}
                 ;}")
 })
   
-  output$shiny_return <- renderDataTable({
+  output$shiny_return <- DT::renderDataTable({
     input$current_node_id
     if(is.null(isolate(input$current_node_id))){return(data.table())}
     
@@ -847,6 +894,7 @@ if(debug){browser()}
   output$sample_info<-renderPlotly({
     input$sample_hist_alpha
     if(is.null(event_data("plotly_click"))){return(data.table())}
+    if(!exists("bin_data") & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     #browser()
     #ed <- event_data("plotly_click")
     if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
@@ -879,6 +927,7 @@ if(debug){browser()}
           layout(barmode = "overlay")
         
         print(sample_info_p)
+        if(debug){browser()}
         return(sample_info_p)
       }
     } #end code for in-house data.
@@ -889,10 +938,12 @@ if(debug){browser()}
     }
   })
   output$sample_info_scatter<-renderPlotly({
-    if(is.null(event_data("plotly_click"))){return(data.table())}
+    if(is.null(event_data("plotly_click"))){return(plotly_empty())}
     #browser()
-    if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
+    req(event_data("plotly_click"))
+    #if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
     recast_matrix<-get_recast_matrix()
+    if(!exists("bin_data") & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     if(!is.null("recast_matrix")) {
       row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
       column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
@@ -922,13 +973,19 @@ if(debug){browser()}
         add_trace(x = as.numeric(d[2,]),name=d[2,"probe"],y=seq(1:ncol(d)))# %>%
       # layout(barmode = "overlay")
       print(sample_info_p_scatter)
+      if(debug){browser()}
+      return(sample_info_p_scatter)
     }
-    
+
   })
   output$minimap<-renderPlotly({
-    if(is.null(event_data("plotly_click"))){return(data.table())}
+    #if(is.null(event_data("plotly_click"))){return(data.table())}
+    #if(is.null(event_data("plotly_click"))){return(NULL)}
+    req(event_data("plotly_click"))
+    #event_data("plotly_click")
+    #if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
+    if(!exists("bin_data") & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     
-    if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
     recast_matrix<-get_recast_matrix()
     ggplotmatrix_full<-getGGplotMatrix_full()
     recast_matrix_full<-get_recast_matrix_full()
@@ -966,12 +1023,15 @@ if(debug){browser()}
       #   add_trace(x = as.numeric(d[2,]),name=d[2,"probe"],y=seq(1:ncol(d)))# %>%
       # # layout(barmode = "overlay")
       # print(sample_info_p_scatter)
+      if(debug){browser()}
+      return(plotly_output)
     }
   })
   output$sample_info_scatter2<-renderPlotly({
-    
-    if (is.null(event_data("plotly_click"))) {return(data.table())}
-    #browser()
+    if(debug){browser()}
+    req(event_data("plotly_click"))
+    if (is.null(event_data("plotly_click"))) {return(NULL)}
+    if(!exists("bin_data") & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit" | isolate(input$data_source)=="TCGA_NBL_low_pass" | 
        isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
     {
@@ -1031,6 +1091,7 @@ if(debug){browser()}
         print(plotly::ggplotly(sample_info_p_scatter2,tooltip=c("text")))
         return(plotly::ggplotly(sample_info_p_scatter2,tooltip=c("text")))
       }
+      
     } #end in-house data processing
     
     if(isolate(input$data_source) %in% c("TCGA_AML_low_pass","TCGA_BRCA_low_pass","TCGA_OS_low_pass","TCGA_PRAD_low_pass"))
@@ -1070,7 +1131,7 @@ if(debug){browser()}
       #d["TCGA_CNV_data_gr.....sample"
     }
   })
-  output$freq_table <- renderDataTable({
+  output$freq_table <- DT::renderDataTable({
     #if(isolate(is.null(input$subset))){selected_rows<-1:nrow(mappability_df)} 
     #textv_subset<-textv[selected_rows]
     #d<-as.character(names(event_data("plotly_hover")))
@@ -1081,6 +1142,8 @@ if(debug){browser()}
     #                            as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1
     #                          ]))
     # cat(file=stderr(),rownames(get_recast_matrix())[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1])
+    #browser()
+    if(is.null(freq_data)){   tryCatch(freq_data<-data.table::fread(paste0(osteofn,"OS_freq_data.txt")),error = function(e) NULL)}
     recast_matrix<-get_recast_matrix()
     #cat(file=stderr(),paste0(d))
     if(!is.null("recast_matrix")) {
