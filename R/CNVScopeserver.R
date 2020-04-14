@@ -6,13 +6,14 @@
 #' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
 #' @importFrom tidyr unite
 #' @rawNamespace import(circlize, except = degree)
-#' @rawNamespace import(shiny, except = runExample)
+#' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(shinyjs, except = runExample)
 #' @rawNamespace import(RCurl, except = reset)
 #' @rawNamespace import(plotly, except = c(last_plot,select,filter))
 #' @rawNamespace import(igraph, except = c(decompose, spectrum, groups))
 #' @rawNamespace import(data.table, except = c(melt, dcast))
 #' @rawNamespace import(GenomicFeatures ,except = show)
+#' @importFrom DT renderDataTable
 #' @param session The shiny session object for the application.
 #' @param input shiny server input
 #' @param output shiny server output
@@ -33,6 +34,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 CNVScopeserver<-function(session,input, output, debug=F) {
 ensembl_gene_tx_data_gr <- if(exists("ensembl_gene_tx_data_gr")){get("ensembl_gene_tx_data_gr")} else {NULL}
 baseurl <- if(exists("baseurl")){get("baseurl")} else {NULL}
+adjpvaluechr <- if(exists("adjpvaluechr")){get("adjpvaluechr")} else {NULL}
 basefn <- if(exists("basefn")){get("basefn")} else {NULL}
 osteofn <- if(exists("osteofn")){get("osteofn")} else {NULL}
 start1 <- if(exists("start1")){get("start1")} else {NULL}

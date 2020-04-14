@@ -10,5 +10,7 @@
 ^.*\\.yml$
 ^.*\\.gif$
 ^\docs$
+^\.github$
+^\.github\workflows$
 docs
 \docs

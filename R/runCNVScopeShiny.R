@@ -8,7 +8,7 @@
 #' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
 #' @importFrom BiocManager repositories
 #' @rawNamespace import(circlize, except = degree)
-#' @rawNamespace import(shiny, except = runExample)
+#' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(shinyjs, except = runExample)
 #' @rawNamespace import(RCurl, except = reset)
 #' @rawNamespace import(plotly, except = c(last_plot,select,filter))
