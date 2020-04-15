@@ -64,11 +64,10 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-          Rscript -e "devtools::install('.', dependencies=TRUE, repos = BiocManager::repositories())"
+          Rscript -e "BiocManager::install(c('DNAcopy','GenomeInfoDb','BSgenome.Hsapiens.UCSC.hg19'))"
+          Rscript -e "setRepositories(ind=c(1:2)); devtools::install('.', dependencies=TRUE, repos = BiocManager::repositories())"
       - name: Install dependencies
         run: |
-          setRepositories(ind=c(1:2))
-          BiocManager::install(c("DNAcopy","GenomeInfoDb","BSgenome.Hsapiens.UCSC.hg19"))
           remotes::install_github("jamesdalg/CNVScope")
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
