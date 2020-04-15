@@ -4,8 +4,12 @@
 \alias{postProcessLinRegMatrix}
 \title{Postprocess linear regression matrix.}
 \usage{
-postProcessLinRegMatrix(input_matrix, LM_mat, cor_type = "pearson",
-  inf_replacement_val = 300)
+postProcessLinRegMatrix(
+  input_matrix,
+  LM_mat,
+  cor_type = "pearson",
+  inf_replacement_val = 300
+)
 }
 \arguments{
 \item{input_matrix}{The input matrix, which consists of bins and samples (no LM or correlation has been done on the segmentation values)}

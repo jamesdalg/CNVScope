@@ -4,13 +4,20 @@
 \alias{runCNVScopeShiny}
 \title{Runs the CNVScope plotly shiny application.}
 \usage{
-runCNVScopeShiny(baseurl = NULL, basefn = NULL, debug = F,
-  useCNVScopePublicData = F)
+runCNVScopeShiny(
+  baseurl = NULL,
+  basefn = NULL,
+  osteofn = NULL,
+  debug = F,
+  useCNVScopePublicData = F
+)
 }
 \arguments{
 \item{baseurl}{the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.}
 
 \item{basefn}{the linux file path of the same source files.}
+
+\item{osteofn}{the linux file path of the OS files.}
 
 \item{debug}{Enable debugging output.}
 

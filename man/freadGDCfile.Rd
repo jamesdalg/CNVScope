@@ -4,9 +4,14 @@
 \alias{freadGDCfile}
 \title{Read GDC segmentation datafile for low-pass sequencing data.}
 \usage{
-freadGDCfile(file, fread_skip = NULL, format = "TARGET",
-  CN_colname = "log2", sample_pattern = "[^_]+",
-  sample_colname = NULL)
+freadGDCfile(
+  file,
+  fread_skip = NULL,
+  format = "TARGET",
+  CN_colname = "log2",
+  sample_pattern = "[^_]+",
+  sample_colname = NULL
+)
 }
 \arguments{
 \item{file}{GDC file to be read}
