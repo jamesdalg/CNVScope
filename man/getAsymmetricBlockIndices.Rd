@@ -4,9 +4,15 @@
 \alias{getAsymmetricBlockIndices}
 \title{Get Block Indices from an asymmetric (or symmetric) matrix.}
 \usage{
-getAsymmetricBlockIndices(genomicmatrix = NULL, algorithm = "HiCseg",
-  nb_change_max = 100, distrib = "G", model = "D",
-  MI_strategy = "average", transpose = T)
+getAsymmetricBlockIndices(
+  genomicmatrix = NULL,
+  algorithm = "HiCseg",
+  nb_change_max = 100,
+  distrib = "G",
+  model = "D",
+  MI_strategy = "average",
+  transpose = T
+)
 }
 \arguments{
 \item{genomicmatrix}{the large, whole matrix from which blocks are taken}

@@ -4,10 +4,19 @@
 \alias{signedRescale}
 \title{Rescale positive and negative data, preserving sign information.}
 \usage{
-signedRescale(matrix, global_max = NULL, global_min = NULL,
-  global_sigma = NULL, global_mu = NULL, max_cap = NULL,
-  method = "minmax", tan_transform = F, global_sigma_pos = NULL,
-  global_sigma_neg = NULL, asymptotic_max = T)
+signedRescale(
+  matrix,
+  global_max = NULL,
+  global_min = NULL,
+  global_sigma = NULL,
+  global_mu = NULL,
+  max_cap = NULL,
+  method = "minmax",
+  tan_transform = F,
+  global_sigma_pos = NULL,
+  global_sigma_neg = NULL,
+  asymptotic_max = T
+)
 }
 \arguments{
 \item{matrix}{A matrix to be transformed}

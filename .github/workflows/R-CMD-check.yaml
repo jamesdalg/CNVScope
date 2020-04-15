@@ -66,7 +66,7 @@ jobs:
           Rscript -e "devtools::install('.', dependencies=TRUE, repos = BiocManager::repositories())"
       - name: Install dependencies
         run: |
-          install.packages("BiocManager")
+          install.packages("BiocManager","knitr")
           BiocManager::install(c("DNAcopy","GenomeInfoDb","BSgenome.Hsapiens.UCSC.hg19"))
           setRepositories(ind=c(1:2))
           remotes::install_github("jamesdalg/CNVScope")

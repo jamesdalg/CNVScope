@@ -4,8 +4,7 @@
 \alias{averageMatrixEdges}
 \title{Average edges of a matrix to facilitate downsampling.}
 \usage{
-averageMatrixEdges(unchangedmatrix, nedges = 1, dimension = c("row",
-  "column"))
+averageMatrixEdges(unchangedmatrix, nedges = 1, dimension = c("row", "column"))
 }
 \arguments{
 \item{unchangedmatrix}{A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.}

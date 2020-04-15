@@ -4,10 +4,20 @@
 \alias{writeAsymmetricMeltedChromosomalMatrixToDisk}
 \title{Write a matrix, with genes, of a submatrix of a whole genome interaction matrix to disk.}
 \usage{
-writeAsymmetricMeltedChromosomalMatrixToDisk(whole_genome_matrix, chrom1,
-  chrom2, extra_data_matrix = NULL, transpose = F, sequential = T,
-  debug = T, desired_range_start = 50, desired_range_end = 300,
-  saveToDisk = T, max_cap = NULL, rescale = T)
+writeAsymmetricMeltedChromosomalMatrixToDisk(
+  whole_genome_matrix,
+  chrom1,
+  chrom2,
+  extra_data_matrix = NULL,
+  transpose = F,
+  sequential = T,
+  debug = T,
+  desired_range_start = 50,
+  desired_range_end = 300,
+  saveToDisk = T,
+  max_cap = NULL,
+  rescale = T
+)
 }
 \arguments{
 \item{whole_genome_matrix}{A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.}
