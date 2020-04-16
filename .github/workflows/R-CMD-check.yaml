@@ -71,11 +71,12 @@ jobs:
           preinstall_packages = c('DNAcopy','GenomeInfoDb','BSgenome.Hsapiens.UCSC.hg19')
           package.check <-lapply(preinstall_packages, FUN = function(x) {    
           if (!require(x, character.only = TRUE)) {
-          install.packages(x, dependencies = TRUE)
+          BiocManager::install(x, dependencies = TRUE)
           library(x, character.only = TRUE)
           }
           })
           search()
+          setRepositories(ind=c(1:2))
           remotes::install_github("jamesdalg/CNVScope")
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
