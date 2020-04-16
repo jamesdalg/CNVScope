@@ -72,6 +72,9 @@ jobs:
           if (!require("BiocManager", character.only = TRUE)) {
           install.packages("BiocManager")
           }
+          if (!require("pwr", character.only = TRUE)) {
+          install.packages("pwr")
+          }
           preinstall_packages = c('DNAcopy','GenomeInfoDb','BSgenome.Hsapiens.UCSC.hg19')
           package.check2 <-lapply(preinstall_packages, FUN = function(x) {    
           if (!require(x, character.only = TRUE)) {
