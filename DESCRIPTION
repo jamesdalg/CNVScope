@@ -14,5 +14,5 @@ URL: https://github.com/jamesdalg/CNVScope/
 biocViews: 
 Description: Provides the ability to create interaction maps, discover CNV map domains (edges), gene annotate interactions, and create interactive visualizations of these CNV interaction maps.
 License: BSD_3_clause + file LICENSE
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 LazyData: true
