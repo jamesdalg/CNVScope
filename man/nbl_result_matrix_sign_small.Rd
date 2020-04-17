@@ -3,7 +3,9 @@
 \name{nbl_result_matrix_sign_small}
 \alias{nbl_result_matrix_sign_small}
 \title{Neuroblastoma sample CNV relationship matrix}
-\format{A matrix with 25 rows and 25 variables}
+\format{
+A matrix with 25 rows and 25 variables
+}
 \source{
 \url{https://gdc.cancer.gov/}
 }
