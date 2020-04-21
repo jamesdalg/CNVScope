@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="James Dalgleish" />
 
@@ -120,9 +119,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -291,7 +287,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -342,43 +339,31 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## [5,] 3.800939 176.388907 299.519384        Inf        Inf</code></pre>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>nbl_result_matrix_sign_corrected&lt;-<span class="kw">postProcessLinRegMatrix</span>(<span class="dt">input_matrix =</span> nbl_input_matrix[<span class="dv">1</span><span class="op">:</span><span class="dv">25</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">25</span>],<span class="dt">LM_mat =</span> nbl_result_matrix_small,<span class="dt">cor_type =</span> <span class="st">&quot;pearson&quot;</span>,<span class="dt">inf_replacement_val =</span> <span class="dv">300</span>)</span>
 <span id="cb9-2"><a href="#cb9-2"></a>nbl_result_matrix_sign_corrected[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</span></code></pre></div>
-<pre><code>##                      chr1_1_1000000 chr1_1000001_2000000
-## chr1_1_1000000           300.000000             4.766959
-## chr1_1000001_2000000       4.766959           300.000000
-## chr1_2000001_3000000       3.743363           199.883186
-## chr1_3000001_4000000       3.800939           176.388907
-## chr1_4000001_5000000       3.800939           176.388907
-##                      chr1_2000001_3000000 chr1_3000001_4000000
-## chr1_1_1000000                   3.743363             3.800939
-## chr1_1000001_2000000           199.883186           176.388907
-## chr1_2000001_3000000           300.000000           299.519384
-## chr1_3000001_4000000           299.519384           300.000000
-## chr1_4000001_5000000           299.519384           300.000000
-##                      chr1_4000001_5000000
-## chr1_1_1000000                   3.800939
-## chr1_1000001_2000000           176.388907
-## chr1_2000001_3000000           299.519384
-## chr1_3000001_4000000           300.000000
-## chr1_4000001_5000000           300.000000</code></pre>
+<pre><code>##                      chr1_1_1000000 chr1_1000001_2000000 chr1_2000001_3000000
+## chr1_1_1000000           300.000000             4.766959             3.743363
+## chr1_1000001_2000000       4.766959           300.000000           199.883186
+## chr1_2000001_3000000       3.743363           199.883186           300.000000
+## chr1_3000001_4000000       3.800939           176.388907           299.519384
+## chr1_4000001_5000000       3.800939           176.388907           299.519384
+##                      chr1_3000001_4000000 chr1_4000001_5000000
+## chr1_1_1000000                   3.800939             3.800939
+## chr1_1000001_2000000           176.388907           176.388907
+## chr1_2000001_3000000           299.519384           299.519384
+## chr1_3000001_4000000           300.000000           300.000000
+## chr1_4000001_5000000           300.000000           300.000000</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>nbl_result_matrix_sign_corrected[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</span></code></pre></div>
-<pre><code>##                      chr1_1_1000000 chr1_1000001_2000000
-## chr1_1_1000000           300.000000             4.766959
-## chr1_1000001_2000000       4.766959           300.000000
-## chr1_2000001_3000000       3.743363           199.883186
-## chr1_3000001_4000000       3.800939           176.388907
-## chr1_4000001_5000000       3.800939           176.388907
-##                      chr1_2000001_3000000 chr1_3000001_4000000
-## chr1_1_1000000                   3.743363             3.800939
-## chr1_1000001_2000000           199.883186           176.388907
-## chr1_2000001_3000000           300.000000           299.519384
-## chr1_3000001_4000000           299.519384           300.000000
-## chr1_4000001_5000000           299.519384           300.000000
-##                      chr1_4000001_5000000
-## chr1_1_1000000                   3.800939
-## chr1_1000001_2000000           176.388907
-## chr1_2000001_3000000           299.519384
-## chr1_3000001_4000000           300.000000
-## chr1_4000001_5000000           300.000000</code></pre>
+<pre><code>##                      chr1_1_1000000 chr1_1000001_2000000 chr1_2000001_3000000
+## chr1_1_1000000           300.000000             4.766959             3.743363
+## chr1_1000001_2000000       4.766959           300.000000           199.883186
+## chr1_2000001_3000000       3.743363           199.883186           300.000000
+## chr1_3000001_4000000       3.800939           176.388907           299.519384
+## chr1_4000001_5000000       3.800939           176.388907           299.519384
+##                      chr1_3000001_4000000 chr1_4000001_5000000
+## chr1_1_1000000                   3.800939             3.800939
+## chr1_1000001_2000000           176.388907           176.388907
+## chr1_2000001_3000000           299.519384           299.519384
+## chr1_3000001_4000000           300.000000           300.000000
+## chr1_4000001_5000000           300.000000           300.000000</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>ComplexHeatmap<span class="op">::</span><span class="kw">Heatmap</span>(<span class="kw">signedRescale</span>(<span class="kw">as.matrix</span>(nbl_result_matrix_sign_corrected)),<span class="dt">col =</span> circlize<span class="op">::</span><span class="kw">colorRamp2</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">0.5</span>,<span class="dv">1</span>),<span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>)),<span class="dt">cluster_rows =</span> F,<span class="dt">cluster_columns =</span> F,<span class="dt">show_heatmap_legend =</span> F,<span class="dt">show_column_names =</span> F,<span class="dt">show_row_names =</span> F)</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --> Finally, the whole genome matrix is too big to plot interactively without crashing most browsers using the plotly package. We’ll need to break things apart a bit. A final function will write chromosomal pair heatmaps to disk with genes from ensembl (hg19 coordinates) in encoded for each square in the matrix. Please only use this function on the WHOLE matrix, not on the small subset we have provided in documentation.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="cf">if</span>(<span class="op">!</span><span class="kw">dir.exists</span>(<span class="st">&quot;nbl_matrix_set&quot;</span>)){<span class="kw">dir.create</span>(<span class="st">&quot;nbl_matrix_set&quot;</span>)}</span>
