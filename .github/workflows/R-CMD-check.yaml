@@ -66,6 +66,7 @@ jobs:
           sudo -s eval "$sysreqs"
           Rscript -e "BiocManager::install(c('DNAcopy','GenomeInfoDb','BSgenome.Hsapiens.UCSC.hg19'))"
           Rscript -e "setRepositories(ind=c(1:2)); devtools::install('.', dependencies=TRUE, repos = BiocManager::repositories())"
+          sudo apt-get install libgsl-dev
       - name: Install dependencies
         run: |
           setRepositories(ind=c(1:2))
