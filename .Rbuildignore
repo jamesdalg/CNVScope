@@ -14,3 +14,4 @@
 ^\.github\workflows$
 docs
 \docs
+^CRAN-RELEASE$

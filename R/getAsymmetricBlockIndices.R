@@ -21,7 +21,7 @@
 #' 
 #' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
 #' submatrix_tiny<-nbl_result_matrix_sign_small
-#' tiny_test<-getAsymmetricBlockIndices(submatrix_tiny)
+#' tiny_test<-getAsymmetricBlockIndices(submatrix_tiny,nb_change_max=10,algorithm="jointSeg")
 #' \dontrun{
 #' submatrix_wide<-submatrix_tiny[1:5,]
 #' submatrix_narrow<-submatrix_tiny[,1:5]
@@ -85,11 +85,11 @@
 #' @export
 getAsymmetricBlockIndices<-function(genomicmatrix=NULL,algorithm="HiCseg",nb_change_max=100,distrib = "G",model = "D",MI_strategy="average",transpose=T)
 {
-  if(Sys.info()["sysname"]=="Darwin"){algorithm="jointSeg"}
+#  if(Sys.info()["sysname"]=="Darwin"){algorithm="jointSeg"}
   if(algorithm=="jointSeg"){
     breakpoints_col<-jointseg::jointSeg(genomicmatrix,K=nb_change_max)$bestBkp
     breakpoints_row<-jointseg::jointSeg(genomicmatrix,K=nb_change_max)$bestBkp
-    if(transpose) {output_list<-list(breakpoints_col,breakpoints_row,t_breakpoints_col,t_breakpoints_row)
+    if(transpose) {
     t_breakpoints_col<-jointseg::jointSeg(t(genomicmatrix),K=nb_change_max)$bestBkp
     t_breakpoints_row<-jointseg::jointSeg(t(genomicmatrix),K=nb_change_max)$bestBkp
     output_list<-list(breakpoints_col,breakpoints_row,t_breakpoints_col,t_breakpoints_row)
