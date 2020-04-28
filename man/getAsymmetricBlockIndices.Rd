@@ -47,7 +47,7 @@ This function segments a matrix, including asymmetric matrices using multiple im
 
 load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
 submatrix_tiny<-nbl_result_matrix_sign_small
-tiny_test<-getAsymmetricBlockIndices(submatrix_tiny)
+tiny_test<-getAsymmetricBlockIndices(submatrix_tiny,nb_change_max=10,algorithm="jointSeg")
 \dontrun{
 submatrix_wide<-submatrix_tiny[1:5,]
 submatrix_narrow<-submatrix_tiny[,1:5]
