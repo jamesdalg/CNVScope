@@ -77,10 +77,17 @@ chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
 ```
 We could then utilize our domain finding function to find the borders of domains in the matrix. There's an obvious distruption near the left center of the matrix (see the blue streaks of anticorrelation?).
 ```{r breakpoints}
+if(.Platform$OS.type == "unix" |
+.Platform$OS.type == "windows"){
 colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]
 breakpoints<-colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))] %>% stringr::str_split_fixed(string = .,pattern="_",n=3) %>% as.matrix() %>% .[,2] %>% as.numeric()
 breakpoint_labels <- colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]
-breakpoint_labels
+breakpoint_labels} else {
+colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"),algorithm = "jointSeg",nb_change_max = round(min(dim(chr_7_mat))/5))$breakpoints_col]
+breakpoints<-colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"),algorithm = "jointSeg",nb_change_max = round(min(dim(chr_7_mat))/5))$breakpoints_col] %>% stringr::str_split_fixed(string = .,pattern="_",n=3) %>% as.matrix() %>% .[,2] %>% as.numeric()
+breakpoint_labels <- colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"),algorithm = "jointSeg",nb_change_max = round(min(dim(chr_7_mat))/5))$breakpoints_col]
+breakpoint_labels  
+}
 ```
 Now, we'll make another plot, only labeling the breakpoints.
 
