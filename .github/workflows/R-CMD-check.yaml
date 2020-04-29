@@ -74,6 +74,10 @@ jobs:
           if (!require("BiocManager", character.only = TRUE)) {
           install.packages("BiocManager")
           }
+          if(Sys.info()["sysname"]!="Linux"){
+          BiocManager::install(c('DNAcopy','GenomeInfoDb','BSgenome.Hsapiens.UCSC.hg19',
+          'ComplexHeatmap'))
+          install.packages("pwr")}
           if (!require("pwr", character.only = TRUE)) {
           install.packages("pwr")
           }
