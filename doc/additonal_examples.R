@@ -32,10 +32,17 @@ chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 
 ## ----breakpoints--------------------------------------------------------------
+if(Sys.info()['sysname'] == "Linux" |
+Sys.info()['sysname'] == "Windows"){
 colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]
 breakpoints<-colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))] %>% stringr::str_split_fixed(string = .,pattern="_",n=3) %>% as.matrix() %>% .[,2] %>% as.numeric()
 breakpoint_labels <- colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]
-breakpoint_labels
+breakpoint_labels} else {
+colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"),algorithm = "jointSeg",nb_change_max = round(min(dim(chr_7_mat))/5))$breakpoints_col]
+breakpoints<-colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"),algorithm = "jointSeg",nb_change_max = round(min(dim(chr_7_mat))/5))$breakpoints_col] %>% stringr::str_split_fixed(string = .,pattern="_",n=3) %>% as.matrix() %>% .[,2] %>% as.numeric()
+breakpoint_labels <- colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"),algorithm = "jointSeg",nb_change_max = round(min(dim(chr_7_mat))/5))$breakpoints_col]
+breakpoint_labels  
+}
 
 ## ----breakpoint_plot----------------------------------------------------------
 chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>% 
