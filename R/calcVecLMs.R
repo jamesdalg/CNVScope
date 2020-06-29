@@ -2,7 +2,8 @@
 #'
 #' Creates a matrix of linear regression p-values, log transformed from every combination of columns in the parent matrix.
 #' @keywords lm linear regression matrix
-#' @import parallel rslurm
+#' @import parallel
+#' @importFrom rslurm slurm_apply get_slurm_out
 #' @param bin_data The parent matrix, with columns to have linear regression performed on them.
 #' @param use_slurm Paralleize over a number of slurm HPC jobs? If false, the program will simply run locally.
 #' @param slurmjob the slurm job object produced by rslurm::slurm_apply(), after running the function initially.
@@ -39,14 +40,14 @@ calcVecLMs<-function(bin_data,use_slurm=F,job_finished=F,slurmjob=NULL,n_nodes=N
   if(use_slurm){
     if(job_finished)
     {
-      output_matrix<-matrix(get_slurm_out(slurmjob),ncol=ncol(bin_data))
+      output_matrix<-matrix(rslurm::get_slurm_out(slurmjob),ncol=ncol(bin_data))
       output_matrix[is.infinite(unlist(output_matrix))]<-max(unlist(output_matrix[!is.infinite(unlist(output_matrix))]))
       colnames(output_matrix)<-colnames(bin_data)
       rownames(output_matrix)<-colnames(bin_data)
       return(output_matrix)
     } else {
       if(is.null(n_nodes)){n_nodes<-ncol(bin_data_df)/2}
-      lm_test_sjob <- slurm_apply(function(x,y) -log(summary(lm(unlist(bin_data_df[,y])~unlist(bin_data_df[,x])))$coefficients[2,4]), bin.pairs, jobname = 'test_apply',
+      lm_test_sjob <- rslurm::slurm_apply(function(x,y) -log(summary(lm(unlist(bin_data_df[,y])~unlist(bin_data_df[,x])))$coefficients[2,4]), bin.pairs, jobname = 'test_apply',
                                   nodes = n_nodes, cpus_per_node = cpus_on_each_node, submit = T,slurm_options = list(partition="ccr,norm,quick",mem=memory_per_node,time=walltime,cpus_per_task=cpus_on_each_node))
       return(lm_test_sjob)
     }
