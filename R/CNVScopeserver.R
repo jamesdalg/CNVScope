@@ -3,11 +3,12 @@
 #'  Server function of the CNVScope shiny application. run with runCNVScopeShiny
 #' @name CNVScopeserver 
 #' @keywords CNV heatmap shiny plotly
-#' @import ggplot2 reshape2 magrittr htmltools htmlwidgets logging foreach GenomicInteractions
+#' @import ggplot2 reshape2 magrittr htmltools htmlwidgets foreach GenomicInteractions
 #' @importFrom tidyr unite
 #' @importFrom igraph graph.empty degree add.vertices add.edges
 #' @importFrom visNetwork toVisNetworkData visNetwork visInteraction visEvents renderVisNetwork
 #' @importFrom jointseg jointSeg
+#' @importFrom logging addHandler
 #' @rawNamespace import(circlize, except = degree)
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(shinyjs, except = runExample)
@@ -158,7 +159,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
   {
     return(isolate(input$heatmapHeight)) 
   }
-  addHandler(printLogJs)
+  logging::addHandler(printLogJs)
   isolate(input$goButton)
   # observe({
   #   input$goButton
