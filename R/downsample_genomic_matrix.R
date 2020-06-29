@@ -3,7 +3,8 @@
 #' Downsamples a matrix by a specified factor.
 #' @name downsample_genomic_matrix
 #' @keywords signed rescale positive negative matrix
-#' @import reshape2 OpenImageR foreach
+#' @import reshape2 foreach
+#' @importFrom OpenImageR down_sample_image
 #' @param whole_matrix A matrix to be downsampled, on a single chromosome
 #' @param downsamplefactor A factor by which to reduce the matrix. Must be something that both the row and columns can be divisible by.
 #' @param singlechromosome Single chromosome mode; Multi-chromosome not yet implemented (leave T)

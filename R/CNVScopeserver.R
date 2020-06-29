@@ -3,10 +3,11 @@
 #'  Server function of the CNVScope shiny application. run with runCNVScopeShiny
 #' @name CNVScopeserver 
 #' @keywords CNV heatmap shiny plotly
-#' @import shinycssloaders shinythemes ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
+#' @import ggplot2 reshape2 magrittr htmltools htmlwidgets logging foreach GenomicInteractions
 #' @importFrom tidyr unite
 #' @importFrom igraph graph.empty degree add.vertices add.edges
-#' @importFrom visNetwork toVisNetworkData visNetwork visInteraction visEvents
+#' @importFrom visNetwork toVisNetworkData visNetwork visInteraction visEvents renderVisNetwork
+#' @importFrom jointseg jointSeg
 #' @rawNamespace import(circlize, except = degree)
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(shinyjs, except = runExample)
@@ -850,7 +851,7 @@ if(debug){browser()}
       return(output)
       
     })
-  output$network <- renderVisNetwork({
+  output$network <- visNetwork::renderVisNetwork({
     if (input$goButton == 0) {return()}
     
     input$goButton
