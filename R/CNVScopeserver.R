@@ -387,7 +387,9 @@ input_mat_cor<-cor(t(input_mat),method=isolate(input$cor_method))
 input_mat_cor_flat<-input_mat_cor %>% reshape2::melt()
 #grab ggplotmatrix and add correlation values.
 #if(!isolate(input$genes_toggle)){ggplotmatrix$value1<-NULL}
-ggplotmatrix_joined<- dplyr::inner_join(x=ggplotmatrix,y=input_mat_cor_flat,by=c("Var1"="Var1","Var2"="Var2"))
+#browser()
+#ggplotmatrix_joined<- dplyr::inner_join(x=ggplotmatrix,y=input_mat_cor_flat,by=c("Var1"="Var1","Var2"="Var2"))
+ggplotmatrix_joined<- data.table::merge.data.table(x=ggplotmatrix,y=input_mat_cor_flat,by.x=c("Var1","Var2"),by.y=c("Var1","Var2"),all=F)
 colnames(ggplotmatrix_joined) <- ggplotmatrix_joined %>% colnames() %>%
   gsub(pattern = "value.x",replacement = "linregval") %>%
   gsub(pattern = "value.y",replacement = "correlation")
