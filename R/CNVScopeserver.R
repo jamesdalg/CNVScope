@@ -3,14 +3,15 @@
 #'  Server function of the CNVScope shiny application. run with runCNVScopeShiny
 #' @name CNVScopeserver 
 #' @keywords CNV heatmap shiny plotly
-#' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
+#' @import shinycssloaders shinythemes ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
 #' @importFrom tidyr unite
+#' @importFrom igraph graph.empty degree add.vertices add.edges
+#' @importFrom visNetwork toVisNetworkData visNetwork visInteraction visEvents
 #' @rawNamespace import(circlize, except = degree)
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(shinyjs, except = runExample)
 #' @rawNamespace import(RCurl, except = reset)
 #' @rawNamespace import(plotly, except = c(last_plot,select,filter))
-#' @rawNamespace import(igraph, except = c(decompose, spectrum, groups))
 #' @rawNamespace import(data.table, except = c(melt, dcast))
 #' @rawNamespace import(GenomicFeatures ,except = show)
 #' @importFrom DT renderDataTable
@@ -863,9 +864,9 @@ if(debug){browser()}
     
     edges<-rbind(as.character(ggplotmatrix_filtered$Var1),as.character(ggplotmatrix_filtered$Var2))
     weights<-ggplotmatrix_filtered$value
-    G <- graph.empty(n = 0, directed = T)
-    G <- add.vertices(G, length(vertex.attrs$name), attr = vertex.attrs)
-    G <- add.edges(G, edges,weight=weights)
+    G <- igraph::graph.empty(n = 0, directed = T)
+    G <- igraph::add.vertices(G, length(vertex.attrs$name), attr = vertex.attrs)
+    G <- igraph::add.edges(G, edges,weight=weights)
     G_connected<-delete.isolates(G)
     #    weights_discretized<-arules::discretize(E(G_connected)$weight)
     #     G_connected_D3<-networkD3::igraph_to_networkD3(G_connected,group = as.character(arules::discretize(strength(G_connected))))
@@ -877,8 +878,8 @@ if(debug){browser()}
     col_fun = colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))
     G_connected_vis$nodes$color<-sapply(col_fun(heatmaply::percentize(strength(G_connected)))  ,function(x) substr(x,start = 1,stop =  7))
     visNetwork::visNetwork(nodes = G_connected_vis$nodes,edges = G_connected_vis$edges,width = isolate(input$heatmapHeight),height = round(isolate(input$heatmapHeight)/1.25))  %>%
-      visInteraction(hover = TRUE) %>%
-      visEvents(hoverNode = "function(nodes) {
+      visNetwork::visInteraction(hover = TRUE) %>%
+      visNetwork::visEvents(hoverNode = "function(nodes) {
                 Shiny.onInputChange('current_node_id', nodes);
                 ;}")
 })
