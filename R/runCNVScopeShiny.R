@@ -5,13 +5,12 @@
 #' For a simple installation, please use the runCNVScopeLocal function.
 #' @name runCNVScopeShiny
 #' @keywords CNV heatmap shiny plotly
-#' @import  ggplot2 reshape2 magrittr htmltools htmlwidgets foreach GenomicInteractions
+#' @import  ggplot2 reshape2 magrittr htmltools htmlwidgets GenomicInteractions
 #' @importFrom logging logerror
 #' @importFrom shinythemes shinytheme
 #' @importFrom BiocManager repositories
 #' @importFrom shinycssloaders withSpinner 
 #' @rawNamespace import(RCurl, except = reset)
-#' @rawNamespace import(circlize, except = degree)
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(shinyjs, except = runExample)
 #' @rawNamespace import(plotly, except = c(last_plot,select,filter))
