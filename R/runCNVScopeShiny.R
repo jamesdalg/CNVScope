@@ -15,7 +15,6 @@
 #' @rawNamespace import(shinyjs, except = runExample)
 #' @rawNamespace import(plotly, except = c(last_plot,select,filter))
 #' @rawNamespace import(data.table, except = c(melt, dcast))
-#' @rawNamespace import(GenomicFeatures ,except = show)
 #' @param baseurl the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.
 #' @param basefn the linux file path of the same source files.
 #' @param osteofn the linux file path of the OS files.
@@ -32,6 +31,7 @@
 
 
 runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, osteofn=NULL,debug=F, useCNVScopePublicData=F) {
+  #rawNamespace import(GenomicFeatures ,except = show)
   menu <- if(exists("menu")){get("menu")} else {NULL}
   browse <- if(exists("browse")){get("browse")} else {NULL}
   if(useCNVScopePublicData)

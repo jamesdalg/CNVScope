@@ -12,7 +12,6 @@
 #' @rawNamespace import(RCurl, except = reset)
 #' @rawNamespace import(plotly, except = c(last_plot,select,filter))
 #' @rawNamespace import(data.table, except = c(melt, dcast))
-#' @rawNamespace import(GenomicFeatures ,except = show)
 #' @importFrom DT renderDataTable
 #' @param session The shiny session object for the application.
 #' @param input shiny server input
@@ -30,6 +29,7 @@
 #                  "expression_data_gr_nbl",'start2','start1','value','Var1','Var2','value1',
 #                 'tcga_type','census_data_gr','common_coords','myReactives',
 #                  'genev','delete.isolates','freq_data'),add = F)
+#rawNamespace import(GenomicFeatures ,except = show)
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 CNVScopeserver<-function(session,input, output, debug=F) {
 ensembl_gene_tx_data_gr <- if(exists("ensembl_gene_tx_data_gr")){get("ensembl_gene_tx_data_gr")} else {NULL}
@@ -768,8 +768,8 @@ if(debug){browser()}
             }
           #mcols(expression_data_gr_nbl)$SYMBOL<-expression_data_gr_nbl$....external_gene_name
          if(debug){browser()}
-          rowexpression<-as.data.table(subsetByOverlaps(expression_data_gr_nbl,rownames_gr_full[rownames_gr_full@ranges@start==event_data("plotly_click")[["y"]]]))
-          colexpression<-as.data.table(subsetByOverlaps(expression_data_gr_nbl,colnames_gr_full[colnames_gr_full@ranges@start==event_data("plotly_click")[["x"]]]))
+          rowexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr_nbl,rownames_gr_full[rownames_gr_full@ranges@start==event_data("plotly_click")[["y"]]]))
+          colexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr_nbl,colnames_gr_full[colnames_gr_full@ranges@start==event_data("plotly_click")[["x"]]]))
         }
       }
     

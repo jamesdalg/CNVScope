@@ -7,8 +7,6 @@
 #' @importFrom data.table fread
 #' @importFrom reshape2 colsplit
 #' @importFrom tidyr drop_na unite
-#' @importFrom GenomicRanges tileGenome mcols
-#' @importFrom IRanges mergeByOverlaps IRanges
 #' @importFrom stringr str_detect
 #' @importFrom plyr ddply
 #' @importFrom dplyr select mutate everything
@@ -40,6 +38,8 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
 freadskip=NULL, parallel = F,debug=F,
 chromosomes=paste0("chr",c(seq(1:22),"X"),"_"),sample_pat="",
 sample_col="sample",chrlabel=">chr", startlabel="begin", endlabel="end",cnlabel="log2") {
+  #importFrom GenomicRanges tileGenome mcols
+  #importFrom IRanges mergeByOverlaps IRanges
 chr <- if(exists("chr")){get("chr")} else {NULL}
 cn <- if(exists("cn")){get("cn")} else {NULL}
   

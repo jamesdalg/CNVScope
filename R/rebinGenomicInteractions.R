@@ -12,7 +12,6 @@
 #' @keywords GenomicInteractions bin matrix colnames rownames binning bin
 #' @import GenomicInteractions
 #' @importFrom GenomicInteractions anchorOne anchorTwo
-#' @importFrom S4Vectors mcols mcols<-
 #' @import foreach doParallel
 #' @examples
 #' foreach::registerDoSEQ()
@@ -32,6 +31,7 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
 {
   #importFrom GenomicRanges nearest GRanges
   #importFrom InteractionSet findOverlaps
+  #importFrom S4Vectors mcols mcols<-
   i <- if(exists("i")){get("i")} else {NULL}
   if(is.null(gint)){return("No GenomicInteractions to rebin!")}
   if(!is.null(whole_genome_matrix)){
@@ -41,7 +41,7 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
   output<-foreach(i=1:length(gint),.inorder = T,.combine="rbind",.errorhandling = "pass",.export = ls()) %dopar% #length(breakpoint_gint_full)length(breakpoint_gint_full)
   {
     #current_int_df<-as.data.table(gint[i]) #
-    current_int_df<-as.data.frame(cbind(as.data.frame(GenomicInteractions::anchorOne(gint)[i]),as.data.frame(GenomicInteractions::anchorTwo(gint)[i]),as.data.frame(mcols(gint[i]))))
+    current_int_df<-as.data.frame(cbind(as.data.frame(GenomicInteractions::anchorOne(gint)[i]),as.data.frame(GenomicInteractions::anchorTwo(gint)[i]),as.data.frame(S4Vectors::mcols(gint[i]))))
     print(paste0(i/length(gint)*100,"%"))
     if(method=="overlap")
     {

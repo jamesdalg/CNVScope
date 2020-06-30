@@ -13,6 +13,6 @@ GRanges_to_underscored_pos<-function(input_gr,minusOneToEnd=T)
 {
   #importFrom GenomicRanges seqnames GRanges
   if(minusOneToEnd){adjustment<-1} else {adjustment=0}
-  output_char<-paste0(seqnames(input_gr),"_",input_gr@ranges@start,"_",input_gr@ranges@start+input_gr@ranges@width-adjustment)
+  output_char<-paste0(GenomicRanges::seqnames(input_gr),"_",input_gr@ranges@start,"_",input_gr@ranges@start+input_gr@ranges@width-adjustment)
   return(output_char)
 }
