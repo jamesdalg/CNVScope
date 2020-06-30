@@ -37,7 +37,7 @@ writeAsymmetricMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom
   submatrix<-whole_genome_matrix[grep(chromosomes[chrom1],rownames(whole_genome_matrix)),grep(chromosomes[chrom2],colnames(whole_genome_matrix))]
   #insert intra code here for compatibility, remembering the bit at the end of the while loops.
   downsample_factor<-NULL
-  desired_range<-IRanges(desired_range_start,desired_range_end)
+  desired_range<-IRanges::IRanges(desired_range_start,desired_range_end)
   downsample_factor_row<-NULL
   downsample_outcomes_row<-as.data.frame(cbind(numbers::divisors(nrow(submatrix)),nrow(submatrix)/numbers::divisors(nrow(submatrix))))
   colnames(downsample_outcomes_row)<-c("factor","downsampled_size")

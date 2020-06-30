@@ -34,7 +34,7 @@ getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
                                           # filters = "ensembl_transcript_id", values = "ENST00000296026",
                                           mart = grch37)
   
-  ensembl_gene_gr<-GenomicRanges::GRanges(seqnames = paste0("chr",ensembl_gene_tx_table$chromosome_name),ranges = IRanges(start = ensembl_gene_tx_table$start_position,end=ensembl_gene_tx_table$end_position),strand = ensembl_gene_tx_table$strand,...=ensembl_gene_tx_table)
+  ensembl_gene_gr<-GenomicRanges::GRanges(seqnames = paste0("chr",ensembl_gene_tx_table$chromosome_name),ranges = IRanges::IRanges(start = ensembl_gene_tx_table$start_position,end=ensembl_gene_tx_table$end_position),strand = ensembl_gene_tx_table$strand,...=ensembl_gene_tx_table)
   
   if(substr(chrom1,start = nchar(chrom1),stop = nchar(chrom1))!="_"){chrom1<-paste0(chrom1,"_")}
   if(substr(chrom2,start = nchar(chrom2),stop = nchar(chrom2))!="_"){chrom1<-paste0(chrom2,"_")}

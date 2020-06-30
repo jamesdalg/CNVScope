@@ -801,8 +801,8 @@ if(debug){browser()}
     #
     #rowclick<-length(common_coords)-myReactives$currentClick$lat
     #colclick<-myReactives$currentClick$lng
-    rowcensus<-as.data.table(subsetByOverlaps(census_data_gr,get_rownames_gr_full()[seq(from=row_index_full,to=row_index_full+3)]))
-    colcensus<-as.data.table(subsetByOverlaps(census_data_gr,get_colnames_gr_full()[seq(from=col_index_full,to=col_index_full+3)]))
+    rowcensus<-as.data.table(IRanges::subsetByOverlaps(census_data_gr,get_rownames_gr_full()[seq(from=row_index_full,to=row_index_full+3)]))
+    colcensus<-as.data.table(IRanges::subsetByOverlaps(census_data_gr,get_colnames_gr_full()[seq(from=col_index_full,to=col_index_full+3)]))
     rowcensus$rowcol<-"row"
     colcensus$rowcol<-"col"
     comb_census_df<-rbind(rowcensus,colcensus)
