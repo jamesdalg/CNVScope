@@ -5,10 +5,9 @@
 #' For a simple installation, please use the runCNVScopeLocal function.
 #' @name runCNVScopeShiny
 #' @keywords CNV heatmap shiny plotly
-#' @import  ggplot2 reshape2 magrittr htmltools htmlwidgets GenomicInteractions
+#' @import  ggplot2 magrittr htmltools htmlwidgets GenomicInteractions
 #' @rawNamespace import(RCurl, except = reset)
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
-#' @rawNamespace import(shinyjs, except = runExample)
 #' @rawNamespace import(plotly, except = c(last_plot,select,filter))
 #' @rawNamespace import(data.table, except = c(melt, dcast))
 #' @param baseurl the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.
@@ -32,7 +31,7 @@ runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, osteofn=NULL,debug=F, useCN
   #importFrom shinythemes shinytheme
   #importFrom BiocManager repositories
   #importFrom shinycssloaders withSpinner 
-  
+  #rawNamespace import(shinyjs, except = runExample)  
   menu <- if(exists("menu")){get("menu")} else {NULL}
   browse <- if(exists("browse")){get("browse")} else {NULL}
   if(useCNVScopePublicData)
