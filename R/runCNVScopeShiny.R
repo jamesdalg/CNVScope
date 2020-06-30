@@ -41,7 +41,7 @@ if (!file.exists(system.file("plotly_dashboard_ext","censushg19.rds",
                             package = "CNVScopePublicData"))
     ) {
     cat("CNVScopeData package not detected. Install now?")
-    install <- menu(c("yes", "no"))
+    install <- utils::menu(c("yes", "no"))
     if(install==1){remotes::install_github("jamesdalg/CNVscope_public_data")}
 }
     basefn=paste0(system.file("plotly_dashboard_ext/",package = "CNVScopePublicData"),"/")
@@ -56,7 +56,7 @@ head.matrix<-function(mat,n=6L)
 }
 delete.isolates <- function(graph, mode = 'all') {
   isolates <- which(igraph::degree(graph, mode = mode) == 0) 
-  delete.vertices(graph, isolates)
+  igraph::delete.vertices(graph, isolates)
 }
 options(repos = BiocManager::repositories())
 options(shiny.error = browser)

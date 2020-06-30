@@ -7,8 +7,8 @@ Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
 BugReports: https://github.com/jamesdalg/CNVScope/issues/
 Depends: R (>= 3.5.0),ggplot2
-Imports: InteractionSet,BiocManager,tidyr,S4Vectors,circlize,reshape2,magrittr,htmltools,htmlwidgets,jointseg,plotly,shinyjs,logging,shiny,RCurl,foreach,GenomicFeatures,GenomicInteractions,IRanges,Matrix,OpenImageR,biomaRt,heatmaply,matrixStats,shinythemes,shinycssloaders,GenomicRanges,plyr,data.table,rslurm,dplyr,numbers,rtracklayer,BSgenome.Hsapiens.UCSC.hg19,doParallel,stringr,tibble,GenomeInfoDb,DT
-Suggests: knitr, rmarkdown,remotes,pwr,ComplexHeatmap,spatialfil,HiCseg,igraph,visNetwork
+Imports: InteractionSet,BiocManager,tidyr,S4Vectors,reshape2,magrittr,htmltools,htmlwidgets,jointseg,plotly,shinyjs,logging,shiny,RCurl,foreach,GenomicFeatures,GenomicInteractions,IRanges,Matrix,OpenImageR,biomaRt,heatmaply,matrixStats,shinythemes,shinycssloaders,GenomicRanges,plyr,data.table,rslurm,dplyr,numbers,rtracklayer,BSgenome.Hsapiens.UCSC.hg19,doParallel,stringr,tibble,GenomeInfoDb,DT
+Suggests: knitr, rmarkdown,remotes,pwr,ComplexHeatmap,spatialfil,HiCseg,igraph,visNetwork,circlize
 VignetteBuilder: knitr
 URL: https://github.com/jamesdalg/CNVScope/
 biocViews: 

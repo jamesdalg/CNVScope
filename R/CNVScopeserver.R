@@ -53,7 +53,7 @@ myReactives <- if(exists("myReactives")){get("myReactives")} else {NULL}
 genev <- if(exists("genev")){get("genev")} else {NULL}
 delete.isolates <- function(graph, mode = 'all') {
   isolates <- which(igraph::degree(graph, mode = mode) == 0) 
-  delete.vertices(graph, isolates)
+  igraph::delete.vertices(graph, isolates)
 }
 freq_data <- if(exists("freq_data")){get("freq_data")} else {NULL}
 #adjpvalue chr cn correlation genes_text probe visval
@@ -878,7 +878,7 @@ if(debug){browser()}
     G_connected_vis<-visNetwork::toVisNetworkData(G_connected)
     G_connected_vis$edges$value<-G_connected_vis$edges$weight
     col_fun = colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))
-    G_connected_vis$nodes$color<-sapply(col_fun(heatmaply::percentize(strength(G_connected)))  ,function(x) substr(x,start = 1,stop =  7))
+    G_connected_vis$nodes$color<-sapply(col_fun(heatmaply::percentize(igraph::strength(G_connected)))  ,function(x) substr(x,start = 1,stop =  7))
     visNetwork::visNetwork(nodes = G_connected_vis$nodes,edges = G_connected_vis$edges,width = isolate(input$heatmapHeight),height = round(isolate(input$heatmapHeight)/1.25))  %>%
       visNetwork::visInteraction(hover = TRUE) %>%
       visNetwork::visEvents(hoverNode = "function(nodes) {

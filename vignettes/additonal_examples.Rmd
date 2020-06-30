@@ -266,7 +266,7 @@ chr_17_long <- chr_17_mat %>%   cor(use="pairwise.complete.obs",method="pearson"
   dplyr::mutate(col_pos=as.numeric(reshape2::colsplit(Var1,"_",c("chr","start","end"))$start), 
          row_pos=as.numeric(reshape2::colsplit(Var2,"_",c("chr","start","end"))$start),
          correlation=value) %>% dplyr::select(col_pos,row_pos,correlation)
-plot_ly(data = chr_17_long, x=chr_17_long$col_pos,y=chr_17_long$row_pos,z=chr_17_long$correlation,color=c(0,0.5,1),colors=colorRamp(c("blue","white","red")),intensity=chr_17_long$correlation,type = "mesh3d")
+plot_ly(data = chr_17_long, x=chr_17_long$col_pos,y=chr_17_long$row_pos,z=chr_17_long$correlation,color=c(0,0.5,1),colors=circlize::colorRamp(c("blue","white","red")),intensity=chr_17_long$correlation,type = "mesh3d")
 ```
 
 We'll briefly demonstrate that SKCM also works with our relationship modeling toolkit.
