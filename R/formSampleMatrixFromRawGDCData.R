@@ -10,7 +10,6 @@
 #' @importFrom stringr str_detect
 #' @importFrom plyr ddply
 #' @importFrom dplyr select mutate everything
-#' @importFrom GenomeInfoDb seqinfo
 #' @param tcga_files GDC files to be read
 #' @param format file format, TCGA or TARGET.
 #' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
@@ -40,6 +39,7 @@ chromosomes=paste0("chr",c(seq(1:22),"X"),"_"),sample_pat="",
 sample_col="sample",chrlabel=">chr", startlabel="begin", endlabel="end",cnlabel="log2") {
   #importFrom GenomicRanges tileGenome mcols
   #importFrom IRanges mergeByOverlaps IRanges
+  #importFrom GenomeInfoDb seqinfo
 chr <- if(exists("chr")){get("chr")} else {NULL}
 cn <- if(exists("cn")){get("cn")} else {NULL}
   

@@ -11,13 +11,13 @@ Imports: tidyr,reshape2,magrittr,
   jointseg,plotly,shiny,RCurl,foreach,
   GenomicInteractions,Matrix,OpenImageR,biomaRt,matrixStats,
   plyr,data.table,dplyr,numbers,rtracklayer,
-  BSgenome.Hsapiens.UCSC.hg19,doParallel,stringr,tibble,
-  GenomeInfoDb
+  doParallel,stringr,tibble
 Suggests: knitr, rmarkdown,remotes,pwr,ComplexHeatmap,
   spatialfil,HiCseg,igraph,visNetwork,circlize,
   InteractionSet,GenomicRanges,GenomicFeatures,IRanges,rslurm,
   shinythemes,shinycssloaders,DT,logging,heatmaply,
-  S4Vectors,BiocManager,shinyjs,htmltools,htmlwidgets
+  S4Vectors,BiocManager,shinyjs,htmltools,htmlwidgets,
+  GenomeInfoDb,BSgenome.Hsapiens.UCSC.hg19
 VignetteBuilder: knitr
 URL: https://github.com/jamesdalg/CNVScope/
 biocViews: 

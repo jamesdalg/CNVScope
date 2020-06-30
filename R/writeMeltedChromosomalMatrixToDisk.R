@@ -170,7 +170,7 @@ if(debug){    print(paste0("col factors:",downsample_factor_col))
     ggplotmatrix$Var2<-as.character(ggplotmatrix$Var2)
     row_merged_ggplotmatrix<-merge(ggplotmatrix,extra_data_df,by.x="Var1",by.y="pos",suffixes=c("","row")) #var1 row Var2 Column, y x.
     row_col_merged_ggplotmatrix<-merge(row_merged_ggplotmatrix,extra_data_df,by.x="Var2",by.y="pos",suffixes=c("","col"))
-    print(head(row_col_merged_ggplotmatrix,n=1))
+    print(utils::head(row_col_merged_ggplotmatrix,n=1))
     if(transpose){save("row_col_merged_ggplotmatrix",file=paste0(chromosomes[chrom1],chromosomes[chrom2],"melted_with_external_data_transposed",".RData"))} else {save("row_col_merged_ggplotmatrix",file=paste0(chromosomes[chrom1],chromosomes[chrom2],"melted_with_external_data",".RData"))}
     
     
