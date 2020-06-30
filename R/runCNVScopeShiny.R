@@ -9,14 +9,12 @@
 #' @importFrom logging logerror
 #' @importFrom shinythemes shinytheme
 #' @importFrom BiocManager repositories
-#' @importFrom visNetwork visNetworkOutput 
 #' @importFrom shinycssloaders withSpinner 
 #' @rawNamespace import(RCurl, except = reset)
 #' @rawNamespace import(circlize, except = degree)
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(shinyjs, except = runExample)
 #' @rawNamespace import(plotly, except = c(last_plot,select,filter))
-#' @rawNamespace import(igraph, except = c(decompose, spectrum, groups))
 #' @rawNamespace import(data.table, except = c(melt, dcast))
 #' @rawNamespace import(GenomicFeatures ,except = show)
 #' @param baseurl the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.

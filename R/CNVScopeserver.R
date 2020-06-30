@@ -5,8 +5,6 @@
 #' @keywords CNV heatmap shiny plotly
 #' @import ggplot2 reshape2 magrittr htmltools htmlwidgets foreach
 #' @importFrom tidyr unite
-#' @importFrom igraph graph.empty degree add.vertices add.edges
-#' @importFrom visNetwork toVisNetworkData visNetwork visInteraction visEvents renderVisNetwork
 #' @importFrom jointseg jointSeg
 #' @importFrom logging addHandler
 #' @rawNamespace import(circlize, except = degree)
