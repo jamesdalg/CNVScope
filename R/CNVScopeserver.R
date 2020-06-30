@@ -876,7 +876,7 @@ if(debug){browser()}
     #              NodeID = 'name',Group='group',fontSize = 14,zoom=T)
     G_connected_vis<-visNetwork::toVisNetworkData(G_connected)
     G_connected_vis$edges$value<-G_connected_vis$edges$weight
-    col_fun = colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))
+    col_fun = circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))
     G_connected_vis$nodes$color<-sapply(col_fun(heatmaply::percentize(igraph::strength(G_connected)))  ,function(x) substr(x,start = 1,stop =  7))
     visNetwork::visNetwork(nodes = G_connected_vis$nodes,edges = G_connected_vis$edges,width = isolate(input$heatmapHeight),height = round(isolate(input$heatmapHeight)/1.25))  %>%
       visNetwork::visInteraction(hover = TRUE) %>%
