@@ -7,7 +7,6 @@
 #' @importFrom tidyr unite
 #' @importFrom jointseg jointSeg
 #' @importFrom logging addHandler
-#' @rawNamespace import(circlize, except = degree)
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(shinyjs, except = runExample)
 #' @rawNamespace import(RCurl, except = reset)
