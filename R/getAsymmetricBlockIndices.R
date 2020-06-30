@@ -3,7 +3,6 @@
 #' This function segments a matrix, including asymmetric matrices using multiple imputation (MI) techniques and a segmentation algorithm to generate breakpoints for column and row.
 #' 
 #' @keywords HiCseg MI multiple imputation Hi-C CNV breakpoints jointseg
-#' @importFrom HiCseg HiCseg_linkC_R
 #' @importFrom utils tail
 #' @param genomicmatrix the large, whole matrix from which blocks are taken
 #' @param algorithm Algorithm to be used: HiCseg or jointSeg.

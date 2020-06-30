@@ -13,7 +13,6 @@
 #' @import doParallel
 #' @importFrom foreach foreach
 #' @importFrom Matrix bandSparse sparseMatrix
-#' @importFrom spatialfil applyFilter
 #' @examples
 #' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope"))
 #' mat_prob_dist<-calcCNVKernelProbDist(nbl_result_matrix_sign_small,parallel=FALSE)
@@ -30,7 +29,11 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores
   k = list(matrix=matrix(1/(win^2),nrow=win,ncol=win),kernel='custom')
   class(k)='convKern'
   if(debug) {win_start <- proc.time()}
-  submatrix_win_avg = spatialfil::applyFilter(submatrix,k)
+  if(requireNamespace("spatialfil",quietly = T)){
+  submatrix_win_avg = spatialfil::applyFilter(submatrix,k)} else{
+    return("Please Install package spatialfil to use this optional function./n
+           This can be done by installing CNVScope using the dependencies=T flag")
+    }
   if(debug){
     print("win avg complete")
     print(proc.time() - win_start)

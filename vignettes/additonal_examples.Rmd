@@ -105,10 +105,13 @@ chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
 ```
 Finally, let's try our probability weighting function for the matrix and see if we can find clearer regions of association. We'll also try another segmentation algorithm with the jointseg package. In most cases, you can achieve a definite speed increase using the parallel=T option. We have disabled it to build the vignette without warnings.
 ```{r probdist}
+if(requireNamespace("spatialfil",quietly=T)){
 chr_7_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_7_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
 js_breakpoints<-jointseg::jointSeg(chr_7_probdist,K=20)$bestBkp
 js_breakpoint_labels<-colnames(chr_7_mat)[js_breakpoints]
-
+} else{
+  print("Please install spatialfil in order to run this example.")
+}
 ```
 We'll notice that using this combination of techniques, we've managed to pick up an AML driver between domain endpoints, in a large region where the association is less than expected (as determined by the calcCNVprobdist function). Within the region of 115 and 120Mb lies the MET gene, where an LOH was detected in the paper. It's a pretty obvious signature, perhaps the most obvious in the whole plot.
 
