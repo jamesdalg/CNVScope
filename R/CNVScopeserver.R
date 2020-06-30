@@ -3,7 +3,7 @@
 #'  Server function of the CNVScope shiny application. run with runCNVScopeShiny
 #' @name CNVScopeserver 
 #' @keywords CNV heatmap shiny plotly
-#' @import ggplot2 reshape2 magrittr htmltools htmlwidgets foreach GenomicInteractions
+#' @import ggplot2 reshape2 magrittr htmltools htmlwidgets foreach
 #' @importFrom tidyr unite
 #' @importFrom igraph graph.empty degree add.vertices add.edges
 #' @importFrom visNetwork toVisNetworkData visNetwork visInteraction visEvents renderVisNetwork
@@ -755,8 +755,8 @@ if(!isolate(input$genes_toggle)){
      if(debug){browser()}
       if(is.null(expression_data_gr)){tryCatch(expression_data_gr<-readRDS(paste0(get("osteofn",.GlobalEnv),"expression_data_gr.rds")),error = function(e) NULL) }
       
-      rowexpression<-as.data.table(subsetByOverlaps(expression_data_gr,get_rownames_gr_full()[seq(from=row_index_full,to=row_index_full+3)]))
-      colexpression<-as.data.table(subsetByOverlaps(expression_data_gr,get_colnames_gr_full()[seq(from=col_index_full,to=col_index_full+3)]))} else {
+      rowexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr,get_rownames_gr_full()[seq(from=row_index_full,to=row_index_full+3)]))
+      colexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr,get_colnames_gr_full()[seq(from=col_index_full,to=col_index_full+3)]))} else {
         if(isolate(input$data_source)=="TCGA_NBL_low_pass" | isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
         {
           

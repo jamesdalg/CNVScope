@@ -35,10 +35,10 @@ Following this, we'll obtain TCGA copy number data from the GDC archive.
 
  Users can download the tar.gz file and remove the tsv files into a single folder. We have already done that here.
 The source for these files is located [here](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TCGA-PRAD%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
-![](prad_files.png){width=250px}
+![](prad_files.png)
 
 The user simply chooses to add all the files to the cart, then click the black cart button in the top right hand corner.
-![](download_from_cart_prad.png){width=250px}
+![](download_from_cart_prad.png)
 
 
 On the cart page, click download, then cart. It will be downloaded as a tar.gz archive.
