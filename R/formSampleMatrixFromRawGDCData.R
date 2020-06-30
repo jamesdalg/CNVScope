@@ -86,7 +86,7 @@ cn <- if(exists("cn")){get("cn")} else {NULL}
   #converts to data table.
   TCGA_CNV_data_gr<-GenomicRanges::GRanges(seqnames = TCGA_CNV_data_range_filtered$`>chr`,ranges = IRanges::IRanges(start = TCGA_CNV_data_range_filtered$begin,end = TCGA_CNV_data_range_filtered$end),... = TCGA_CNV_data_range_filtered[,4:ncol(TCGA_CNV_data_range_filtered)])
   #creates GRanges object with other columns appended. These can be accessed using mcols()
-  bins<-GenomicRanges::tileGenome(seqinfo(BSgenome.Hsapiens.UCSC.hg19::Hsapiens),tilewidth=binsize,cut.last.tile.in.chrom = T)
+  bins<-GenomicRanges::tileGenome(GenomeInfoDb::seqinfo(BSgenome.Hsapiens.UCSC.hg19::Hsapiens),tilewidth=binsize,cut.last.tile.in.chrom = T)
   #creates bins using the tileGenome function.
   if(debug){browser()}
   bins<-bins[as.character(bins@seqnames) %in% gsub("_","",chromosomes)]
