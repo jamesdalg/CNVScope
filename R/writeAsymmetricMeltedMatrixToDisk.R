@@ -3,7 +3,6 @@
 #' Writes an RData file with a ggplot2 object within.
 #' @keywords ggplot2 heatmap plotly ggiraph genomic matrix
 #' @import magrittr
-#' @importFrom utils head
 #' @param whole_genome_matrix A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.
 #' @param chrom1 first chromosome of the two which will subset the matrix. (this is done in row-column fasion).
 #' @param chrom2 second chromosome of the two which will subset the matrix. (this is done in row-column fasion).
@@ -28,6 +27,7 @@
 #' @export
 writeAsymmetricMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,desired_range_start=50,desired_range_end=300,saveToDisk=T,max_cap=NULL,rescale=T)
 {
+  #importFrom utils head
   if(!is.null(extra_data_matrix))
   {  
     extra_data_matrix_fn<-extra_data_matrix
