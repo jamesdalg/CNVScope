@@ -5,11 +5,9 @@
 #' @keywords CNV heatmap shiny plotly
 #' @import ggplot2 reshape2 magrittr htmltools htmlwidgets
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
-#' @rawNamespace import(shinyjs, except = runExample)
 #' @rawNamespace import(RCurl, except = reset)
 #' @rawNamespace import(plotly, except = c(last_plot,select,filter))
 #' @rawNamespace import(data.table, except = c(melt, dcast))
-#' @importFrom DT renderDataTable
 #' @param session The shiny session object for the application.
 #' @param input shiny server input
 #' @param output shiny server output
@@ -32,6 +30,8 @@ CNVScopeserver<-function(session,input, output, debug=F) {
 #importFrom tidyr unite
   #importFrom jointseg jointSeg
   #importFrom logging addHandler
+  #importFrom DT renderDataTable
+  #rawNamespace import(shinyjs, except = runExample)
 ensembl_gene_tx_data_gr <- if(exists("ensembl_gene_tx_data_gr")){get("ensembl_gene_tx_data_gr")} else {NULL}
 baseurl <- if(exists("baseurl")){get("baseurl")} else {NULL}
 adjpvaluechr <- if(exists("adjpvaluechr")){get("adjpvaluechr")} else {NULL}
@@ -74,9 +74,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
   
   
   printLogJs <- function(x, ...) {
-    
-    logjs(x)
-    
+    shinyjs::logjs(x)
     T
   }
   observe({
