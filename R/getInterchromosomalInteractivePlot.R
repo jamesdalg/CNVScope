@@ -4,7 +4,6 @@
 #' @name getInterchromosomalInteractivePlot
 #' @keywords CNV heatmap HTML widget data.table readr
 #' @importFrom biomaRt getBM useMart
-#' @importFrom GenomicRanges GRanges seqnames mcols
 #' @importFrom IRanges subsetByOverlaps
 #' @importFrom heatmaply heatmaply
 #' @importFrom ggplot2 scale_fill_gradient2
@@ -23,6 +22,7 @@
 globalVariables(c('chromosomes'))
 getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
 {
+  #importFrom GenomicRanges GRanges seqnames mcols
   i <- if(exists("i")){get("i")} else {NULL}
   #if(rownames(whole_matrix)==colnames(whole_matrix))
   chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")

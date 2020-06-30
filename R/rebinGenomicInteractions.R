@@ -11,8 +11,6 @@
 #' @param method Method to rebin with-- can use overlap and nearest methods.Default: nearest.
 #' @keywords GenomicInteractions bin matrix colnames rownames binning bin
 #' @import GenomicInteractions
-#' @importFrom GenomicRanges nearest GRanges
-#' @importFrom InteractionSet findOverlaps
 #' @importFrom GenomicInteractions anchorOne anchorTwo
 #' @importFrom S4Vectors mcols mcols<-
 #' @import foreach doParallel
@@ -32,6 +30,8 @@
 globalVariables("mcols")
 rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_gr=NULL,colnames_gr=NULL,rownames_mat=NULL,colnames_mat=NULL,method="nearest")
 {
+  #importFrom GenomicRanges nearest GRanges
+  #importFrom InteractionSet findOverlaps
   i <- if(exists("i")){get("i")} else {NULL}
   if(is.null(gint)){return("No GenomicInteractions to rebin!")}
   if(!is.null(whole_genome_matrix)){

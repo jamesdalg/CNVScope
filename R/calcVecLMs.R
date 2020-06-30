@@ -3,7 +3,6 @@
 #' Creates a matrix of linear regression p-values, log transformed from every combination of columns in the parent matrix.
 #' @keywords lm linear regression matrix
 #' @import parallel
-#' @importFrom rslurm slurm_apply get_slurm_out
 #' @param bin_data The parent matrix, with columns to have linear regression performed on them.
 #' @param use_slurm Paralleize over a number of slurm HPC jobs? If false, the program will simply run locally.
 #' @param slurmjob the slurm job object produced by rslurm::slurm_apply(), after running the function initially.
@@ -28,6 +27,7 @@
 calcVecLMs<-function(bin_data,use_slurm=F,job_finished=F,slurmjob=NULL,n_nodes=NULL,cpus_on_each_node=2,memory_per_node="2g",walltime="4:00:00")
 {
   #if(dim(bin_data)[1]<dim(bin_data)[2]){bin_data<-t(bin_data)}
+  #importFrom rslurm slurm_apply get_slurm_out
   bin_data_df<-as.data.frame(bin_data)
   bin.pairs<-expand.grid(1:ncol(bin_data),1:ncol(bin_data))
   colnames(bin.pairs)<-c("x","y")

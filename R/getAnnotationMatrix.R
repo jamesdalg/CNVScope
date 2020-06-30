@@ -3,7 +3,6 @@
 #'
 #' Gets the genes in the ranges within each cell of the matrix.
 #' @keywords genomic matrix
-#' @importFrom GenomicRanges GRanges seqnames mcols
 #' @importFrom biomaRt useMart getBM
 #' @importFrom IRanges IRanges subsetByOverlaps
 #' @import foreach doParallel
@@ -21,6 +20,7 @@
 #' @export
 getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_col=F)
 {
+  #importFrom GenomicRanges GRanges seqnames mcols
   i <- if(exists("i")){get("i")} else {NULL}
   if(!exists("grch37")){
   grch37 = biomaRt::useMart(biomart="ENSEMBL_MART_ENSEMBL", host="grch37.ensembl.org", path="/biomart/martservice", dataset="hsapiens_gene_ensembl")
