@@ -3,10 +3,7 @@
 #'  Server function of the CNVScope shiny application. run with runCNVScopeShiny
 #' @name CNVScopeserver 
 #' @keywords CNV heatmap shiny plotly
-#' @import ggplot2 reshape2 magrittr htmltools htmlwidgets foreach
-#' @importFrom tidyr unite
-#' @importFrom jointseg jointSeg
-#' @importFrom logging addHandler
+#' @import ggplot2 reshape2 magrittr htmltools htmlwidgets
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(shinyjs, except = runExample)
 #' @rawNamespace import(RCurl, except = reset)
@@ -32,6 +29,9 @@
 #rawNamespace import(GenomicFeatures ,except = show)
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 CNVScopeserver<-function(session,input, output, debug=F) {
+#importFrom tidyr unite
+  #importFrom jointseg jointSeg
+  #importFrom logging addHandler
 ensembl_gene_tx_data_gr <- if(exists("ensembl_gene_tx_data_gr")){get("ensembl_gene_tx_data_gr")} else {NULL}
 baseurl <- if(exists("baseurl")){get("baseurl")} else {NULL}
 adjpvaluechr <- if(exists("adjpvaluechr")){get("adjpvaluechr")} else {NULL}
