@@ -41,6 +41,7 @@ if(length(na.omit(unlist(sample_info_colsplit)))!=6){return(NULL)}
 }
 if(format=="TCGA")
 {
+  if(!requireNamespace("tibble",quietly = T)){return("tibble package is required for processing TCGA format files.")}
   if(is.null(fread_skip)){  fread_skip=0}
   input_tsv_with_sample_info<-data.table::fread(file,skip=fread_skip) %>% 
   dplyr::mutate(fn = basename(file),sep="--") %>% 
