@@ -1,6 +1,6 @@
 
 ---
-title: "Creating Linear Regression Matrices from Segment data"
+title: "Creating Linear Regression Matrices from Segment Data"
 author: "James Dalgleish"
 date: "July 25, 2018"
 output: rmarkdown::html_vignette

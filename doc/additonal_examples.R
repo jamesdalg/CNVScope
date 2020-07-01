@@ -57,10 +57,13 @@ chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
 
 
 ## ----probdist-----------------------------------------------------------------
+if(requireNamespace("spatialfil",quietly=T)){
 chr_7_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_7_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
 js_breakpoints<-jointseg::jointSeg(chr_7_probdist,K=20)$bestBkp
 js_breakpoint_labels<-colnames(chr_7_mat)[js_breakpoints]
-
+} else{
+  print("Please install spatialfil in order to run this example.")
+}
 
 ## ----plot_probdist------------------------------------------------------------
 chr_7_probdist %>%  
@@ -180,7 +183,7 @@ chr_17_js_breakpoint_labels
 #    dplyr::mutate(col_pos=as.numeric(reshape2::colsplit(Var1,"_",c("chr","start","end"))$start),
 #           row_pos=as.numeric(reshape2::colsplit(Var2,"_",c("chr","start","end"))$start),
 #           correlation=value) %>% dplyr::select(col_pos,row_pos,correlation)
-#  plot_ly(data = chr_17_long, x=chr_17_long$col_pos,y=chr_17_long$row_pos,z=chr_17_long$correlation,color=c(0,0.5,1),colors=colorRamp(c("blue","white","red")),intensity=chr_17_long$correlation,type = "mesh3d")
+#  plot_ly(data = chr_17_long, x=chr_17_long$col_pos,y=chr_17_long$row_pos,z=chr_17_long$correlation,color=c(0,0.5,1),colors=circlize::colorRamp(c("blue","white","red")),intensity=chr_17_long$correlation,type = "mesh3d")
 
 ## ----skcm_files,eval=F,echo=T-------------------------------------------------
 #  if(!dir.exists("extracted_skcm_data")){dir.create("extracted_skcm_data")}
