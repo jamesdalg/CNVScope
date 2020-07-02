@@ -1,3 +1,9 @@
+CNVScope v3.1.9 (Release Date 2020-7-1)
+==============
+*Reduced imports to 20 and moved the remainder of packages into suggests.
+*Fixed whole genome map.
+*Optimized load time to plot a whole genome map (should be roughly a 50% reduction, according to profvis).
+
 CNVScope v2.9.4 (Release Date 2019-12-7)
 ==============
 *Removed Biostrings dependency to clear NOTE 
