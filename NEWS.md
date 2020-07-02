@@ -1,4 +1,4 @@
-CNVScope v3.1.9 (Release Date 2020-7-1)
+CNVScope v3.1.8 (Release Date 2020-7-2)
 ==============
 *Reduced imports to 20 and moved the remainder of packages into suggests.
 *Fixed whole genome map.
