@@ -681,7 +681,7 @@ if(!isolate(input$genes_toggle)){
   })
   outputOptions(output,"plotlyChromosomalHeatmap",suspendWhenHidden=F)
   output$whole_genome_image<-renderImage({
-    
+    #https://community.rstudio.com/t/shinydashboard-render-only-the-clicked-tab/36493
     input$whole_genome_max_cap
     input$goButton
     #browser()
@@ -708,7 +708,8 @@ if(!isolate(input$genes_toggle)){
     #          height = round(isolate(input$heatmapHeight)/1.25),
     #          alt = "whole genome png")
     # 
-    list(src=paste0(pngfn,"whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_chrom_cent_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"))
+    browser()
+   return( list(src=paste0(pngfn,"whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png")))
   },deleteFile = F) 
   
   
