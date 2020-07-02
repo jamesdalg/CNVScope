@@ -2,7 +2,8 @@
 #'
 #' Takes a linear regression matrix and sets infinites to a finite value, and changes the sign to match the sign of the correlation for each value.
 #' @keywords lm linear regression matrix correlation
-#' @import matrixStats stats
+#' @import stats
+#' @importFrom matrixStats colSds
 #' @param input_matrix The input matrix, which consists of bins and samples (no LM or correlation has been done on the segmentation values)
 #' @param LM_mat The linear regression matrix, with rows and columns consisting of bins and the values being the negative log p-value between them.
 #' @param cor_type The correlation type ("pearson" (linear), "spearman" (rank), "kendall"(also rank-based)).
@@ -24,7 +25,7 @@ postProcessLinRegMatrix<-function(input_matrix,LM_mat,cor_type="pearson",inf_rep
 {
   #removing empty columns:"
   #input_matrix_zeros_removed<-as.data.frame(t(input_matrix))[,colSums(as.data.frame(t(input_matrix)))>0]
-  input_matrix_zeros_removed<-as.data.frame(t(input_matrix))[,colSds(as.matrix(t(input_matrix)))!=0] #this will take care of zero bins and invariant bins.
+  input_matrix_zeros_removed<-as.data.frame(t(input_matrix))[,matrixStats::colSds(as.matrix(t(input_matrix)))!=0] #this will take care of zero bins and invariant bins.
   #input_matrix_zeros<-as.data.frame(t(input_matrix))[,colSums(as.data.frame(t(input_matrix)))==0]
   #correcting infinites
   LM_mat[is.infinite(unlist(LM_mat))]<-inf_replacement_val

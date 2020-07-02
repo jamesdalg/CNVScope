@@ -5,16 +5,11 @@
 #' For a simple installation, please use the runCNVScopeLocal function.
 #' @name runCNVScopeShiny
 #' @keywords CNV heatmap shiny plotly
-#' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
-#' @importFrom BiocManager repositories
-#' @rawNamespace import(circlize, except = degree)
-#' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
-#' @rawNamespace import(shinyjs, except = runExample)
+#' @import  ggplot2 magrittr GenomicInteractions
 #' @rawNamespace import(RCurl, except = reset)
+#' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(plotly, except = c(last_plot,select,filter))
-#' @rawNamespace import(igraph, except = c(decompose, spectrum, groups))
 #' @rawNamespace import(data.table, except = c(melt, dcast))
-#' @rawNamespace import(GenomicFeatures ,except = show)
 #' @param baseurl the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.
 #' @param basefn the linux file path of the same source files.
 #' @param osteofn the linux file path of the OS files.
@@ -31,6 +26,13 @@
 
 
 runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, osteofn=NULL,debug=F, useCNVScopePublicData=F) {
+  #rawNamespace import(GenomicFeatures ,except = show)
+  #importFrom logging logerror
+  #importFrom shinythemes shinytheme
+  #importFrom BiocManager repositories
+  #importFrom shinycssloaders withSpinner 
+  #rawNamespace import(shinyjs, except = runExample)
+  #import htmltools htmlwidgets
   menu <- if(exists("menu")){get("menu")} else {NULL}
   browse <- if(exists("browse")){get("browse")} else {NULL}
   if(useCNVScopePublicData)
@@ -39,7 +41,7 @@ if (!file.exists(system.file("plotly_dashboard_ext","censushg19.rds",
                             package = "CNVScopePublicData"))
     ) {
     cat("CNVScopeData package not detected. Install now?")
-    install <- menu(c("yes", "no"))
+    install <- utils::menu(c("yes", "no"))
     if(install==1){remotes::install_github("jamesdalg/CNVscope_public_data")}
 }
     basefn=paste0(system.file("plotly_dashboard_ext/",package = "CNVScopePublicData"),"/")
@@ -54,7 +56,7 @@ head.matrix<-function(mat,n=6L)
 }
 delete.isolates <- function(graph, mode = 'all') {
   isolates <- which(igraph::degree(graph, mode = mode) == 0) 
-  delete.vertices(graph, isolates)
+  igraph::delete.vertices(graph, isolates)
 }
 options(repos = BiocManager::repositories())
 options(shiny.error = browser)
@@ -121,7 +123,7 @@ if(exists("basefn")) {#local objects:
     tryCatch(ensembl_gene_tx_data_gr<-readRDS(url(paste0(baseurl,"ensembl_gene_tx_table_gr.rds"))),error = function(e) NULL)
   }
 }
-CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector() 
+CNVScopeui<-fluidPage(theme=shinythemes::shinytheme("flatly"), #shinythemes::themeSelector() 
                    tags$style(type="text/css",
                               ".shiny-output-error { visibility: hidden; }",
                               ".shiny-output-error:before { visibility: hidden; }"),
@@ -162,7 +164,7 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                                       
                                       ))),tabPanel("Plots",fluidRow(column(5,offset=2,
                                                         h2("interactive chromosomal heatmap and minimap"),
-                                                        withSpinner(plotlyOutput("plotlyChromosomalHeatmap",height = "100%"))#,
+                                                        shinycssloaders::withSpinner(plotlyOutput("plotlyChromosomalHeatmap",height = "100%"))#,
                                                         #               visNetwork::visNetworkOutput("network",height="1024")
                                                         
                                                         
@@ -173,21 +175,21 @@ CNVScopeui<-fluidPage(theme=shinytheme("flatly"), #shinythemes::themeSelector()
                    #         )),
                    tabPanel("gain/loss frequency",
                             conditionalPanel("!is.null(event_data('plotly_click')) & is.null(output$freq_table)", fluidRow(h2("gain/loss frequency"), #
-                                                                                                                           withSpinner(DT::dataTableOutput("freq_table"))))),
+                                                                                                                           shinycssloaders::withSpinner(DT::dataTableOutput("freq_table"))))),
                    tabPanel("COSMIC cancer gene census",h2("Cancer Gene Census Data"),
-                            fluidRow( withSpinner(DT::dataTableOutput("census_data")))), #end tabpanel
+                            fluidRow( shinycssloaders::withSpinner(DT::dataTableOutput("census_data")))), #end tabpanel
                    tabPanel("sample info",
-                            fluidRow(column(2,offset=1,h3("sample histogram for row and column values at clicked point"),sliderInput('sample_hist_alpha',"histogram opacity",min=0.1,max=1,value = 0.6), withSpinner(plotlyOutput("sample_info"))),
-                                     column(2,offset=1,h3("sample scatterplot for row and column segmentation values at clicked point"),withSpinner(plotlyOutput("sample_info_scatter"))),
-                                     column(2,offset=1,h3("sample regression scatterplot for values at clicked point, colored by sample to show clustering"),withSpinner(plotlyOutput("sample_info_scatter2"))))      
+                            fluidRow(column(2,offset=1,h3("sample histogram for row and column values at clicked point"),sliderInput('sample_hist_alpha',"histogram opacity",min=0.1,max=1,value = 0.6), shinycssloaders::withSpinner(plotlyOutput("sample_info"))),
+                                     column(2,offset=1,h3("sample scatterplot for row and column segmentation values at clicked point"),shinycssloaders::withSpinner(plotlyOutput("sample_info_scatter"))),
+                                     column(2,offset=1,h3("sample regression scatterplot for values at clicked point, colored by sample to show clustering"),shinycssloaders::withSpinner(plotlyOutput("sample_info_scatter2"))))      
                    ),
                    tabPanel("expression_data",
                             h2("expression data table for clicked point"),
-                            fluidRow( withSpinner(DT::dataTableOutput("expression_data")))
+                            fluidRow( shinycssloaders::withSpinner(DT::dataTableOutput("expression_data")))
                    ),
                    tabPanel("Whole Genome View",fluidRow(column(11,offset=2,conditionalPanel("input.data_source== 'linreg_osteosarcoma_CNVkit' | input.data_source=='TCGA_NBL_low_pass'",h2("whole genome view"),
                                                                                              sliderInput(inputId = "whole_genome_max_cap",label = "Whole Genome p-value Saturation Cap",value = 75, min = 5,max=75,step = 5),
-                                                                                             withSpinner(plotOutput("whole_genome_image")))
+                                                                                             shinycssloaders::withSpinner(plotOutput("whole_genome_image")))
                                                                 
                    )#end column
                    )#end fluidRow

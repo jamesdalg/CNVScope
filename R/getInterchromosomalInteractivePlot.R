@@ -4,9 +4,6 @@
 #' @name getInterchromosomalInteractivePlot
 #' @keywords CNV heatmap HTML widget data.table readr
 #' @importFrom biomaRt getBM useMart
-#' @importFrom GenomicRanges GRanges seqnames mcols
-#' @importFrom IRanges subsetByOverlaps
-#' @importFrom heatmaply heatmaply
 #' @importFrom ggplot2 scale_fill_gradient2
 #' @param whole_matrix the large, whole genomic matrix from which the submatrix is taken (rows)
 #' @param chrom1 The first chromsome used for the map (columns).
@@ -23,6 +20,9 @@
 globalVariables(c('chromosomes'))
 getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
 {
+  #importFrom GenomicRanges GRanges seqnames mcols
+  #importFrom IRanges subsetByOverlaps
+  #importFrom heatmaply heatmaply
   i <- if(exists("i")){get("i")} else {NULL}
   #if(rownames(whole_matrix)==colnames(whole_matrix))
   chromosomes<-paste0("chr",c(seq(1:22),"X"),"_")
@@ -34,7 +34,7 @@ getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
                                           # filters = "ensembl_transcript_id", values = "ENST00000296026",
                                           mart = grch37)
   
-  ensembl_gene_gr<-GenomicRanges::GRanges(seqnames = paste0("chr",ensembl_gene_tx_table$chromosome_name),ranges = IRanges(start = ensembl_gene_tx_table$start_position,end=ensembl_gene_tx_table$end_position),strand = ensembl_gene_tx_table$strand,...=ensembl_gene_tx_table)
+  ensembl_gene_gr<-GenomicRanges::GRanges(seqnames = paste0("chr",ensembl_gene_tx_table$chromosome_name),ranges = IRanges::IRanges(start = ensembl_gene_tx_table$start_position,end=ensembl_gene_tx_table$end_position),strand = ensembl_gene_tx_table$strand,...=ensembl_gene_tx_table)
   
   if(substr(chrom1,start = nchar(chrom1),stop = nchar(chrom1))!="_"){chrom1<-paste0(chrom1,"_")}
   if(substr(chrom2,start = nchar(chrom2),stop = nchar(chrom2))!="_"){chrom1<-paste0(chrom2,"_")}
@@ -67,7 +67,7 @@ getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
     nrow=nrow(row_gene_strings_matrix_submatrix)) 
   
   #if(Sys.info()['sysname']=="Windows"){groupdir<-"W:/"} else {groupdir<-"/data/CCRBioinfo/"}
-  htmlwidget<-heatmaply(signedRescale(submatrix),Rowv = F,Colv = F,showticklabels=F,custom_hovertext = concatenated_gene_matrix,
+  htmlwidget<-heatmaply::heatmaply(signedRescale(submatrix),Rowv = F,Colv = F,showticklabels=F,custom_hovertext = concatenated_gene_matrix,
                         #file=paste0(groupdir,"dalgleishjl/hicnv/inter/fixed_rescale/largemem2/chr",chromosomes[chrom1],chromosomes[chrom2],"withrow_and_colgenes_genes_fixed_rescale.html"),
                         scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)))
   return(htmlwidget)

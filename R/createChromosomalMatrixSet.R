@@ -4,6 +4,7 @@
 #' @keywords Interaction matrix
 #' @import GenomicInteractions reshape2 magrittr foreach doParallel
 #' @importFrom biomaRt useMart getBM
+#' @importFrom reshape2 colsplit
 #' @param whole_genome_mat The matrix containing all of the data, from which the individual matrices will be split.
 #' @param output_dir the folder where the matrices in RData format, will be written.
 #' @param prefix filename prefix for individual matrices. Default: "nbl_"

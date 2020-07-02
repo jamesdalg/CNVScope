@@ -2,8 +2,7 @@
 #'
 #' Writes an RData file with a ggplot2 object within.
 #' @keywords ggplot2 heatmap plotly ggiraph genomic matrix
-#' @import magrittr OpenImageR
-#' @importFrom utils head
+#' @import magrittr
 #' @param whole_genome_matrix A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.
 #' @param chrom1 first chromosome of the two which will subset the matrix. (this is done in row-column fasion).
 #' @param chrom2 second chromosome of the two which will subset the matrix. (this is done in row-column fasion).
@@ -28,6 +27,7 @@
 #' @export
 writeAsymmetricMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,desired_range_start=50,desired_range_end=300,saveToDisk=T,max_cap=NULL,rescale=T)
 {
+  #importFrom utils head
   if(!is.null(extra_data_matrix))
   {  
     extra_data_matrix_fn<-extra_data_matrix
@@ -37,7 +37,7 @@ writeAsymmetricMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom
   submatrix<-whole_genome_matrix[grep(chromosomes[chrom1],rownames(whole_genome_matrix)),grep(chromosomes[chrom2],colnames(whole_genome_matrix))]
   #insert intra code here for compatibility, remembering the bit at the end of the while loops.
   downsample_factor<-NULL
-  desired_range<-IRanges(desired_range_start,desired_range_end)
+  desired_range<-IRanges::IRanges(desired_range_start,desired_range_end)
   downsample_factor_row<-NULL
   downsample_outcomes_row<-as.data.frame(cbind(numbers::divisors(nrow(submatrix)),nrow(submatrix)/numbers::divisors(nrow(submatrix))))
   colnames(downsample_outcomes_row)<-c("factor","downsampled_size")

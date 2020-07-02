@@ -3,17 +3,11 @@
 #'  Server function of the CNVScope shiny application. run with runCNVScopeShiny
 #' @name CNVScopeserver 
 #' @keywords CNV heatmap shiny plotly
-#' @import shinycssloaders shinythemes visNetwork ggplot2 reshape2 magrittr htmltools htmlwidgets jointseg logging foreach GenomicInteractions shinythemes
-#' @importFrom tidyr unite
-#' @rawNamespace import(circlize, except = degree)
+#' @import ggplot2 magrittr
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
-#' @rawNamespace import(shinyjs, except = runExample)
 #' @rawNamespace import(RCurl, except = reset)
 #' @rawNamespace import(plotly, except = c(last_plot,select,filter))
-#' @rawNamespace import(igraph, except = c(decompose, spectrum, groups))
 #' @rawNamespace import(data.table, except = c(melt, dcast))
-#' @rawNamespace import(GenomicFeatures ,except = show)
-#' @importFrom DT renderDataTable
 #' @param session The shiny session object for the application.
 #' @param input shiny server input
 #' @param output shiny server output
@@ -30,8 +24,15 @@
 #                  "expression_data_gr_nbl",'start2','start1','value','Var1','Var2','value1',
 #                 'tcga_type','census_data_gr','common_coords','myReactives',
 #                  'genev','delete.isolates','freq_data'),add = F)
+#rawNamespace import(GenomicFeatures ,except = show)
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 CNVScopeserver<-function(session,input, output, debug=F) {
+#importFrom tidyr unite
+  #importFrom jointseg jointSeg
+  #importFrom logging addHandler
+  #importFrom DT renderDataTable
+  #rawNamespace import(shinyjs, except = runExample)
+  #import reshape2 htmltools htmlwidgets
 ensembl_gene_tx_data_gr <- if(exists("ensembl_gene_tx_data_gr")){get("ensembl_gene_tx_data_gr")} else {NULL}
 baseurl <- if(exists("baseurl")){get("baseurl")} else {NULL}
 adjpvaluechr <- if(exists("adjpvaluechr")){get("adjpvaluechr")} else {NULL}
@@ -52,7 +53,7 @@ myReactives <- if(exists("myReactives")){get("myReactives")} else {NULL}
 genev <- if(exists("genev")){get("genev")} else {NULL}
 delete.isolates <- function(graph, mode = 'all') {
   isolates <- which(igraph::degree(graph, mode = mode) == 0) 
-  delete.vertices(graph, isolates)
+  igraph::delete.vertices(graph, isolates)
 }
 freq_data <- if(exists("freq_data")){get("freq_data")} else {NULL}
 #adjpvalue chr cn correlation genes_text probe visval
@@ -74,9 +75,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
   
   
   printLogJs <- function(x, ...) {
-    
-    logjs(x)
-    
+    shinyjs::logjs(x)
     T
   }
   observe({
@@ -156,7 +155,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
   {
     return(isolate(input$heatmapHeight)) 
   }
-  addHandler(printLogJs)
+  logging::addHandler(printLogJs)
   isolate(input$goButton)
   # observe({
   #   input$goButton
@@ -384,7 +383,9 @@ input_mat_cor<-cor(t(input_mat),method=isolate(input$cor_method))
 input_mat_cor_flat<-input_mat_cor %>% reshape2::melt()
 #grab ggplotmatrix and add correlation values.
 #if(!isolate(input$genes_toggle)){ggplotmatrix$value1<-NULL}
-ggplotmatrix_joined<- dplyr::inner_join(x=ggplotmatrix,y=input_mat_cor_flat,by=c("Var1"="Var1","Var2"="Var2"))
+#browser()
+#ggplotmatrix_joined<- dplyr::inner_join(x=ggplotmatrix,y=input_mat_cor_flat,by=c("Var1"="Var1","Var2"="Var2"))
+ggplotmatrix_joined<- data.table::merge.data.table(x=ggplotmatrix,y=input_mat_cor_flat,by.x=c("Var1","Var2"),by.y=c("Var1","Var2"),all=F)
 colnames(ggplotmatrix_joined) <- ggplotmatrix_joined %>% colnames() %>%
   gsub(pattern = "value.x",replacement = "linregval") %>%
   gsub(pattern = "value.y",replacement = "correlation")
@@ -680,7 +681,7 @@ if(!isolate(input$genes_toggle)){
   })
   outputOptions(output,"plotlyChromosomalHeatmap",suspendWhenHidden=F)
   output$whole_genome_image<-renderImage({
-    
+    #https://community.rstudio.com/t/shinydashboard-render-only-the-clicked-tab/36493
     input$whole_genome_max_cap
     input$goButton
     #browser()
@@ -707,7 +708,8 @@ if(!isolate(input$genes_toggle)){
     #          height = round(isolate(input$heatmapHeight)/1.25),
     #          alt = "whole genome png")
     # 
-    list(src=paste0(pngfn,"whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_chrom_cent_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"))
+    browser()
+   return( list(src=paste0(pngfn,"whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png")))
   },deleteFile = F) 
   
   
@@ -750,8 +752,8 @@ if(!isolate(input$genes_toggle)){
      if(debug){browser()}
       if(is.null(expression_data_gr)){tryCatch(expression_data_gr<-readRDS(paste0(get("osteofn",.GlobalEnv),"expression_data_gr.rds")),error = function(e) NULL) }
       
-      rowexpression<-as.data.table(subsetByOverlaps(expression_data_gr,get_rownames_gr_full()[seq(from=row_index_full,to=row_index_full+3)]))
-      colexpression<-as.data.table(subsetByOverlaps(expression_data_gr,get_colnames_gr_full()[seq(from=col_index_full,to=col_index_full+3)]))} else {
+      rowexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr,get_rownames_gr_full()[seq(from=row_index_full,to=row_index_full+3)]))
+      colexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr,get_colnames_gr_full()[seq(from=col_index_full,to=col_index_full+3)]))} else {
         if(isolate(input$data_source)=="TCGA_NBL_low_pass" | isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
         {
           
@@ -766,8 +768,8 @@ if(debug){browser()}
             }
           #mcols(expression_data_gr_nbl)$SYMBOL<-expression_data_gr_nbl$....external_gene_name
          if(debug){browser()}
-          rowexpression<-as.data.table(subsetByOverlaps(expression_data_gr_nbl,rownames_gr_full[rownames_gr_full@ranges@start==event_data("plotly_click")[["y"]]]))
-          colexpression<-as.data.table(subsetByOverlaps(expression_data_gr_nbl,colnames_gr_full[colnames_gr_full@ranges@start==event_data("plotly_click")[["x"]]]))
+          rowexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr_nbl,rownames_gr_full[rownames_gr_full@ranges@start==event_data("plotly_click")[["y"]]]))
+          colexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr_nbl,colnames_gr_full[colnames_gr_full@ranges@start==event_data("plotly_click")[["x"]]]))
         }
       }
     
@@ -799,8 +801,8 @@ if(debug){browser()}
     #
     #rowclick<-length(common_coords)-myReactives$currentClick$lat
     #colclick<-myReactives$currentClick$lng
-    rowcensus<-as.data.table(subsetByOverlaps(census_data_gr,get_rownames_gr_full()[seq(from=row_index_full,to=row_index_full+3)]))
-    colcensus<-as.data.table(subsetByOverlaps(census_data_gr,get_colnames_gr_full()[seq(from=col_index_full,to=col_index_full+3)]))
+    rowcensus<-as.data.table(IRanges::subsetByOverlaps(census_data_gr,get_rownames_gr_full()[seq(from=row_index_full,to=row_index_full+3)]))
+    colcensus<-as.data.table(IRanges::subsetByOverlaps(census_data_gr,get_colnames_gr_full()[seq(from=col_index_full,to=col_index_full+3)]))
     rowcensus$rowcol<-"row"
     colcensus$rowcol<-"col"
     comb_census_df<-rbind(rowcensus,colcensus)
@@ -849,7 +851,7 @@ if(debug){browser()}
       return(output)
       
     })
-  output$network <- renderVisNetwork({
+  output$network <- visNetwork::renderVisNetwork({
     if (input$goButton == 0) {return()}
     
     input$goButton
@@ -863,9 +865,9 @@ if(debug){browser()}
     
     edges<-rbind(as.character(ggplotmatrix_filtered$Var1),as.character(ggplotmatrix_filtered$Var2))
     weights<-ggplotmatrix_filtered$value
-    G <- graph.empty(n = 0, directed = T)
-    G <- add.vertices(G, length(vertex.attrs$name), attr = vertex.attrs)
-    G <- add.edges(G, edges,weight=weights)
+    G <- igraph::graph.empty(n = 0, directed = T)
+    G <- igraph::add.vertices(G, length(vertex.attrs$name), attr = vertex.attrs)
+    G <- igraph::add.edges(G, edges,weight=weights)
     G_connected<-delete.isolates(G)
     #    weights_discretized<-arules::discretize(E(G_connected)$weight)
     #     G_connected_D3<-networkD3::igraph_to_networkD3(G_connected,group = as.character(arules::discretize(strength(G_connected))))
@@ -874,11 +876,11 @@ if(debug){browser()}
     #              NodeID = 'name',Group='group',fontSize = 14,zoom=T)
     G_connected_vis<-visNetwork::toVisNetworkData(G_connected)
     G_connected_vis$edges$value<-G_connected_vis$edges$weight
-    col_fun = colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))
-    G_connected_vis$nodes$color<-sapply(col_fun(heatmaply::percentize(strength(G_connected)))  ,function(x) substr(x,start = 1,stop =  7))
+    col_fun = circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))
+    G_connected_vis$nodes$color<-sapply(col_fun(heatmaply::percentize(igraph::strength(G_connected)))  ,function(x) substr(x,start = 1,stop =  7))
     visNetwork::visNetwork(nodes = G_connected_vis$nodes,edges = G_connected_vis$edges,width = isolate(input$heatmapHeight),height = round(isolate(input$heatmapHeight)/1.25))  %>%
-      visInteraction(hover = TRUE) %>%
-      visEvents(hoverNode = "function(nodes) {
+      visNetwork::visInteraction(hover = TRUE) %>%
+      visNetwork::visEvents(hoverNode = "function(nodes) {
                 Shiny.onInputChange('current_node_id', nodes);
                 ;}")
 })

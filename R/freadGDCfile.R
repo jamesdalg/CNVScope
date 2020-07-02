@@ -6,7 +6,6 @@
 #' @importFrom data.table fread
 #' @importFrom reshape2 colsplit
 #' @importFrom dplyr bind_cols
-#' @importFrom tibble as.tibble
 #' @param file GDC file to be read
 #' @param fread_skip The number of metadata lines to be skipped(typically 14)
 #' @param format The format of the files (TCGA,TARGET, or custom).
@@ -26,6 +25,7 @@
 
 freadGDCfile<-function(file,fread_skip=NULL, format = "TARGET",CN_colname="log2",
                        sample_pattern="[^_]+",sample_colname=NULL) {
+  #importFrom tibble as.tibble
   fn <- if(exists("fn")){get("fn")} else {NULL}
   barcode1 <- if(exists("barcode1")){get("barcode1")} else {NULL}
   barcode2 <- if(exists("barcode2")){get("barcode2")} else {NULL}
@@ -41,6 +41,7 @@ if(length(na.omit(unlist(sample_info_colsplit)))!=6){return(NULL)}
 }
 if(format=="TCGA")
 {
+  if(!requireNamespace("tibble",quietly = T)){return("tibble package is required for processing TCGA format files.")}
   if(is.null(fread_skip)){  fread_skip=0}
   input_tsv_with_sample_info<-data.table::fread(file,skip=fread_skip) %>% 
   dplyr::mutate(fn = basename(file),sep="--") %>% 

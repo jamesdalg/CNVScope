@@ -3,9 +3,7 @@
 #'
 #' Gets the genes in the ranges within each cell of the matrix.
 #' @keywords genomic matrix
-#' @importFrom GenomicRanges GRanges seqnames mcols
 #' @importFrom biomaRt useMart getBM
-#' @importFrom IRanges IRanges subsetByOverlaps
 #' @import foreach doParallel
 #' @param genomic_matrix A matrix with row and column names of the format chr1_100_200 (chr,start,end)
 #' @param prot_only Inlcude only the protein coding genes from ensembl?
@@ -21,13 +19,15 @@
 #' @export
 getAnnotationMatrix<-function(genomic_matrix,prot_only=T,sequential=F,flip_row_col=F)
 {
+  #importFrom GenomicRanges GRanges seqnames mcols
+  #importFrom IRanges IRanges subsetByOverlaps
   i <- if(exists("i")){get("i")} else {NULL}
   if(!exists("grch37")){
   grch37 = biomaRt::useMart(biomart="ENSEMBL_MART_ENSEMBL", host="grch37.ensembl.org", path="/biomart/martservice", dataset="hsapiens_gene_ensembl")
   }
   if(!exists("ensembl_gene_tx_table_prot") & prot_only==TRUE)
   {
-  if(!(exists("ensembl_gene_tx_table") | !exists("ensembl_gen_tx_table$gene_biotype") ))
+  if((!exists("ensembl_gene_tx_table") | !exists("ensembl_gene_tx_table$gene_biotype") ))
 {  ensembl_gene_tx_table <- biomaRt::getBM(attributes = c("ensembl_gene_id", "ensembl_transcript_id","chromosome_name","transcript_start","transcript_end","start_position","end_position", "strand", "percentage_gene_gc_content","external_gene_name","gene_biotype"),
                                  mart = grch37)
 ensembl_gene_gr<-GenomicRanges::GRanges(seqnames = paste0("chr",ensembl_gene_tx_table$chromosome_name),ranges = IRanges::IRanges(start = ensembl_gene_tx_table$start_position,end=ensembl_gene_tx_table$end_position),strand = ensembl_gene_tx_table$strand,...=ensembl_gene_tx_table)

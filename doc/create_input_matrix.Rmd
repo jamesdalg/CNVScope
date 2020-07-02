@@ -25,21 +25,20 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 
 knitr::opts_knit$set(root.dir = '.')
-library(CNVScope)
 library(magrittr)
 ```
-We have to begin our work by loading the library:
-```{r,eval=F,echo=T}
-library(CNVScope)
-```
-Following this, we'll obtain TARGET low-pass neuroblastoma data (NBL) from the GDC archive.
+We begin by obtaining TARGET low-pass neuroblastoma data (NBL) from the GDC archive.
 Please note: TARGET_NBL_WGS_CNVLOH.tsv is a clinical metadata file and therefore not compatible with the ensuing functions to extract segment data.
 We have also chosen to use only a single comparison type (NormalVsPrimary) to ensure comparability and compatibility with the data. Users can download the tar.gz file and remove the tsv files into a single folder. We have already done that here.
 The source for these files is located [here](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TARGET-NBL%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:101,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
-![](NBL_data_files.png)
 
+```{r nbl_data_files_png,echo=F}
+knitr::include_graphics("NBL_data_files.png", dpi = 10)
+```
 The user simply chooses to add all the files to the cart, then click the black cart button in the top right hand corner.
-![](download_from_cart.png)
+```{r download_from_cart,echo=F}
+knitr::include_graphics("download_from_cart.png", dpi = 10)
+```
 
 
 On the cart page, click download, then cart. It will be downloaded as a tar.gz archive.
@@ -55,7 +54,7 @@ print(target_files_nbl)
 ```
 With the full list of input files from the GDC, these can then be simply loaded into a function that will read all of them, sample match them, and aggregate the data into a bin-sample matrix. This matrix can then be saved into the fast, space efficient, RDS filetype.
 ```{r,eval=F,echo=T}
-sample_aggregated_segvals_output_full<-formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,format = "TARGET")
+sample_aggregated_segvals_output_full<-CNVScope::formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,format = "TARGET")
 saveRDS(sample_aggregated_segvals_output_full,"NBL_sample_matched_input_matrix.rds")
 
 ```
@@ -82,7 +81,7 @@ For further information, please review the help files by typing:
 help("CNVScope::formSampleMatrixFromRawGDCData")
 
 ```{r, eval=F,echo=T}
-nbl_custom_input_matrix<-formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,
+nbl_custom_input_matrix<-CNVScope::formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,
 format = "custom",binsize = 1e6,freadskip = 14,parallel=F,debug=F,
 sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",
 startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")
@@ -105,7 +104,7 @@ benefit from binsize reduction more than larger chromosomes (except for chromoso
 In this case, we decrease our binsize by a factor of 4, making the total number of values 
 in the matrix increase by a factor of 16. It will take longer than the typical time.
 ```{r, echo=T,eval=F}
-nbl_custom_input_matrix_hd<-formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,
+nbl_custom_input_matrix_hd<-CNVScope::formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,
 format = "custom",binsize = 2.5e5,freadskip = 14,parallel=T,debug=F,
 sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",
 startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")
@@ -117,7 +116,7 @@ this would be the way to go about it. It will make the input matrix creation pro
 great deal faster and will require less RAM to display an interactive map.
 
 ```{r, echo=T,eval=F}
-nbl_custom_input_matrix_ld<-formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,
+nbl_custom_input_matrix_ld<-CNVScope::formSampleMatrixFromRawGDCData(tcga_files = target_files_nbl,
 format = "custom",binsize = 1e8,freadskip = 14,parallel=F,debug=F,
 sample_pat = "(?<=30-)(.*?)(?=_)",sample_col = "sample",chrlabel=">chr",
 startlabel = "begin",endlabel = "end",cnlabel = "relativeCvg")

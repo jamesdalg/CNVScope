@@ -73,25 +73,25 @@ signedRescale<-function(matrix,global_max=NULL,global_min=NULL,global_sigma=NULL
 # bins_t<-t(bins[,2:ncol(bins)])
 # colnames(bins_t)<-bins$probe
 # #head(bins_t)
-# Heatmap(signedRescale(all_conc_cleaned_common_coords_linreg_tiny,tan_transform = F),cluster_rows = F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
-# Heatmap(CNVScope::signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),tan_transform = F),cluster_rows = F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
-# Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),tan_transform = F),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
+# ComplexHeatmap::Heatmap(signedRescale(all_conc_cleaned_common_coords_linreg_tiny,tan_transform = F),cluster_rows = F,cluster_columns = F,circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
+# ComplexHeatmap::Heatmap(CNVScope::signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),tan_transform = F),cluster_rows = F,cluster_columns = F,circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
+# ComplexHeatmap::Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),tan_transform = F),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
 # CNVScope::signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:85,1:85]))
 # matrix=all_conc_cleaned_common_coords_linreg[1:85,1:85]
 # setwd(paste0(groupdir,"dalgleishjl/hicnv/color_scale_test_plots/"))
 # 
-# Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="tan",tan_transform = F),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
+# ComplexHeatmap::Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="tan",tan_transform = F),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
 # 
-# Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="minmax",tan_transform = F,max_cap = 200),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
-# Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="minmax",tan_transform = F,max_cap = 100),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
-# Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="minmax",tan_transform = F,max_cap = 50),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
-# Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="minmax",tan_transform = F,max_cap = 25),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
+# ComplexHeatmap::Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="minmax",tan_transform = F,max_cap = 200),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
+# ComplexHeatmap::Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="minmax",tan_transform = F,max_cap = 100),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
+# ComplexHeatmap::Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="minmax",tan_transform = F,max_cap = 50),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
+# ComplexHeatmap::Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="minmax",tan_transform = F,max_cap = 25),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red")))
 # foreach(i=c(10,25,50,75,100,200)) %dopar%
 # {
 #   png(paste0("chr1_max_cap",i,".png"))
-#   print(Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="minmax",tan_transform = F,max_cap = i),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))))
+#   print(ComplexHeatmap::Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="minmax",tan_transform = F,max_cap = i),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))))
 #   dev.off()
 # }
 # png(paste0("chr1_tan_transform",".png"))
-# print(Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="tan",tan_transform = F),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))))
+# print(ComplexHeatmap::Heatmap(signedRescale(as.matrix(all_conc_cleaned_common_coords_linreg[1:1107,1:1107]),method="tan",tan_transform = F),cluster_rows = F,show_row_names=F,show_column_names=F,cluster_columns = F,circlize::colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))))
 # dev.off()

@@ -2,8 +2,7 @@
 #'
 #' Writes an RData file with a ggplot2 object within the current directory.
 #' @keywords ggplot2 plotly ggiraph genomic matrix
-#' @import magrittr OpenImageR
-#' @importFrom IRanges IRanges
+#' @import magrittr
 #' @param whole_genome_matrix A matrix to have edges averaged with genomic coordinates in the form chr1_50_100 set as the column and row names.
 #' @param chrom1 first chromosome of the two which will subset the matrix. (this is done in row-column fasion).
 #' @param chrom2 second chromosome of the two which will subset the matrix. (this is done in row-column fasion).
@@ -25,6 +24,7 @@
 #' @export
 writeMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,filename,extra_data_matrix=NULL,transpose=F,sequential=T,debug=T,desired_range_start=50,desired_range_end=300)
 {
+  #importFrom IRanges IRanges
   if(!is.null(extra_data_matrix))
   {  
     extra_data_matrix_fn<-extra_data_matrix
@@ -170,7 +170,7 @@ if(debug){    print(paste0("col factors:",downsample_factor_col))
     ggplotmatrix$Var2<-as.character(ggplotmatrix$Var2)
     row_merged_ggplotmatrix<-merge(ggplotmatrix,extra_data_df,by.x="Var1",by.y="pos",suffixes=c("","row")) #var1 row Var2 Column, y x.
     row_col_merged_ggplotmatrix<-merge(row_merged_ggplotmatrix,extra_data_df,by.x="Var2",by.y="pos",suffixes=c("","col"))
-    print(head(row_col_merged_ggplotmatrix,n=1))
+    print(utils::head(row_col_merged_ggplotmatrix,n=1))
     if(transpose){save("row_col_merged_ggplotmatrix",file=paste0(chromosomes[chrom1],chromosomes[chrom2],"melted_with_external_data_transposed",".RData"))} else {save("row_col_merged_ggplotmatrix",file=paste0(chromosomes[chrom1],chromosomes[chrom2],"melted_with_external_data",".RData"))}
     
     
