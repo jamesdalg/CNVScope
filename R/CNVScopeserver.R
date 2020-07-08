@@ -189,14 +189,14 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
       # load( url(paste0(paste0(baseurl,"matrix/linreg/unrescaled/",
       #                             chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
       #                             "melted_downsampled_linreg_unrescaled.RData"))))
-      load(paste0(paste0(osteofn,"matrix/linreg/unrescaled/",
+      load(paste0(paste0(osteofn,"linreg240/unrescaled/",
                          chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
-                         "melted_downsampled_linreg_unrescaled.RData")))
+                         "melted_downsampled_linreg_max_cap_75.RData")))
       
       # load( url(paste0(paste0(baseurl,"matrix/linreg/unrescaled/full/",
       #                         chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
       #                         "melted_full_linreg_max_cap_75.RData"))))
-      load( paste0(paste0(osteofn,"matrix/linreg/unrescaled/full/",
+      load( paste0(paste0(osteofn,"linreg240/unrescaled/full/",
                               chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
                               "melted_full_linreg_max_cap_75.RData")))
       
@@ -898,7 +898,7 @@ if(debug){browser()}
   output$sample_info<-renderPlotly({
     input$sample_hist_alpha
     if(is.null(event_data("plotly_click"))){return(data.table())}
-    if(!exists("bin_data") & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
+    if((!exists("bin_data")|dim(bin_data)[1]==3053) & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     #browser()
     #ed <- event_data("plotly_click")
     if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
@@ -943,11 +943,11 @@ if(debug){browser()}
   })
   output$sample_info_scatter<-renderPlotly({
     if(is.null(event_data("plotly_click"))){return(plotly_empty())}
-    #browser()
+    browser()
     req(event_data("plotly_click"))
     #if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
     recast_matrix<-get_recast_matrix()
-    if(!exists("bin_data") & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
+    if((!exists("bin_data")|dim(bin_data)[1]==3053) & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     if(!is.null("recast_matrix")) {
       row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
       column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
@@ -988,7 +988,7 @@ if(debug){browser()}
     req(event_data("plotly_click"))
     #event_data("plotly_click")
     #if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
-    if(!exists("bin_data") & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
+    if((!exists("bin_data")|dim(bin_data)[1]==3053) & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     
     recast_matrix<-get_recast_matrix()
     ggplotmatrix_full<-getGGplotMatrix_full()
@@ -1035,7 +1035,7 @@ if(debug){browser()}
     if(debug){browser()}
     req(event_data("plotly_click"))
     if (is.null(event_data("plotly_click"))) {return(NULL)}
-    if(!exists("bin_data") & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
+    if((!exists("bin_data")|dim(bin_data)[1]==3053) & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit" | isolate(input$data_source)=="TCGA_NBL_low_pass" | 
        isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
     {
