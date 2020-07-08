@@ -943,7 +943,7 @@ if(debug){browser()}
   })
   output$sample_info_scatter<-renderPlotly({
     if(is.null(event_data("plotly_click"))){return(plotly_empty())}
-    browser()
+    #browser()
     req(event_data("plotly_click"))
     #if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
     recast_matrix<-get_recast_matrix()
