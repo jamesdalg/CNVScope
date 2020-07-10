@@ -1,8 +1,8 @@
 Package: CNVScope
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
-Version: 3.2.0
-Date: 2020-7-8
+Version: 3.2.1
+Date: 2020-7-10
 Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
 BugReports: https://github.com/jamesdalg/CNVScope/issues/
