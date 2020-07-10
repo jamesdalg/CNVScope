@@ -463,11 +463,11 @@ if(!isolate(input$genes_toggle)){
     {
       if(exists("osteofn"))
       {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(osteofn,"breakpoint_gint_240/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" )),error = function(e) NULL) 
-        tryCatch(lumpy_summarized_counts<-readRDS(paste0(osteofn,"lumpy_sv_240/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" )),error = function(e) NULL)    
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(osteofn,"breakpoint_gint_LCC240/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords.rds" )),error = function(e) NULL) 
+        tryCatch(lumpy_summarized_counts<-readRDS(paste0(osteofn,"lumpy_sv_LCC240/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" )),error = function(e) NULL)    
       }else {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"breakpoint_gint_240/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" ))),error = function(e) NULL) 
-        tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"lumpy_sv_240/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" ))),error = function(e) NULL)   
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"breakpoint_gint_LCC240/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" ))),error = function(e) NULL) 
+        tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"lumpy_sv_LCC240/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" ))),error = function(e) NULL)   
       }
       
     }
