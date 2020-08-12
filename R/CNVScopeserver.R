@@ -83,7 +83,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     
     x<-isolate(input$geneSearch)
     
-    #browser()
+    browser()
     if(x!=0 & isolate(input$gene_input_col)!=""& isolate(input$gene_input_row)!=""){
       if(length(ensembl_gene_tx_data_gr[ensembl_gene_tx_data_gr$....external_gene_name==isolate(input$gene_input_col)])!=0) {
         
@@ -709,7 +709,7 @@ if(!isolate(input$genes_toggle)){
     #          height = round(isolate(input$heatmapHeight)/1.25),
     #          alt = "whole genome png")
     # 
-    browser()
+    #browser()
    return( list(src=paste0(pngfn,"whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png")))
   },deleteFile = F) 
   

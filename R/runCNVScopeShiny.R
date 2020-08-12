@@ -108,7 +108,7 @@ if(exists("basefn")) {#local objects:
 #  tryCatch(bin_data_gr<-readRDS(paste0(basefn,"bin_data_gr.rds")),error = function(e) NULL)
   #tryCatch(census_data_gr<-readRDS(paste0(basefn,"census_data_gr.rds")),error = function(e) NULL)
   tryCatch(census_data_gr<-readRDS(paste0(basefn,"censushg19.rds")),error = function(e) NULL)
-  tryCatch(ensembl_gene_tx_data_gr<-readRDS(paste0(basefn,"ensembl_gene_tx_table_gr.rds")),error = function(e) NULL)
+  tryCatch(ensembl_gene_tx_data_gr<<-readRDS(paste0(basefn,"ensembl_gene_tx_table_gr.rds")),error = function(e) NULL)
 } else {
   if(exists("baseurl"))
   {tryCatch(freq_data<-data.table::fread(paste0(baseurl,"OS_freq_data.txt")),error = function(e) NULL)
