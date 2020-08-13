@@ -130,37 +130,37 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
       
       showTab(inputId="tabs",target="gain/loss frequency")
     }
-    show("row_gene_data")
-    show("col_gene_data")
-    showTab(inputId="tabs",target="sample info")
-    showTab(inputId="tabs",target="COSMIC cancer gene census") 
-    showTab(inputId="tabs",target="expression_data")
+    shinyjs::show("row_gene_data")
+    shinyjs::show("col_gene_data")
+    shiny::showTab(inputId="tabs",target="sample info")
+    shiny::showTab(inputId="tabs",target="COSMIC cancer gene census") 
+    shiny::showTab(inputId="tabs",target="expression_data")
   })
   observeEvent(input$goButton, {
     showTab(inputId = "tabs",select = T, target = "Plots")
     if(isolate(input$data_source)!="linreg_osteosarcoma_CNVkit")
     {
-      hideTab(inputId="tabs",target="gain/loss frequency")
+      shiny::hideTab(inputId="tabs",target="gain/loss frequency")
     }
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
     {
-      showTab(inputId="tabs",select = F,target="gain/loss frequency")
+      shiny::showTab(inputId="tabs",select = F,target="gain/loss frequency")
     }
   })
   observeEvent(input$data_source, {
     if(isolate(input$data_source)!="linreg_osteosarcoma_CNVkit")
     {
-      hideTab(inputId="tabs",target="gain/loss frequency")
+      shiny::hideTab(inputId="tabs",target="gain/loss frequency")
     }
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
     {
-      showTab(inputId="tabs",select = F,target="gain/loss frequency")
+      shiny::showTab(inputId="tabs",select = F,target="gain/loss frequency")
     }
     if(is.null(event_data("plotly_click"))){
-      hideTab(inputId="tabs",target="gain/loss frequency")
-      hideTab(inputId="tabs",target="sample info")
-      hideTab(inputId="tabs",target="COSMIC cancer gene census") 
-      hideTab(inputId="tabs",target="expression_data")
+      shiny::hideTab(inputId="tabs",target="gain/loss frequency")
+      shiny::hideTab(inputId="tabs",target="sample info")
+      shiny::hideTab(inputId="tabs",target="COSMIC cancer gene census") 
+      shiny::hideTab(inputId="tabs",target="expression_data")
     }
   })
   getHeight<-function()
