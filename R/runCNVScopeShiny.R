@@ -162,15 +162,15 @@ CNVScopeui<-fluidPage(theme=shinythemes::shinytheme("flatly"), #shinythemes::the
                                       actionButton("geneSearch", "find genes"),
                                       actionButton("goButton", "create plots")
                                       
-                                      ))),tabPanel("Plots",fluidRow(column(5,offset=2,
-                                                        h2("interactive chromosomal heatmap and minimap"),
-                                                        shinycssloaders::withSpinner(plotlyOutput("plotlyChromosomalHeatmap",height = "100%"))#,
-                                                        #               visNetwork::visNetworkOutput("network",height="1024")
-                                                        
-                                                        
-                   ),column(1,offset=1,plotlyOutput("minimap",height=1024)#,verbatimTextOutput("shiny_return")
-                   ))
-                   ) ,#tabPanel("Top Network interactions", h2("Interactive Chromosomal Interaction network for top positive and negative relationships"),
+                                      ))),
+                   tabPanel("Plots",fluidRow(column(2,DT::dataTableOutput("row_gene_data")),column(2,DT::dataTableOutput("col_gene_data")), column(5, h2("interactive chromosomal heatmap and minimap"),
+                                                                                                                                                                  shinycssloaders::withSpinner(plotlyOutput("plotlyChromosomalHeatmap",height = "100%"))#,
+                                                                                                                                                                  #               visNetwork::visNetworkOutput("network",height="1024")
+                                                                                                                                                                  
+                                                                                                                                                                  
+                                      ),column(1,offset=2,plotlyOutput("minimap",height=1024)#,verbatimTextOutput("shiny_return")
+                                      ))
+                                      ) ,#tabPanel("Top Network interactions", h2("Interactive Chromosomal Interaction network for top positive and negative relationships"),
                    #         fluidRow(dataTableOutput("shiny_return"),fluidRow(visNetwork::visNetworkOutput("network",height="1024"))#paste0(round(isolate(input$heatmapHeight)/1.25),"px")) 
                    #         )),
                    tabPanel("gain/loss frequency",

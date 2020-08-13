@@ -113,13 +113,25 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     } #end check to see if there is input in the gene search.
     
   })
+  # observeEvent(input$goButton, {
+  #   hide("minimap")
+  #   hide("row_gene_data")
+  #   hide("col_gene_data")
+  # })
+  # observeEvent(event_data("plotly_click"), {
+  #   show("minimap")
+  #   show("row_gene_data")
+  #   show("col_gene_data")
+  # })
   observeEvent(event_data("plotly_click"), {
-    showTab(inputId = "tabs",select = T, target = "sample info")
+    #showTab(inputId = "tabs",select = T, target = "sample info")
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
     {
       
       showTab(inputId="tabs",target="gain/loss frequency")
     }
+    show("row_gene_data")
+    show("col_gene_data")
     showTab(inputId="tabs",target="sample info")
     showTab(inputId="tabs",target="COSMIC cancer gene census") 
     showTab(inputId="tabs",target="expression_data")
@@ -852,6 +864,85 @@ if(debug){browser()}
       return(output)
       
     })
+  output$row_gene_data <-
+    DT::renderDataTable({
+      if(is.null(event_data("plotly_click"))){return(data.table())}
+      #browser()
+      #row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
+      #column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
+      #start<-proc.time()
+      if(isolate(input$data_source)=="TCGA_NBL_low_pass" | 
+         isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
+      {
+        row_label<-paste0(isolate(input$chrom2),event_data("plotly_click")[["y"]],"_",event_data("plotly_click")[["y"]]+1e6-1)
+        #column_label<-paste0(isolate(input$chrom1),event_data("plotly_click")[["x"]],"_",event_data("plotly_click")[["x"]]+1e6-1)
+      }
+      row_genes_merged<-IRanges::mergeByOverlaps(ensembl_gene_tx_data_gr,underscored_pos_to_GRanges(row_label))
+      row_genes<-sort(unique(row_genes_merged[row_genes_merged$....gene_biotype=="protein_coding","....external_gene_name"]))
+      #cat(file=stderr(),paste0(names(proc.time()-start)))
+      #cat(file=stderr(),paste0(proc.time()-start))
+      print(row_genes)
+      dt<-as.data.table(row_genes)
+      colnames(dt)<-"row genes"
+      return(dt)
+      #if(myReactives)
+      #
+      #all_input<-isolate(input)
+      # cat(file=stderr(),paste0(event_data("plotly_click")))
+      #cat(file=stderr(),paste0(names(event_data("plotly_click"))))
+      #cat(file=stderr(),paste0(event_data("plotly_click")["y"]))
+      #cat(file=stderr(),paste0(row_label))
+      # cat(file=stderr(),ls())
+      #rowclick<-length(common_coords)-myReactives$currentClick$lat
+      #colclick<-myReactives$currentClick$lng
+      #row_genes<-genev[rowclick]
+      #col_genes<-genev[colclick]
+      #
+      #output<-paste0("row genes:",as.character(genev[rowclick]),
+      #               "column genes:",as.character(genev[colclick]))
+      #return(output)
+      
+    }) #,options = list(pageLength=5)
+  output$col_gene_data <-
+    DT::renderDataTable({
+      if(is.null(event_data("plotly_click"))){return(data.table())}
+      #browser()
+      #row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
+      #column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
+      if(isolate(input$data_source)=="TCGA_NBL_low_pass" | 
+         isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
+      {
+        #row_label<-paste0(isolate(input$chrom2),event_data("plotly_click")[["y"]],"_",event_data("plotly_click")[["y"]]+1e6-1)
+        column_label<-paste0(isolate(input$chrom1),event_data("plotly_click")[["x"]],"_",event_data("plotly_click")[["x"]]+1e6-1)
+      }
+      #col_genes<-sort(unique(mergeByOverlaps(ensembl_gene_tx_data_gr,underscored_pos_to_GRanges(column_label))$....external_gene_name))
+      col_genes_merged<-IRanges::mergeByOverlaps(ensembl_gene_tx_data_gr,underscored_pos_to_GRanges(column_label))
+      col_genes<-sort(unique(col_genes_merged[col_genes_merged$....gene_biotype=="protein_coding","....external_gene_name"]))
+      print(col_genes)
+      #print(as.data.table(col_genes))
+      dt<-as.data.table(col_genes)
+      colnames(dt)<-"column genes"
+      
+      return(dt)
+      #if(myReactives)
+      #
+      #all_input<-isolate(input)
+      # cat(file=stderr(),paste0(event_data("plotly_click")))
+      #cat(file=stderr(),paste0(names(event_data("plotly_click"))))
+      #cat(file=stderr(),paste0(event_data("plotly_click")["y"]))
+      #cat(file=stderr(),paste0(row_label))
+      # cat(file=stderr(),ls())
+      #rowclick<-length(common_coords)-myReactives$currentClick$lat
+      #colclick<-myReactives$currentClick$lng
+      #row_genes<-genev[rowclick]
+      #col_genes<-genev[colclick]
+      #
+      #output<-paste0("row genes:",as.character(genev[rowclick]),
+      #               "column genes:",as.character(genev[colclick]))
+      #return(output)
+      
+    }) #,options = list(pageLength=5)
+  
   output$network <- visNetwork::renderVisNetwork({
     if (input$goButton == 0) {return()}
     
