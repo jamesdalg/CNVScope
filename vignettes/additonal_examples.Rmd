@@ -119,6 +119,7 @@ We'll notice that using this combination of techniques, we've managed to pick up
 
 We don't suggest that this tool is perfect and will rapidly make clear all cancer drivers associated with CNVs, but we suggest that it can, with other tools, add to your investigative toolbox to substantiate known drivers and to elucidate new ones.
 ```{r plot_probdist}
+if(requireNamespace("spatialfil",quietly=T)){
 chr_7_probdist %>%  
 #  CNVScope::signedRescale(max_cap=1) %>%
   reshape2::melt()  %>%
@@ -135,6 +136,9 @@ chr_7_probdist %>%
       scale_y_continuous(breaks=js_breakpoints,labels=js_breakpoint_labels) +
 
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
+} else{
+  print("Please install spatialfil in order to run this example.")
+}
 
 ```
 

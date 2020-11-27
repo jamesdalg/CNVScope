@@ -1,3 +1,24 @@
+
+CNVScope v3.2.7 (Release Date 2020-11-27)
+==============
+*With spatialfil removed from CRAN, we have disabled the spatialfil requirement
+to run the additional examples.
+*This algorithm is neat and we'll look at other ways to calculate interaction
+probability, but for the moment,
+we'll just disable things to keep the package on CRAN.
+
+CNVScope v3.2.6 (Release Date 2020-8-14)
+==============
+*Fixed the gene search in the shiny application
+*Added gene listing for row and column genes to the left of the plot.
+**These gene data table outputs are searchable and the size
+is adjustable.
+*Disabled automatic switching to the sample data tab on click so that
+users can properly use the new gene column feature.
+*CRAN fixes to keep the package publicly available
+
+
+
 CNVScope v3.1.8 (Release Date 2020-7-2)
 ==============
 *Reduced imports to 20 and moved the remainder of packages into suggests.
