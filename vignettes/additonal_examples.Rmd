@@ -190,12 +190,16 @@ chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
 
 We can follow the same procedure with this case, but it may not yield precisely the same dramatic result. We expect with most investigative tools this is the case and do not guarantee a winning result each time. In this case, we are attempting to show that the tool DOES work on TCGA data. We can confidently say that we created a matched sample matrix with the TCGA format as well as the TARGET format. We recommend setting parallel=T on the next line for speed, but for the purposes of compatibility with all systems, we have set the code to run without additional cores in this example.
 ```{r probdist_chr17}
+if(requireNamespace("spatialfil",quietly=T)){
 chr_17_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_17_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
 colnames(chr_17_probdist)<-colnames(chr_17_mat)
 rownames(chr_17_probdist)<-colnames(chr_17_mat)
 chr_17_js_breakpoints<-jointseg::jointSeg(chr_17_probdist,K=40)$bestBkp
 chr_17_js_breakpoint_labels<-colnames(cor(chr_17_mat))[chr_17_js_breakpoints]
 chr_17_js_breakpoint_labels
+} else{
+  print("Please install spatialfil in order to run this example.")
+}
 
 ```
 With the coordinates for *ERBB2* at chr17:37844167-37886679, we find a precise match in the second breakpoint. It lies exactly within it. All the breakpoints are plotted in the plot below. Beyond that, the centromere point is precisely identifiable. It not only shows pathophysiology, but illustrates clearly the position of the chromosomal landmark as the border between the largest domains. [Click here](https://grch37.ensembl.org/Homo_sapiens/Location/View?r=17:23000001-25000000) to view the ensembl-75 view of this position. It is clear that it precisely matches the location of the centromere.

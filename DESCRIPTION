@@ -1,7 +1,7 @@
 Package: CNVScope
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
-Version: 3.2.7
+Version: 3.2.9
 Date: 2020-11-27
 Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
@@ -13,7 +13,7 @@ Imports: tidyr,reshape2,magrittr,
   plyr,data.table,dplyr,numbers,rtracklayer,
   doParallel,stringr
 Suggests: knitr, rmarkdown,remotes,pwr,ComplexHeatmap,
-  spatialfil,HiCseg,igraph,visNetwork,circlize,
+  HiCseg,igraph,visNetwork,circlize,
   InteractionSet,GenomicRanges,GenomicFeatures,IRanges,rslurm,
   shinythemes,shinycssloaders,DT,logging,heatmaply,
   S4Vectors,BiocManager,shinyjs,htmltools,htmlwidgets,

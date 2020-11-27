@@ -1,5 +1,5 @@
 
-CNVScope v3.2.7 (Release Date 2020-11-27)
+CNVScope v3.2.9 (Release Date 2020-11-27)
 ==============
 *With spatialfil removed from CRAN, we have disabled the spatialfil requirement
 to run the additional examples.
