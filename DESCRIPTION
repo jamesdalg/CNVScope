@@ -1,8 +1,8 @@
 Package: CNVScope
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
-Version: 3.2.9
-Date: 2020-11-27
+Version: 3.3.1
+Date: 2020-11-28
 Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
 BugReports: https://github.com/jamesdalg/CNVScope/issues/
@@ -11,7 +11,7 @@ Imports: tidyr,reshape2,magrittr,
   jointseg,plotly,shiny,RCurl,foreach,
   GenomicInteractions,Matrix,OpenImageR,biomaRt,matrixStats,
   plyr,data.table,dplyr,numbers,rtracklayer,
-  doParallel,stringr
+  doParallel,stringr,smoothie
 Suggests: knitr, rmarkdown,remotes,pwr,ComplexHeatmap,
   HiCseg,igraph,visNetwork,circlize,
   InteractionSet,GenomicRanges,GenomicFeatures,IRanges,rslurm,
@@ -23,5 +23,5 @@ URL: https://github.com/jamesdalg/CNVScope/
 biocViews: 
 Description: Provides the ability to create interaction maps, discover CNV map domains (edges), gene annotate interactions, and create interactive visualizations of these CNV interaction maps.
 License: BSD_3_clause + file LICENSE
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 LazyData: true
