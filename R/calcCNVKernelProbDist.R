@@ -26,12 +26,15 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores
   submatrix<-as.matrix(submatrix)
   #win<-5
   #library(spatialfil)
-  k = list(matrix=matrix(1/(win^2),nrow=win,ncol=win),kernel='custom')
-  class(k)='convKern'
+  
   if(debug) {win_start <- proc.time()}
-  if(requireNamespace("spatialfil",quietly = T)){
-  submatrix_win_avg = spatialfil::applyFilter(submatrix,k)} else{
-    return("Please Install package spatialfil to use this optional function./n
+  if(requireNamespace("smoothie",quietly = T)){
+  # k = list(matrix=matrix(1/(win^2),nrow=win,ncol=win),kernel='custom')
+  # class(k)='convKern'
+  # submatrix_win_avg = spatialfil::applyFilter(submatrix,k)
+  submatrix_win_avg=smoothie::kernel2dsmooth( submatrix, kernel.type="boxcar", n=win)
+  } else{
+    return("Please Install package smoothie to use this optional function./n
            This can be done by installing CNVScope using the dependencies=T flag")
     }
   if(debug){
