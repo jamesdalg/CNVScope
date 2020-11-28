@@ -1,4 +1,4 @@
-CNVScope v3.3.0 (Release Date 2020-11-28)
+CNVScope v3.3.6 (Release Date 2020-11-28)
 ==============
 *We have now added smoothie::kernel2d smooth
 as an alternative smoother to spatialfil (now disabled) 

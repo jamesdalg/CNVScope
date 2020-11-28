@@ -13,7 +13,6 @@
 #' @import doParallel
 #' @importFrom foreach foreach
 #' @importFrom Matrix bandSparse sparseMatrix
-#' @importFrom smoothie kernel2dsmooth
 #' @examples
 #' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope"))
 #' mat_prob_dist<-calcCNVKernelProbDist(nbl_result_matrix_sign_small,parallel=FALSE)
@@ -33,7 +32,7 @@ calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores
   # k = list(matrix=matrix(1/(win^2),nrow=win,ncol=win),kernel='custom')
   # class(k)='convKern'
   # submatrix_win_avg = spatialfil::applyFilter(submatrix,k)
-  submatrix_win_avg=kernel2dsmooth( submatrix, kernel.type="boxcar", n=win)
+  submatrix_win_avg=smoothie::kernel2dsmooth( submatrix, kernel.type="boxcar", n=win)
   } else{
     return("Please Install package smoothie to use this optional function./n
            This can be done by installing CNVScope using the dependencies=T flag")
