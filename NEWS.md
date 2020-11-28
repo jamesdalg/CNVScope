@@ -1,3 +1,8 @@
+CNVScope v3.3.0 (Release Date 2020-11-28)
+==============
+*We have now added smoothie::kernel2d smooth
+as an alternative smoother to spatialfil (now disabled) 
+and now our package should once again be CRAN ready.
 
 CNVScope v3.2.9 (Release Date 2020-11-27)
 ==============
