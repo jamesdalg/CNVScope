@@ -32,6 +32,9 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
   #importFrom GenomicRanges nearest GRanges
   #importFrom InteractionSet findOverlaps
   #importFrom S4Vectors mcols mcols<-
+  if (!requireNamespace('InteractionSet', quietly = TRUE)) {
+    return("Please install InteractionSet to use this function")
+  }
   i <- if(exists("i")){get("i")} else {NULL}
   if(is.null(gint)){return("No GenomicInteractions to rebin!")}
   if(!is.null(whole_genome_matrix)){
