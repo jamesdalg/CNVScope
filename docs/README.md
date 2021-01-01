@@ -28,11 +28,13 @@ The package is intended for users with experience in the R programming language.
 Non-R users should use the public site:
 http://cnvscope.nci.nih.gov
 
-The program will install typically using the following code:
+
+The program should install using the following code:
 ``` r
 install.packages("CNVScope")
 ```
 To install the development version (may have more features), please use:
+=======
 ``` r
 remotes::install_github("jamesdalg/CNVScope")
 CNVScope::runCNVScopeLocal()
@@ -44,24 +46,26 @@ Installation works best if base R and R tools are up to date.
 https://cran.r-project.org/index.html
 Windows:https://cran.r-project.org/bin/windows/base/
 Macintosh: https://cran.r-project.org/bin/macosx/
-2. Install the appropriate compilation tools for your operating system:
+2. Install RStudio. If running macintosh, install Xcode when prompted.
+3. Install the appropriate compilation tools for your operating system:
 a. For windows, please download & install the latest version of RTools:
 https://cran.r-project.org/bin/windows/Rtools/
-b. For macintosh, be sure to install the latest version of gfortran and clang:
+b. For macintosh, be sure to install the latest version of gfortran and clang (make sure these install AFTER Xcode, so that it overwrites the existing clang installation):
 https://cran.r-project.org/bin/macosx/tools/
-3. Install Bioconductor Dependencies, set allowed repositories, and install the package:
+4. Install Bioconductor Dependencies, set allowed repositories, and install the package:
 Run the following on the R command line:
 ``` r
-install.packages(“BiocManager”)
-BiocManager::install(c(“DNAcopy”,”GenomeInfoDb”,”BSgenome.Hsapiens.UCSC.hg19”))
+install.packages("BiocManager")
+BiocManager::install(c("DNAcopy","GenomeInfoDb","BSgenome.Hsapiens.UCSC.hg19"))
 setRepositories(ind=c(1:2))
-install.packages(“CNVScope”)
+install.packages("CNVScope")
 ```
 
 The package is now installed and should contain the vignettes, functions, and help files.
+
+5. To install the app data (several GB), use the following lines:
 ``` r
-To install the app data (several GB), use the following lines:
-install.packages(“remotes”)
+install.packages("remotes")
 CNVScope::runCNVScopeLocal()
 ```
 
