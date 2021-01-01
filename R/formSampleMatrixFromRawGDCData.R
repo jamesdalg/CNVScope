@@ -37,6 +37,10 @@ formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize
 freadskip=NULL, parallel = F,debug=F,
 chromosomes=paste0("chr",c(seq(1:22),"X"),"_"),sample_pat="",
 sample_col="sample",chrlabel=">chr", startlabel="begin", endlabel="end",cnlabel="log2") {
+  if (!requireNamespace('BSgenome.Hsapiens.UCSC.hg19', quietly = TRUE)) {
+    return("Please install BSgenome.Hsapiens.UCSC.hg19 to use this function")
+  }
+  
   #importFrom GenomicRanges tileGenome mcols
   #importFrom IRanges mergeByOverlaps IRanges
   #importFrom GenomeInfoDb seqinfo

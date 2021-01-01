@@ -1,3 +1,15 @@
+
+CNVScope v3.4.0 (Release Date 2020-12-15)
+==============
+*Made conditional BSgenome.Hsapiens.UCSC.hg19 to improve OSX installation.
+
+CNVScope v3.3.9 (Release Date 2020-12-14)
+==============
+*Made conditional InteractionSet to make OSX installation more seamless.
+
+CNVScope v3.3.7 (Release Date 2020-11-28)
+==============
+*Resubmit due to CRAN submission system bug
 CNVScope v3.3.6 (Release Date 2020-11-28)
 ==============
 *We have now added smoothie::kernel2d smooth
