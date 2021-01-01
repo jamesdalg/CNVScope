@@ -32,7 +32,7 @@ The program will install typically using the following code:
 ``` r
 install.packages("CNVScope")
 ```
-To install the development version (may more features), please use:
+To install the development version (may have more features), please use:
 ``` r
 remotes::install_github("jamesdalg/CNVScope")
 CNVScope::runCNVScopeLocal()
