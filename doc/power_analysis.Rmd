@@ -26,7 +26,6 @@ vignette: >
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(CNVScope)
-library(pwr)
 library(magrittr)
 ```
 
@@ -35,21 +34,30 @@ Power Analysis:
 
 As this is a visual tool, the threshold for finding visual signatures is a visual process, and knowing how many samples is appropriate is a good question. One can use standard power and sample size calculators to determine the number of samples if the user knows the threshold they are trying to detect and at what power. As a simple exercise using the *pwr* package, we could find the number of samples to detect a linear association at the 0.05 level, with 80% power (standard in most textbooks and on the pwr vignette). Mind you, this is only the linear regression for a single point (one bin against another bin).
 ```{r, knit='asis'}
+ if (requireNamespace("pwr", quietly = TRUE)) {
+   library(pwr)
 large.effect.size<-pwr::cohen.ES(test="f2",size="large")$effect.size
 large.effect.size
 f2.res<-pwr::pwr.f2.test(u = 1, f2 = large.effect.size/(1 - large.effect.size), sig.level = 0.05, power = 0.8)
 f2.res
 n<-ceiling(f2.res$v+f2.res$u+1)
 n
+} else {
+  print("Please install the pwr package in order to build this vignette.")
+}
 ```
 
 
-We see that we need `r n` samples to properly obtain a significance level of 0.05 for a given bin pair.
+We see that we need `r  if (requireNamespace("pwr", quietly = TRUE)) {n}` samples to properly obtain a significance level of 0.05 for a given bin pair.
 
 In practice, however, we suggest using more than this. Samples over 100 (like the NBL data) achieve the results that most clearly show a good CNV signature.
 
 One could also do a power analysis from the correlation test within the *pwr* package as well. Wishing to detect a 0.3 difference (which is visually detectable for the average user) with 80% power requires over 100 samples. This seems to be the best approach.
 ```{r}
+if (requireNamespace("pwr", quietly = TRUE)) {
 pwr::pwr.r.test(r = 0.3, sig.level = 0.01, power = 0.8, alternative = "greater")$n %>% ceiling()
+} else {
+  print("Please install the pwr package in order to build this vignette.")
+}
 ```
 

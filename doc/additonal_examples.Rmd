@@ -77,8 +77,8 @@ chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
 ```
 We could then utilize our domain finding function to find the borders of domains in the matrix. There's an obvious distruption near the left center of the matrix (see the blue streaks of anticorrelation?).
 ```{r breakpoints}
-if(Sys.info()['sysname'] == "Linux" |
-Sys.info()['sysname'] == "Windows"){
+if((Sys.info()['sysname'] == "Linux" |
+Sys.info()['sysname'] == "Windows")&requireNamespace("HiCseg",quietly = T)){
 colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]
 breakpoints<-colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))] %>% stringr::str_split_fixed(string = .,pattern="_",n=3) %>% as.matrix() %>% .[,2] %>% as.numeric()
 breakpoint_labels <- colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]
@@ -105,12 +105,12 @@ chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
 ```
 Finally, let's try our probability weighting function for the matrix and see if we can find clearer regions of association. We'll also try another segmentation algorithm with the jointseg package. In most cases, you can achieve a definite speed increase using the parallel=T option. We have disabled it to build the vignette without warnings.
 ```{r probdist}
-if(requireNamespace("spatialfil",quietly=T)){
+if(requireNamespace("smoothie",quietly=T)){
 chr_7_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_7_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
 js_breakpoints<-jointseg::jointSeg(chr_7_probdist,K=20)$bestBkp
 js_breakpoint_labels<-colnames(chr_7_mat)[js_breakpoints]
 } else{
-  print("Please install spatialfil in order to run this example.")
+  print("Please install smoothie in order to run this example.")
 }
 ```
 We'll notice that using this combination of techniques, we've managed to pick up an AML driver between domain endpoints, in a large region where the association is less than expected (as determined by the calcCNVprobdist function). Within the region of 115 and 120Mb lies the MET gene, where an LOH was detected in the paper. It's a pretty obvious signature, perhaps the most obvious in the whole plot.
@@ -119,6 +119,7 @@ We'll notice that using this combination of techniques, we've managed to pick up
 
 We don't suggest that this tool is perfect and will rapidly make clear all cancer drivers associated with CNVs, but we suggest that it can, with other tools, add to your investigative toolbox to substantiate known drivers and to elucidate new ones.
 ```{r plot_probdist}
+if(requireNamespace("smoothie",quietly=T)){
 chr_7_probdist %>%  
 #  CNVScope::signedRescale(max_cap=1) %>%
   reshape2::melt()  %>%
@@ -135,6 +136,9 @@ chr_7_probdist %>%
       scale_y_continuous(breaks=js_breakpoints,labels=js_breakpoint_labels) +
 
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
+} else{
+  print("Please install smoothie in order to run this example.")
+}
 
 ```
 
@@ -186,12 +190,16 @@ chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
 
 We can follow the same procedure with this case, but it may not yield precisely the same dramatic result. We expect with most investigative tools this is the case and do not guarantee a winning result each time. In this case, we are attempting to show that the tool DOES work on TCGA data. We can confidently say that we created a matched sample matrix with the TCGA format as well as the TARGET format. We recommend setting parallel=T on the next line for speed, but for the purposes of compatibility with all systems, we have set the code to run without additional cores in this example.
 ```{r probdist_chr17}
+if(requireNamespace("smoothie",quietly=T)){
 chr_17_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_17_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
 colnames(chr_17_probdist)<-colnames(chr_17_mat)
 rownames(chr_17_probdist)<-colnames(chr_17_mat)
 chr_17_js_breakpoints<-jointseg::jointSeg(chr_17_probdist,K=40)$bestBkp
 chr_17_js_breakpoint_labels<-colnames(cor(chr_17_mat))[chr_17_js_breakpoints]
 chr_17_js_breakpoint_labels
+} else{
+  print("Please install smoothie in order to run this example.")
+}
 
 ```
 With the coordinates for *ERBB2* at chr17:37844167-37886679, we find a precise match in the second breakpoint. It lies exactly within it. All the breakpoints are plotted in the plot below. Beyond that, the centromere point is precisely identifiable. It not only shows pathophysiology, but illustrates clearly the position of the chromosomal landmark as the border between the largest domains. [Click here](https://grch37.ensembl.org/Homo_sapiens/Location/View?r=17:23000001-25000000) to view the ensembl-75 view of this position. It is clear that it precisely matches the location of the centromere.

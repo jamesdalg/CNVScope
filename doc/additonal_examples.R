@@ -32,8 +32,8 @@ chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 
 ## ----breakpoints--------------------------------------------------------------
-if(Sys.info()['sysname'] == "Linux" |
-Sys.info()['sysname'] == "Windows"){
+if((Sys.info()['sysname'] == "Linux" |
+Sys.info()['sysname'] == "Windows")&requireNamespace("HiCseg",quietly = T)){
 colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]
 breakpoints<-colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))] %>% stringr::str_split_fixed(string = .,pattern="_",n=3) %>% as.matrix() %>% .[,2] %>% as.numeric()
 breakpoint_labels <- colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]
@@ -57,15 +57,16 @@ chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
 
 
 ## ----probdist-----------------------------------------------------------------
-if(requireNamespace("spatialfil",quietly=T)){
+if(requireNamespace("smoothie",quietly=T)){
 chr_7_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_7_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
 js_breakpoints<-jointseg::jointSeg(chr_7_probdist,K=20)$bestBkp
 js_breakpoint_labels<-colnames(chr_7_mat)[js_breakpoints]
 } else{
-  print("Please install spatialfil in order to run this example.")
+  print("Please install smoothie in order to run this example.")
 }
 
 ## ----plot_probdist------------------------------------------------------------
+if(requireNamespace("smoothie",quietly=T)){
 chr_7_probdist %>%  
 #  CNVScope::signedRescale(max_cap=1) %>%
   reshape2::melt()  %>%
@@ -82,6 +83,9 @@ chr_7_probdist %>%
       scale_y_continuous(breaks=js_breakpoints,labels=js_breakpoint_labels) +
 
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
+} else{
+  print("Please install smoothie in order to run this example.")
+}
 
 
 ## ----census_data,eval=F-------------------------------------------------------
@@ -114,12 +118,16 @@ chr_17_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 
 ## ----probdist_chr17-----------------------------------------------------------
+if(requireNamespace("smoothie",quietly=T)){
 chr_17_probdist <- CNVScope::calcCNVKernelProbDist(cor(chr_17_mat,use="pairwise.complete.obs"),parallel=F)$percentile_matrix
 colnames(chr_17_probdist)<-colnames(chr_17_mat)
 rownames(chr_17_probdist)<-colnames(chr_17_mat)
 chr_17_js_breakpoints<-jointseg::jointSeg(chr_17_probdist,K=40)$bestBkp
 chr_17_js_breakpoint_labels<-colnames(cor(chr_17_mat))[chr_17_js_breakpoints]
 chr_17_js_breakpoint_labels
+} else{
+  print("Please install smoothie in order to run this example.")
+}
 
 
 ## ----breakpoint_plot_chr17,eval=F---------------------------------------------
