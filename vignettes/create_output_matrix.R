@@ -53,7 +53,20 @@ nbl_result_matrix_sign_corrected[1:5,1:5]
 
 ## ----echo=T-------------------------------------------------------------------
 nbl_result_matrix_sign_corrected[1:5,1:5]
-ComplexHeatmap::Heatmap(signedRescale(as.matrix(nbl_result_matrix_sign_corrected)),col = circlize::colorRamp2(c(0,0.5,1),c("blue","white","red")),cluster_rows = F,cluster_columns = F,show_heatmap_legend = F,show_column_names = F,show_row_names = F)
+   if (requireNamespace("ComplexHeatmap", quietly = TRUE) & requireNamespace("circlize", quietly = TRUE)) {
+      ComplexHeatmap::Heatmap(signedRescale(as.matrix(nbl_result_matrix_sign_corrected)),
+                              col = circlize::colorRamp2(c(0,0.5,1),c("blue","white","red")),
+                              cluster_rows = F,cluster_columns = F,
+                              show_heatmap_legend = F,
+                              show_column_names = F,
+                              show_row_names = F)
+   } else {
+print("ComplexHeatmap not installed.\n
+      Please install ComplexHeatmap in order to create this plot.")
+   }
+
+  
+
 
 ## ----eval=F,echo=T------------------------------------------------------------
 #  if(!dir.exists("nbl_matrix_set")){dir.create("nbl_matrix_set")}
