@@ -1,4 +1,8 @@
 
+CNVScope v3.4.2 (Release Date 2021-01-04)
+==============
+*Made package check successfully without suggested dependencies.
+
 CNVScope v3.4.0 (Release Date 2020-12-15)
 ==============
 *Made conditional BSgenome.Hsapiens.UCSC.hg19 to improve OSX installation.

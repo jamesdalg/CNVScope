@@ -1,8 +1,8 @@
 Package: CNVScope
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
-Version: 3.4.0
-Date: 2020-12-15
+Version: 3.4.2
+Date: 2021-01-03
 Author: James Dalgeish, Yonghong Wang, Jack Zhu, Paul Meltzer
 Maintainer: James Dalgleish <james.dalgleish@nih.gov>
 BugReports: https://github.com/jamesdalg/CNVScope/issues/
@@ -12,7 +12,7 @@ Imports: tidyr,reshape2,magrittr,
   GenomicInteractions,Matrix,OpenImageR,biomaRt,matrixStats,
   plyr,data.table,dplyr,numbers,rtracklayer,
   doParallel,stringr
-Suggests: knitr, rmarkdown,remotes,pwr,ComplexHeatmap,
+Suggests: knitr, remotes,pwr,ComplexHeatmap,rmarkdown,
   HiCseg,igraph,visNetwork,circlize,
   InteractionSet,GenomicRanges,GenomicFeatures,IRanges,rslurm,
   shinythemes,shinycssloaders,DT,logging,heatmaply,

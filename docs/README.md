@@ -34,7 +34,6 @@ The program should install using the following code:
 install.packages("CNVScope")
 ```
 To install the development version (may have more features), please use:
-=======
 ``` r
 remotes::install_github("jamesdalg/CNVScope")
 CNVScope::runCNVScopeLocal()

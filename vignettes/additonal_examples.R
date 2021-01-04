@@ -32,8 +32,8 @@ chr_7_mat %>%  cor(use="pairwise.complete.obs",method="pearson") %>%
   ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1))
 
 ## ----breakpoints--------------------------------------------------------------
-if(Sys.info()['sysname'] == "Linux" |
-Sys.info()['sysname'] == "Windows"){
+if((Sys.info()['sysname'] == "Linux" |
+Sys.info()['sysname'] == "Windows")&requireNamespace("HiCseg",quietly = T)){
 colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]
 breakpoints<-colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))] %>% stringr::str_split_fixed(string = .,pattern="_",n=3) %>% as.matrix() %>% .[,2] %>% as.numeric()
 breakpoint_labels <- colnames(chr_7_mat)[CNVScope::getAsymmetricBlockIndices(cor(chr_7_mat,use="pairwise.complete.obs"))]

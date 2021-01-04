@@ -82,7 +82,20 @@ nbl_result_matrix_sign_corrected[1:5,1:5]
 ```
 ```{r,echo=T}
 nbl_result_matrix_sign_corrected[1:5,1:5]
-ComplexHeatmap::Heatmap(signedRescale(as.matrix(nbl_result_matrix_sign_corrected)),col = circlize::colorRamp2(c(0,0.5,1),c("blue","white","red")),cluster_rows = F,cluster_columns = F,show_heatmap_legend = F,show_column_names = F,show_row_names = F)
+   if (requireNamespace("ComplexHeatmap", quietly = TRUE) & requireNamespace("circlize", quietly = TRUE)) {
+      ComplexHeatmap::Heatmap(signedRescale(as.matrix(nbl_result_matrix_sign_corrected)),
+                              col = circlize::colorRamp2(c(0,0.5,1),c("blue","white","red")),
+                              cluster_rows = F,cluster_columns = F,
+                              show_heatmap_legend = F,
+                              show_column_names = F,
+                              show_row_names = F)
+   } else {
+print("ComplexHeatmap not installed.\n
+      Please install ComplexHeatmap in order to create this plot.")
+   }
+
+  
+
 ```
 Finally, the whole genome matrix is too big to plot interactively without crashing most browsers using the plotly package. We'll need to break things apart a bit. A final function will write chromosomal pair heatmaps to disk with genes from ensembl (hg19 coordinates) in encoded for each square in the matrix. Please only use this function on the WHOLE matrix, not on the small subset we have provided in documentation.
 ```{r,eval=F,echo=T}
