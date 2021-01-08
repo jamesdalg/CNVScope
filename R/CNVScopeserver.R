@@ -7,7 +7,6 @@
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(RCurl, except = reset)
 #' @rawNamespace import(data.table, except = c(melt, dcast))
-#' @importFrom plotly event_data renderPlotly layout ggplotly add_histogram add_trace plot_ly
 #' @param session The shiny session object for the application.
 #' @param input shiny server input
 #' @param output shiny server output
