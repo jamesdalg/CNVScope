@@ -6,14 +6,13 @@
 #' @import ggplot2 magrittr
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(RCurl, except = reset)
-#' @rawNamespace import(plotly, except = c(last_plot,select,filter))
 #' @rawNamespace import(data.table, except = c(melt, dcast))
+#' @importFrom plotly event_data renderPlotly layout ggplotly add_histogram add_trace plot_ly
 #' @param session The shiny session object for the application.
 #' @param input shiny server input
 #' @param output shiny server output
 #' @param debug enable debugging mode
 #' @return None
-
 #' @examples
 #' \dontrun{
 #' runCNVScopeShiny()
@@ -25,8 +24,11 @@
 #                 'tcga_type','census_data_gr','common_coords','myReactives',
 #                  'genev','delete.isolates','freq_data'),add = F)
 #rawNamespace import(GenomicFeatures ,except = show)
+
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 CNVScopeserver<-function(session,input, output, debug=F) {
+#  if(requireNamespace("plotly",quietly = T)){
+    #
 #importFrom tidyr unite
   #importFrom jointseg jointSeg
   #importFrom logging addHandler
@@ -123,7 +125,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
   #   show("row_gene_data")
   #   show("col_gene_data")
   # })
-  observeEvent(event_data("plotly_click"), {
+  observeEvent(plotly::event_data("plotly_click"), {
     #showTab(inputId = "tabs",select = T, target = "sample info")
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
     {
@@ -156,7 +158,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     {
       shiny::showTab(inputId="tabs",select = F,target="gain/loss frequency")
     }
-    if(is.null(event_data("plotly_click"))){
+    if(is.null(plotly::event_data("plotly_click"))){
       shiny::hideTab(inputId="tabs",target="gain/loss frequency")
       shiny::hideTab(inputId="tabs",target="sample info")
       shiny::hideTab(inputId="tabs",target="COSMIC cancer gene census") 
@@ -174,7 +176,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
   #   if(!is.null(isolate(input$loc_input_row))){
   # updateSelectInput(session,"chrom1",chromosomes,selected=paste0(as.character(GRanges(isolate(input$loc_input_row))@seqnames),"_"))}
   # })
-  output$plotlyChromosomalHeatmap <- renderPlotly({
+  output$plotlyChromosomalHeatmap <- plotly::renderPlotly({
     
     if (input$goButton == 0) {return()}
     
@@ -624,15 +626,15 @@ if(!isolate(input$genes_toggle)){
     
     
     #check for the correct format.
-    plotly_output<-plotly::ggplotly(p_with_points,tooltip="text") %>% layout(margin=list(r=0, l=200, t=0, b=200),width=isolate(input$heatmapHeight),height=round(isolate(input$heatmapHeight)/1.25))
+    plotly_output<-plotly::ggplotly(p_with_points,tooltip="text") %>% plotly::layout(margin=list(r=0, l=200, t=0, b=200),width=isolate(input$heatmapHeight),height=round(isolate(input$heatmapHeight)/1.25))
     } else {if(exists("p"))
     {
-      plotly_output<-plotly::ggplotly(p,tooltip="text") %>% layout(margin=list(r=0, l=200, t=0, b=200),width=isolate(input$heatmapHeight),height=round(isolate(input$heatmapHeight)/1.25))
+      plotly_output<-plotly::ggplotly(p,tooltip="text") %>% plotly::layout(margin=list(r=0, l=200, t=0, b=200),width=isolate(input$heatmapHeight),height=round(isolate(input$heatmapHeight)/1.25))
     }
     }
     #
     
-    #plotly_output<-plotly::ggplotly(p) %>%       layout(margin=list(r=0, l=200, t=0, b=200),width=1280,height=1024)
+    #plotly_output<-plotly::ggplotly(p) %>%       plotly::layout(margin=list(r=0, l=200, t=0, b=200),width=1280,height=1024)
     #%>% saveWidget(title = gsub("_","",paste0(chromosomes[isolate(input$chrom1)],"-",chromosomes[isolate(input$chrom2)])),file = paste0(chromosomes[isolate(input$chrom1)],chromosomes[isolate(input$chrom2)],"transparent_tooltipv27_coord_no_flip_downsample_upward_orientation_plotly_nrsample.html"),selfcontained = T)
     #
     if( (!is.null(isolate(input$loc_input_row)) | !is.null(isolate(input$loc_input_col)) ) & (!isolate(input$loc_input_row)=="" | !isolate(input$loc_input_col)==""))
@@ -667,7 +669,7 @@ if(!isolate(input$genes_toggle)){
       
       if(xmax>xglobalmax){xmax<-xglobalmax}
       if(ymax>yglobalmax){ymax<-yglobalmax}
-      #ggplotly(p, dynamicTicks = T) %>% layout(xaxis=list(autorange=F, range=c(xcentercoord-4,xcentercoord+4)), yaxis=list(autorange=F, range=c(20,30)))
+      #ggplotly(p, dynamicTicks = T) %>% plotly::layout(xaxis=list(autorange=F, range=c(xcentercoord-4,xcentercoord+4)), yaxis=list(autorange=F, range=c(20,30)))
       if(!exists("xmin")){xmin<-xglobalmin}
       if(!exists("xmax")){xmax<-xglobalmax}
       if(!exists("ymin")){ymin<-yglobalmin}
@@ -675,13 +677,13 @@ if(!isolate(input$genes_toggle)){
       #xmin<-floor(xmin/1e6)*1e6
       
       if(exists("p_with_points")){
-        plotly_output<-plotly::ggplotly(p_with_points,tooltip="text") %>% layout(margin=list(r=0, l=200, t=0, b=200),width=isolate(input$heatmapHeight),height=round(isolate(input$heatmapHeight)/1.25),
+        plotly_output<-plotly::ggplotly(p_with_points,tooltip="text") %>% plotly::layout(margin=list(r=0, l=200, t=0, b=200),width=isolate(input$heatmapHeight),height=round(isolate(input$heatmapHeight)/1.25),
                                                                                  xaxis=list(range=c(xmin,xmax),autorange=F), yaxis=list(range=c(ymin,ymax),autorange=F))
       } else {
         if(exists("p"))
         {
 
-          plotly_output<-plotly::ggplotly(p,tooltip="text") %>% layout(margin=list(r=0, l=200, t=0, b=200),width=isolate(input$heatmapHeight),height=round(isolate(input$heatmapHeight)/1.25),xaxis=list(range=c(xmin,xmax),autorange=F), yaxis=list(range=c(ymin,ymax),autorange=F))
+          plotly_output<-plotly::ggplotly(p,tooltip="text") %>% plotly::layout(margin=list(r=0, l=200, t=0, b=200),width=isolate(input$heatmapHeight),height=round(isolate(input$heatmapHeight)/1.25),xaxis=list(range=c(xmin,xmax),autorange=F), yaxis=list(range=c(ymin,ymax),autorange=F))
         }
       }
       return(plotly_output)
@@ -746,13 +748,13 @@ if(!isolate(input$genes_toggle)){
   # get_recast_matrix<-function(){return(recast_matrix)}
   output$expression_data<-DT::renderDataTable({
     #browser()
-    if(is.null(event_data("plotly_click"))){return(data.table())}
+    if(is.null(plotly::event_data("plotly_click"))){return(data.table())}
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")
     {     
       
       recast_matrix<-get_recast_matrix()
-      row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
-      column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
+      row_label<-rownames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
+      column_label<-colnames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
       #row_point_gr<-underscored_pos_to_GRanges(row_label)
       #column_point_gr<-underscored_pos_to_GRanges(column_label)
       #row_index<-as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1
@@ -781,8 +783,8 @@ if(debug){browser()}
             }
           #mcols(expression_data_gr_nbl)$SYMBOL<-expression_data_gr_nbl$....external_gene_name
          if(debug){browser()}
-          rowexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr_nbl,rownames_gr_full[rownames_gr_full@ranges@start==event_data("plotly_click")[["y"]]]))
-          colexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr_nbl,colnames_gr_full[colnames_gr_full@ranges@start==event_data("plotly_click")[["x"]]]))
+          rowexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr_nbl,rownames_gr_full[rownames_gr_full@ranges@start==plotly::event_data("plotly_click")[["y"]]]))
+          colexpression<-as.data.table(IRanges::subsetByOverlaps(expression_data_gr_nbl,colnames_gr_full[colnames_gr_full@ranges@start==plotly::event_data("plotly_click")[["x"]]]))
         }
       }
     
@@ -800,11 +802,11 @@ if(debug){browser()}
   })
   output$census_data<-DT::renderDataTable({
     #
-    if(is.null(event_data("plotly_click"))){return(data.table())}
+    if(is.null(plotly::event_data("plotly_click"))){return(data.table())}
     recast_matrix<-get_recast_matrix()
     if(length(intersect(ls(),"census_data_gr"))!=1) {    tryCatch(census_data_gr<-readRDS(paste0(basefn,"censushg19.rds")),error = function(e) NULL)}
-    row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
-    column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
+    row_label<-rownames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
+    column_label<-colnames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
     #row_point_gr<-underscored_pos_to_GRanges(row_label)
     #column_point_gr<-underscored_pos_to_GRanges(column_label)
     #row_index<-as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1
@@ -845,10 +847,10 @@ if(debug){browser()}
   # })
   output$gene_data <-
     renderPrint({
-      if(is.null(event_data("plotly_click"))){return(data.table())}
+      if(is.null(plotly::event_data("plotly_click"))){return(data.table())}
       
-      row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
-      column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
+      row_label<-rownames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
+      column_label<-colnames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
       #if(myReactives)
       #
       #all_input<-isolate(input)
@@ -866,7 +868,7 @@ if(debug){browser()}
     })
   output$row_gene_data <-
     DT::renderDataTable({
-      if(is.null(event_data("plotly_click"))){return(data.table())}
+      if(is.null(plotly::event_data("plotly_click"))){return(data.table())}
       #browser()
       #row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
       #column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
@@ -874,7 +876,7 @@ if(debug){browser()}
       if(isolate(input$data_source)=="TCGA_NBL_low_pass" | 
          isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
       {
-        row_label<-paste0(isolate(input$chrom2),event_data("plotly_click")[["y"]],"_",event_data("plotly_click")[["y"]]+1e6-1)
+        row_label<-paste0(isolate(input$chrom2),plotly::event_data("plotly_click")[["y"]],"_",plotly::event_data("plotly_click")[["y"]]+1e6-1)
         #column_label<-paste0(isolate(input$chrom1),event_data("plotly_click")[["x"]],"_",event_data("plotly_click")[["x"]]+1e6-1)
       }
       row_genes_merged<-IRanges::mergeByOverlaps(ensembl_gene_tx_data_gr,underscored_pos_to_GRanges(row_label))
@@ -905,7 +907,7 @@ if(debug){browser()}
     }) #,options = list(pageLength=5)
   output$col_gene_data <-
     DT::renderDataTable({
-      if(is.null(event_data("plotly_click"))){return(data.table())}
+      if(is.null(plotly::event_data("plotly_click"))){return(data.table())}
       #browser()
       #row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
       #column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
@@ -913,7 +915,7 @@ if(debug){browser()}
          isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
       {
         #row_label<-paste0(isolate(input$chrom2),event_data("plotly_click")[["y"]],"_",event_data("plotly_click")[["y"]]+1e6-1)
-        column_label<-paste0(isolate(input$chrom1),event_data("plotly_click")[["x"]],"_",event_data("plotly_click")[["x"]]+1e6-1)
+        column_label<-paste0(isolate(input$chrom1),plotly::event_data("plotly_click")[["x"]],"_",plotly::event_data("plotly_click")[["x"]]+1e6-1)
       }
       #col_genes<-sort(unique(mergeByOverlaps(ensembl_gene_tx_data_gr,underscored_pos_to_GRanges(column_label))$....external_gene_name))
       col_genes_merged<-IRanges::mergeByOverlaps(ensembl_gene_tx_data_gr,underscored_pos_to_GRanges(column_label))
@@ -987,26 +989,26 @@ if(debug){browser()}
     return(as.data.table(ggplotmatrix[ggplotmatrix$Var1 %in% isolate(input$current_node_id) | ggplotmatrix$Var2 %in% isolate(input$current_node_id),]))#c("Var1,Var2","value","value1")
   },options = list(pageLength=5))#
   #pageLength = 5)
-  output$sample_info<-renderPlotly({
+  output$sample_info<-plotly::renderPlotly({
     input$sample_hist_alpha
-    if(is.null(event_data("plotly_click"))){return(data.table())}
+    if(is.null(plotly::event_data("plotly_click"))){return(data.table())}
     if(length((!exists("bin_data")|if(exists("bin_data")){dim(bin_data)[1]==3053}))==0 & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     #browser()
     #ed <- event_data("plotly_click")
-    if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
+    if (is.null(plotly::event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit" | isolate(input$data_source)=="TCGA_NBL_low_pass" | 
        isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset")
     )
     {
       recast_matrix<-get_recast_matrix()
       if(!is.null("recast_matrix")) {
-        row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
-        column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
+        row_label<-rownames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
+        column_label<-colnames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
         if(isolate(input$data_source)=="TCGA_NBL_low_pass" | 
            isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
         {
-          row_label<-paste0(isolate(input$chrom2),event_data("plotly_click")[["y"]],"_",event_data("plotly_click")[["y"]]+1e6-1)
-          column_label<-paste0(isolate(input$chrom1),event_data("plotly_click")[["x"]],"_",event_data("plotly_click")[["x"]]+1e6-1)
+          row_label<-paste0(isolate(input$chrom2),plotly::event_data("plotly_click")[["y"]],"_",plotly::event_data("plotly_click")[["y"]]+1e6-1)
+          column_label<-paste0(isolate(input$chrom1),plotly::event_data("plotly_click")[["x"]],"_",plotly::event_data("plotly_click")[["x"]]+1e6-1)
         }
         if(length(bin_data$probe)==0)
         {
@@ -1017,10 +1019,10 @@ if(debug){browser()}
         #p <- plotly::plot_ly(x = bin_data[1,], type = "histogram")
         #        cat(file=stderr(),paste0("sample_info"))
         #        cat(file=stderr(),ls())
-        sample_info_p <- plot_ly(alpha = isolate(input$sample_hist_alpha)) %>%
-          add_histogram(x = as.numeric(d[1,]),name=d[1,"probe"]) %>%
-          add_histogram(x = as.numeric(d[2,]),name=d[2,"probe"]) %>%
-          layout(barmode = "overlay")
+        sample_info_p <- plotly::plot_ly(alpha = isolate(input$sample_hist_alpha)) %>%
+          plotly::add_histogram(x = as.numeric(d[1,]),name=d[1,"probe"]) %>%
+          plotly::add_histogram(x = as.numeric(d[2,]),name=d[2,"probe"]) %>%
+          plotly::layout(barmode = "overlay")
         
         print(sample_info_p)
         if(debug){browser()}
@@ -1033,22 +1035,22 @@ if(debug){browser()}
       
     }
   })
-  output$sample_info_scatter<-renderPlotly({
-    if(is.null(event_data("plotly_click"))){return(plotly_empty())}
+  output$sample_info_scatter<-plotly::renderPlotly({
+    if(is.null(plotly::event_data("plotly_click"))){return(plotly::plotly_empty())}
     #browser()
-    req(event_data("plotly_click"))
+    req(plotly::event_data("plotly_click"))
     #if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
     recast_matrix<-get_recast_matrix()
     if(length((!exists("bin_data")|if(exists("bin_data")){dim(bin_data)[1]==3053}))==0 & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     #if((!exists("bin_data")|if(exists("bin_data")){dim(bin_data)[1]==3053}) & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     if(!is.null("recast_matrix")) {
-      row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
-      column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
+      row_label<-rownames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
+      column_label<-colnames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
       if(isolate(input$data_source)=="TCGA_NBL_low_pass" | 
          isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
       {
-        row_label<-paste0(isolate(input$chrom2),event_data("plotly_click")[["y"]],"_",event_data("plotly_click")[["y"]]+1e6-1)
-        column_label<-paste0(isolate(input$chrom1),event_data("plotly_click")[["x"]],"_",event_data("plotly_click")[["x"]]+1e6-1)
+        row_label<-paste0(isolate(input$chrom2),plotly::event_data("plotly_click")[["y"]],"_",plotly::event_data("plotly_click")[["y"]]+1e6-1)
+        column_label<-paste0(isolate(input$chrom1),plotly::event_data("plotly_click")[["x"]],"_",plotly::event_data("plotly_click")[["x"]]+1e6-1)
       }
       if(length(bin_data$probe)==0)
       {
@@ -1065,20 +1067,20 @@ if(debug){browser()}
       #p <- plotly::plot_ly(x = bin_data[1,], type = "histogram")
       # cat(file=stderr(),paste0("census_data"))
       # cat(file=stderr(),ls())
-      sample_info_p_scatter <- plot_ly(alpha = 0.6) %>%
-        add_trace(x = as.numeric(d[1,]),name=d[1,"probe"],y=seq(1:ncol(d))) %>%
-        add_trace(x = as.numeric(d[2,]),name=d[2,"probe"],y=seq(1:ncol(d)))# %>%
-      # layout(barmode = "overlay")
+      sample_info_p_scatter <- plotly::plot_ly(alpha = 0.6) %>%
+        plotly::add_trace(x = as.numeric(d[1,]),name=d[1,"probe"],y=seq(1:ncol(d))) %>%
+        plotly::add_trace(x = as.numeric(d[2,]),name=d[2,"probe"],y=seq(1:ncol(d)))# %>%
+      # plotly::layout(barmode = "overlay")
       print(sample_info_p_scatter)
       if(debug){browser()}
       return(sample_info_p_scatter)
     }
 
   })
-  output$minimap<-renderPlotly({
+  output$minimap<-plotly::renderPlotly({
     #if(is.null(event_data("plotly_click"))){return(data.table())}
     #if(is.null(event_data("plotly_click"))){return(NULL)}
-    req(event_data("plotly_click"))
+    req(plotly::event_data("plotly_click"))
     #event_data("plotly_click")
     #if (is.null(event_data("plotly_click"))) {return("Click events appear here (double-click to clear)")}
     if(length((!exists("bin_data")|if(exists("bin_data")){dim(bin_data)[1]==3053}))==0 & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
@@ -1087,13 +1089,13 @@ if(debug){browser()}
     ggplotmatrix_full<-getGGplotMatrix_full()
     recast_matrix_full<-get_recast_matrix_full()
     if(!is.null("recast_matrix") & !is.null("recast_matrix_full")) {
-      row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
-      column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
+      row_label<-rownames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
+      column_label<-colnames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
       if(isolate(input$data_source)=="TCGA_NBL_low_pass" | 
          isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
       {
-        row_label<-paste0(isolate(input$chrom2),event_data("plotly_click")[["y"]],"_",event_data("plotly_click")[["y"]]+1e6-1)
-        column_label<-paste0(isolate(input$chrom1),event_data("plotly_click")[["x"]],"_",event_data("plotly_click")[["x"]]+1e6-1)
+        row_label<-paste0(isolate(input$chrom2),plotly::event_data("plotly_click")[["y"]],"_",plotly::event_data("plotly_click")[["y"]]+1e6-1)
+        column_label<-paste0(isolate(input$chrom1),plotly::event_data("plotly_click")[["x"]],"_",plotly::event_data("plotly_click")[["x"]]+1e6-1)
       }
       if(length(bin_data$probe)==0)
       {
@@ -1111,7 +1113,7 @@ if(debug){browser()}
       # cat(file=stderr(),paste0("minimap"))
       # cat(file=stderr(),ls())
       
-      plotly_output<-plotly::ggplotly(p,tooltip="text") %>% layout(margin=list(r=0, l=200, t=0, b=200),width=isolate(input$heatmapHeight),height=isolate(input$heatmapHeight)/1.25)
+      plotly_output<-plotly::ggplotly(p,tooltip="text") %>% plotly::layout(margin=list(r=0, l=200, t=0, b=200),width=isolate(input$heatmapHeight),height=isolate(input$heatmapHeight)/1.25)
       #print(plotly_output)
       #essentially, grab the row and column bins (above) for the sampled matrix, then grab the same coordinates for the full matrix, plus four to x, plus four to y.
       #p <- plotly::plot_ly(x = bin_data[1,], type = "histogram")
@@ -1124,10 +1126,10 @@ if(debug){browser()}
       return(plotly_output)
     }
   })
-  output$sample_info_scatter2<-renderPlotly({
+  output$sample_info_scatter2<-plotly::renderPlotly({
     if(debug){browser()}
-    req(event_data("plotly_click"))
-    if (is.null(event_data("plotly_click"))) {return(NULL)}
+    req(plotly::event_data("plotly_click"))
+    if (is.null(plotly::event_data("plotly_click"))) {return(NULL)}
     #browser()
     if(length((!exists("bin_data")|if(exists("bin_data")){dim(bin_data)[1]==3053}))==0 & isolate(input$data_source)=="linreg_osteosarcoma_CNVkit")   { tryCatch(bin_data<<-readRDS((paste0(osteofn,"bin_data.rds"))),error = function(e) NULL) }
     if(isolate(input$data_source)=="linreg_osteosarcoma_CNVkit" | isolate(input$data_source)=="TCGA_NBL_low_pass" | 
@@ -1136,13 +1138,13 @@ if(debug){browser()}
       recast_matrix<-get_recast_matrix()
       if(!is.null("recast_matrix")) {
         #
-        row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
-        column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
+        row_label<-rownames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
+        column_label<-colnames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
         if(isolate(input$data_source)=="TCGA_NBL_low_pass" | 
            isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
         {
-          row_label<-paste0(isolate(input$chrom2),event_data("plotly_click")[["y"]],"_",event_data("plotly_click")[["y"]]+1e6-1)
-          column_label<-paste0(isolate(input$chrom1),event_data("plotly_click")[["x"]],"_",event_data("plotly_click")[["x"]]+1e6-1)
+          row_label<-paste0(isolate(input$chrom2),plotly::event_data("plotly_click")[["y"]],"_",plotly::event_data("plotly_click")[["y"]]+1e6-1)
+          column_label<-paste0(isolate(input$chrom1),plotly::event_data("plotly_click")[["x"]],"_",plotly::event_data("plotly_click")[["x"]]+1e6-1)
         }
         if(length(bin_data$probe)==0)
         {
@@ -1198,12 +1200,12 @@ if(debug){browser()}
       TCGA_low_pass_sample_info<-get_tcga_lp_sample_info()
       recast_matrix <- get_recast_matrix()
       if (!is.null("recast_matrix")) {
-        row_label <- rownames(recast_matrix)[order(get_rownames_gr())][as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1])) + 1]
-        column_label <- colnames(recast_matrix)[order(get_colnames_gr())][as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2])) + 1]
+        row_label <- rownames(recast_matrix)[order(get_rownames_gr())][as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][1])) + 1]
+        column_label <- colnames(recast_matrix)[order(get_colnames_gr())][as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][2])) + 1]
         if(isolate(input$data_source)=="TCGA_NBL_low_pass")
         {
-          row_label<-paste0(isolate(input$chrom2),event_data("plotly_click")[["y"]],"_",event_data("plotly_click")[["y"]]+1e6-1)
-          column_label<-paste0(isolate(input$chrom1),event_data("plotly_click")[["x"]],"_",event_data("plotly_click")[["x"]]+1e6-1)
+          row_label<-paste0(isolate(input$chrom2),plotly::event_data("plotly_click")[["y"]],"_",plotly::event_data("plotly_click")[["y"]]+1e6-1)
+          column_label<-paste0(isolate(input$chrom1),plotly::event_data("plotly_click")[["x"]],"_",plotly::event_data("plotly_click")[["x"]]+1e6-1)
         }
         d<-as.data.table(TCGA_low_pass_sample_info[TCGA_low_pass_sample_info$pos %in% c(row_label,column_label),])
         if("TCGA_CNV_data_gr.....relativeCvg" %in% colnames(TCGA_low_pass_sample_info)){
@@ -1245,8 +1247,8 @@ if(debug){browser()}
     recast_matrix<-get_recast_matrix()
     #cat(file=stderr(),paste0(d))
     if(!is.null("recast_matrix")) {
-      row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
-      column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
+      row_label<-rownames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
+      column_label<-colnames(recast_matrix)[as.integer(paste0(plotly::event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
       d<-as.data.table(freq_data[freq_data$pos %in% c(row_label,column_label)])
       # cat(file=stderr(),paste0("freq_table"))
       # cat(file=stderr(),ls())
@@ -1312,4 +1314,5 @@ if(debug){browser()}
     # cat(file=stderr(),paste0(d))
     # return(d)
   })
-}
+  }
+#}

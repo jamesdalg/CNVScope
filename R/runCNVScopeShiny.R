@@ -8,7 +8,6 @@
 #' @import  ggplot2 magrittr GenomicInteractions
 #' @rawNamespace import(RCurl, except = reset)
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
-#' @rawNamespace import(plotly, except = c(last_plot,select,filter))
 #' @rawNamespace import(data.table, except = c(melt, dcast))
 #' @param baseurl the url of the source files for the application (e.g. the contents of plotly_dashboard_ext). This will be pulled from remotely.
 #' @param basefn the linux file path of the same source files.
@@ -26,6 +25,7 @@
 
 
 runCNVScopeShiny<-function(baseurl=NULL,basefn=NULL, osteofn=NULL,debug=F, useCNVScopePublicData=F) {
+#  if(requireNamespace("plotly",quietly = T)){
   #rawNamespace import(GenomicFeatures ,except = show)
   #importFrom logging logerror
   #importFrom shinythemes shinytheme
@@ -118,7 +118,6 @@ if(exists("basefn")) {#local objects:
     tryCatch(expression_data_gr_nbl<-readRDS(url(paste0(baseurl,"tcga_nbl_expression.rds"))),error = function(e) NULL)
     tryCatch(bin_data_gr<-readRDS(url(paste0(baseurl,"bin_data_gr.rds"))),error = function(e) NULL)
     #tryCatch(census_data_gr<-readRDS(url(paste0(baseurl,"census_data_gr.rds"))),error = function(e) NULL)
-    browse()
     tryCatch(census_data_gr<-readRDS(paste0(basefn,"censushg19.rds")),error = function(e) NULL)
     tryCatch(ensembl_gene_tx_data_gr<-readRDS(url(paste0(baseurl,"ensembl_gene_tx_table_gr.rds"))),error = function(e) NULL)
   }
@@ -164,11 +163,11 @@ CNVScopeui<-fluidPage(theme=shinythemes::shinytheme("flatly"), #shinythemes::the
                                       
                                       ))),
                    tabPanel("Plots",fluidRow(column(2,DT::dataTableOutput("row_gene_data")),column(2,DT::dataTableOutput("col_gene_data")), column(5, h2("interactive chromosomal heatmap and minimap"),
-                                                                                                                                                                  shinycssloaders::withSpinner(plotlyOutput("plotlyChromosomalHeatmap",height = "100%"))#,
+                                                                                                                                                                  shinycssloaders::withSpinner(plotly::plotlyOutput("plotlyChromosomalHeatmap",height = "100%"))#,
                                                                                                                                                                   #               visNetwork::visNetworkOutput("network",height="1024")
                                                                                                                                                                   
                                                                                                                                                                   
-                                      ),column(1,offset=2,plotlyOutput("minimap",height=1024)#,verbatimTextOutput("shiny_return")
+                                      ),column(1,offset=2,plotly::plotlyOutput("minimap",height=1024)#,verbatimTextOutput("shiny_return")
                                       ))
                                       ) ,#tabPanel("Top Network interactions", h2("Interactive Chromosomal Interaction network for top positive and negative relationships"),
                    #         fluidRow(dataTableOutput("shiny_return"),fluidRow(visNetwork::visNetworkOutput("network",height="1024"))#paste0(round(isolate(input$heatmapHeight)/1.25),"px")) 
@@ -179,9 +178,9 @@ CNVScopeui<-fluidPage(theme=shinythemes::shinytheme("flatly"), #shinythemes::the
                    tabPanel("COSMIC cancer gene census",h2("Cancer Gene Census Data"),
                             fluidRow( shinycssloaders::withSpinner(DT::dataTableOutput("census_data")))), #end tabpanel
                    tabPanel("sample info",
-                            fluidRow(column(2,offset=1,h3("sample histogram for row and column values at clicked point"),sliderInput('sample_hist_alpha',"histogram opacity",min=0.1,max=1,value = 0.6), shinycssloaders::withSpinner(plotlyOutput("sample_info"))),
-                                     column(2,offset=1,h3("sample scatterplot for row and column segmentation values at clicked point"),shinycssloaders::withSpinner(plotlyOutput("sample_info_scatter"))),
-                                     column(2,offset=1,h3("sample regression scatterplot for values at clicked point, colored by sample to show clustering"),shinycssloaders::withSpinner(plotlyOutput("sample_info_scatter2"))))      
+                            fluidRow(column(2,offset=1,h3("sample histogram for row and column values at clicked point"),sliderInput('sample_hist_alpha',"histogram opacity",min=0.1,max=1,value = 0.6), shinycssloaders::withSpinner(plotly::plotlyOutput("sample_info"))),
+                                     column(2,offset=1,h3("sample scatterplot for row and column segmentation values at clicked point"),shinycssloaders::withSpinner(plotly::plotlyOutput("sample_info_scatter"))),
+                                     column(2,offset=1,h3("sample regression scatterplot for values at clicked point, colored by sample to show clustering"),shinycssloaders::withSpinner(plotly::plotlyOutput("sample_info_scatter2"))))      
                    ),
                    tabPanel("expression_data",
                             h2("expression data table for clicked point"),
@@ -205,4 +204,5 @@ CNVScopeui<-fluidPage(theme=shinythemes::shinytheme("flatly"), #shinythemes::the
                    
 )
 shinyApp(ui = CNVScopeui, server = CNVScopeserver)
-}
+  }
+#}

@@ -1,3 +1,10 @@
+CNVScope v3.4.5 (Release Date 2021-01-07)
+==============
+*Bug fixes related to the suggested plotly dependency.
+
+CNVScope v3.4.3 (Release Date 2021-01-05)
+==============
+*Moved the plotly package to suggests because it has been temporarily orphaned.
 
 CNVScope v3.4.2 (Release Date 2021-01-04)
 ==============

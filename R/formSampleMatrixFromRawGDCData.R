@@ -145,7 +145,7 @@ cn <- if(exists("cn")){get("cn")} else {NULL}
     #grabs the BIN position, copy number, and sample of the current merged DF.
     current_merged_df_bins_vals$....relativeCvg<-as.numeric(as.character(current_merged_df_bins_vals$....relativeCvg)) #converts relative coverage to a number.
     current_merged_df_bins_vals<-na.omit(current_merged_df_bins_vals) #removes NAs
-    current_merged_df_bins_aggregated<-plyr::ddply(na.omit(current_merged_df_bins_vals),.(pos),summarise,meanrelcvg=mean(....relativeCvg),samples=paste0(unique(....sample),collapse=",")) 
+    current_merged_df_bins_aggregated<-plyr::ddply(na.omit(current_merged_df_bins_vals),.(pos),plyr::summarise,meanrelcvg=mean(....relativeCvg),samples=paste0(unique(....sample),collapse=",")) 
     #removes NAs from the merged by overlaps df, grabs the position, mean copy number, and concatenated samples for each bin like "NAKKEF,PALHRL,ABCABC". #note that it removes nonunique samples from this new string  of samples for each bin.
     }
     if(format=="TCGA")
@@ -154,7 +154,7 @@ cn <- if(exists("cn")){get("cn")} else {NULL}
      #grabs position, CN number, sample ID
      #drops NAs
      #converts the CN from factor to character to numeric.
-     current_merged_df_bins_aggregated<-plyr::ddply(na.omit(current_merged_df_bins_vals),.(pos),summarise,segmentmean=mean(current_gr.....Segment_Mean),samples=paste0(unique(....uuid),collapse=","))
+     current_merged_df_bins_aggregated<-plyr::ddply(na.omit(current_merged_df_bins_vals),.(pos),plyr::summarise,segmentmean=mean(current_gr.....Segment_Mean),samples=paste0(unique(....uuid),collapse=","))
      #removes NAs from the merged by overlaps df, grabs the position, mean copy number, and concatenated samples for each bin like "NAKKEF,PALHRL,ABCABC". #note that it removes nonunique samples from this new string of samples for each bin.
     }
     #current_merged_df_bins_aggregated_test<-ddply(na.omit(current_merged_df_bins_vals[1,]),.(pos),summarise,meanrelcvg=mean(current_merged_df_bins_vals$....relativeCvg))#,samples=list(unique(current_merged_df_bins_vals$....sample))
