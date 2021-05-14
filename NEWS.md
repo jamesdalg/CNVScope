@@ -1,3 +1,8 @@
+CNVScope v3.5.7 (Release Date 2021-05-14)
+==============
+*Following CRAN guidance,
+removed a command to close all connections after opening a file.
+
 CNVScope v3.4.5 (Release Date 2021-01-07)
 ==============
 *Bug fixes related to the suggested plotly dependency.

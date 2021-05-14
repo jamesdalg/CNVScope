@@ -12,7 +12,6 @@
 #' @examples 
 #' importBreakpointBed(breakpoint_fn = system.file("extdata",
 #' "sample_breakpoints.bed",package = "CNVScope"))
-#' closeAllConnections()
 #' @export
 globalVariables(c("mcols","mcols<-"))
   importBreakpointBed<-function(breakpoint_fn)
