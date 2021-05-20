@@ -1,3 +1,8 @@
+CNVScope v3.6.0 (Release Date 2021-05-19)
+==============
+*Require R-4.1.0 in order to make the package CRAN compliant
+(fixes a single rtracklayer check server install issue)
+
 CNVScope v3.5.7 (Release Date 2021-05-14)
 ==============
 *Following CRAN guidance,
