@@ -868,12 +868,12 @@ if(debug){browser()}
   output$row_gene_data <-
     DT::renderDataTable({
       if(is.null(plotly::event_data("plotly_click"))){return(data.table())}
-      #browser()
+      browser()
       #row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
       #column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
       #start<-proc.time()
       if(isolate(input$data_source)=="TCGA_NBL_low_pass" | 
-         isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
+         isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset","linreg_osteosarcoma_CNVkit"))
       {
         row_label<-paste0(isolate(input$chrom2),plotly::event_data("plotly_click")[["y"]],"_",plotly::event_data("plotly_click")[["y"]]+1e6-1)
         #column_label<-paste0(isolate(input$chrom1),event_data("plotly_click")[["x"]],"_",event_data("plotly_click")[["x"]]+1e6-1)
@@ -911,7 +911,7 @@ if(debug){browser()}
       #row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
       #column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
       if(isolate(input$data_source)=="TCGA_NBL_low_pass" | 
-         isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset"))
+         isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset","linreg_osteosarcoma_CNVkit"))
       {
         #row_label<-paste0(isolate(input$chrom2),event_data("plotly_click")[["y"]],"_",event_data("plotly_click")[["y"]]+1e6-1)
         column_label<-paste0(isolate(input$chrom1),plotly::event_data("plotly_click")[["x"]],"_",plotly::event_data("plotly_click")[["x"]]+1e6-1)

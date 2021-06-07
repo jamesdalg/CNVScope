@@ -1,3 +1,7 @@
+CNVScope v3.6.1 (Release Date 2021-06-17)
+==============
+*Minor change to ensure compatibility with multiple datasets.
+
 CNVScope v3.6.0 (Release Date 2021-05-19)
 ==============
 *Require R-4.1.0 in order to make the package CRAN compliant
