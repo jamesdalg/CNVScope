@@ -868,7 +868,7 @@ if(debug){browser()}
   output$row_gene_data <-
     DT::renderDataTable({
       if(is.null(plotly::event_data("plotly_click"))){return(data.table())}
-      browser()
+      #browser()
       #row_label<-rownames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][1]))+1] #correct column label.
       #column_label<-colnames(recast_matrix)[as.integer(paste0(event_data("plotly_click")[["pointNumber"]][[1]][2]))+1] #correct column label.
       #start<-proc.time()
