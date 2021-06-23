@@ -216,9 +216,9 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
       
       downsample_factor<<-4
       if(debug){browser()}
-      tryCatch(bin_data<<-readRDS((url(paste0(baseurl,"bin_data_lcc236.rds")))),error = function(e) NULL) 
-      tryCatch(bin_data<<-readRDS((paste0(osteofn,"bin_data_lcc236.rds"))),error = function(e) NULL) 
       
+    if(!exists("osteofn")){  tryCatch(bin_data<<-readRDS((url(paste0(baseurl,"bin_data_lcc236.rds")))),error = function(e) NULL)}
+      tryCatch(bin_data<<-readRDS((paste0(osteofn,"bin_data_lcc236.rds"))),error = function(e) NULL) 
     }
     # 
     if(isolate(input$data_source)=="TCGA_SARC_SNP6")
@@ -325,13 +325,14 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
       ))))
       ggplotmatrix_full<-ggplotmatrix
     }
-   #browser() 
+   # colnames(ggplotmatrix)<-gsub(pattern = "(\\.)+.","",colnames(ggplotmatrix))
+   # colnames(ggplotmatrix_full)<-gsub(pattern = "(\\.)+.","",colnames(ggplotmatrix_full))
+   colnames(ggplotmatrix_full)<-colnames(ggplotmatrix)<-c("Var1","Var2","value","Var11","Var21","value1")
     ggplotmatrix$value<-signedRescale(ggplotmatrix$value,max_cap=isolate(input$max_cap))[,1]
     ggplotmatrix<-dplyr::bind_cols(ggplotmatrix,reshape2::colsplit(ggplotmatrix$Var1,"_",c("chr1","start1","end1")))
     ggplotmatrix<-dplyr::bind_cols(ggplotmatrix,reshape2::colsplit(ggplotmatrix$Var2,"_",c("chr2","start2","end2")))
     ggplotmatrix<-ggplotmatrix[order(ggplotmatrix$start1,ggplotmatrix$start2),]
     if(!is.null(ggplotmatrix)){ggplotmatrix<<-ggplotmatrix}
-    #
     if(!is.null(ggplotmatrix_full)){ ggplotmatrix_full$value<-signedRescale(ggplotmatrix_full$value,max_cap=isolate(input$max_cap))[,1]}
     if(!is.null(ggplotmatrix_full)){ggplotmatrix_full<<-ggplotmatrix_full}
     recast_matrix<-reshape2::dcast(data=ggplotmatrix,formula=Var1 ~ Var2, var = ggplotmatrix$value) #this creates a matrix in wide format.
@@ -340,7 +341,6 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
       rownames(recast_matrix)<-recast_matrix$Var1
       recast_matrix<-recast_matrix[,2:ncol(recast_matrix)]
     }
-    #
     recast_matrix_full<-reshape2::dcast(data=ggplotmatrix_full,formula=Var1 ~ Var2, var = ggplotmatrix_full$value) #this creates a matrix with 
     if(ncol(recast_matrix_full)!=nrow(recast_matrix_full))
     {
@@ -359,7 +359,6 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     if(!is.null(rownames_gr_full)){rownames_gr_full<<-rownames_gr_full}
     if(!is.null(colnames_gr)){colnames_gr<<-colnames_gr}
     if(!is.null(colnames_gr_full)){colnames_gr_full<<-colnames_gr_full}
-    
     ggplotmatrix$value1<-gsub("col genes:","row genes:",ggplotmatrix$value1)
     ggplotmatrix$value1<-gsub("row_genes:","col_genes:",ggplotmatrix$value1)
     rownames_ordered<-GRanges_to_underscored_pos(rownames_gr[order(rownames_gr)])
@@ -399,6 +398,7 @@ input_mat_cor_flat<-input_mat_cor %>% reshape2::melt()
 #if(!isolate(input$genes_toggle)){ggplotmatrix$value1<-NULL}
 #browser()
 #ggplotmatrix_joined<- dplyr::inner_join(x=ggplotmatrix,y=input_mat_cor_flat,by=c("Var1"="Var1","Var2"="Var2"))
+
 ggplotmatrix_joined<- data.table::merge.data.table(x=ggplotmatrix,y=input_mat_cor_flat,by.x=c("Var1","Var2"),by.y=c("Var1","Var2"),all=F)
 colnames(ggplotmatrix_joined) <- ggplotmatrix_joined %>% colnames() %>%
   gsub(pattern = "value.x",replacement = "linregval") %>%
@@ -913,6 +913,7 @@ if(debug){browser()}
       if(isolate(input$data_source)=="TCGA_NBL_low_pass" | 
          isolate(input$data_source) %in% c("TCGA_NBL_stage3_subset","TCGA_NBL_stage4_subset","TCGA_NBL_stage4s_subset","TCGA_NBL_myc_amp_subset","TCGA_NBL_not_myc_amp_subset","linreg_osteosarcoma_CNVkit"))
       {
+        #browser()
         #row_label<-paste0(isolate(input$chrom2),event_data("plotly_click")[["y"]],"_",event_data("plotly_click")[["y"]]+1e6-1)
         column_label<-paste0(isolate(input$chrom1),plotly::event_data("plotly_click")[["x"]],"_",plotly::event_data("plotly_click")[["x"]]+1e6-1)
       }
