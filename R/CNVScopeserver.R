@@ -84,7 +84,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     
     x<-isolate(input$geneSearch)
     
-    browser()
+    #browser()
     if(x!=0 & isolate(input$gene_input_col)!=""& isolate(input$gene_input_row)!=""){
       if(length(ensembl_gene_tx_data_gr[ensembl_gene_tx_data_gr$....external_gene_name==isolate(input$gene_input_col)])!=0) {
         
@@ -102,7 +102,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
                             ensembl_gene_tx_data_gr[ensembl_gene_tx_data_gr$....external_gene_name==isolate(input$gene_input_row)][1]$....start_position,"-",
                             ensembl_gene_tx_data_gr[ensembl_gene_tx_data_gr$....external_gene_name==isolate(input$gene_input_row)][1]$....end_position)
       } else {
-        #   #browser()
+        #   ##browser()
         rowgene_loc<-""}
       updateTextInput(session,"loc_input_col",value=colgene_loc)
       updateTextInput(session,"loc_input_row",value=rowgene_loc)
@@ -182,6 +182,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     input$goButton
     if(debug){browser()}
     #browser()
+    #browser()
     # if(!file.exists(
     #   (
     #     paste0(getwd(),"/matrix/linreg/",
@@ -219,6 +220,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
       
     if(!exists("osteofn")){  tryCatch(bin_data<<-readRDS((url(paste0(baseurl,"bin_data_lcc236.rds")))),error = function(e) NULL)}
       tryCatch(bin_data<<-readRDS((paste0(osteofn,"bin_data_lcc236.rds"))),error = function(e) NULL) 
+      colnames(ggplotmatrix_full)<-colnames(ggplotmatrix)<-c("Var1","Var2","value","Var11","Var21","value1")
     }
     # 
     if(isolate(input$data_source)=="TCGA_SARC_SNP6")
@@ -260,6 +262,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     }
     if(isolate(input$data_source)=="TCGA_NBL_low_pass")
     {
+      #browser()
       sample_name<-"NBL_output_matrix1e6"
       load( paste0(paste0(basefn,"matrix/TCGA_low_pass/NBL/",
                               paste0(isolate(input$chrom1),isolate(input$chrom2),"nbl_sample_matched_unrescaled.RData")
@@ -286,7 +289,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
       {
         bin_data$probe<-rownames(bin_data)
       }
-      
+      #browser()
       
       
       
@@ -300,7 +303,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
       #
       tryCatch(expression_data_gr_nbl<<-readRDS(url(paste0(baseurl,"tcga_nbl_expression_",subset_name,"subset.rds"))),error = function(e) NULL)
       tryCatch(expression_data_gr_nbl<<-readRDS(paste0(basefn,"tcga_nbl_expression_",subset_name,"subset.rds")),error = function(e) NULL)
-      
+      #browser()
       #server-side processing(disabled):
       # tryCatch(tcga_gr<<-readRDS((url(paste0(baseurl,"tcga_gr_no_stats.rds")))),error = function(e) NULL) 
       # tryCatch(tcga_gr<<-readRDS((paste0(basefn,"tcga_gr_no_stats.rds"))),error = function(e) NULL) 
@@ -327,7 +330,8 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     }
    # colnames(ggplotmatrix)<-gsub(pattern = "(\\.)+.","",colnames(ggplotmatrix))
    # colnames(ggplotmatrix_full)<-gsub(pattern = "(\\.)+.","",colnames(ggplotmatrix_full))
-   colnames(ggplotmatrix_full)<-colnames(ggplotmatrix)<-c("Var1","Var2","value","Var11","Var21","value1")
+    #browser()
+
     ggplotmatrix$value<-signedRescale(ggplotmatrix$value,max_cap=isolate(input$max_cap))[,1]
     ggplotmatrix<-dplyr::bind_cols(ggplotmatrix,reshape2::colsplit(ggplotmatrix$Var1,"_",c("chr1","start1","end1")))
     ggplotmatrix<-dplyr::bind_cols(ggplotmatrix,reshape2::colsplit(ggplotmatrix$Var2,"_",c("chr2","start2","end2")))
@@ -347,7 +351,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
       rownames(recast_matrix_full)<-recast_matrix_full$Var1
       recast_matrix_full<-recast_matrix_full[,2:ncol(recast_matrix_full)]
     }
-    #
+    #browser()
     #resorting recast_matrix
     if(!is.null(recast_matrix)){recast_matrix<<-recast_matrix}
     if(!is.null(recast_matrix_full)){recast_matrix_full<<-recast_matrix_full}
@@ -381,6 +385,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
     # 
 #browser()
 #recreate input matrix, add rownames.
+    #browser()
     options(stringsAsFactors = F)
 input_mat<-bin_data %>% dplyr::select(-probe) %>% as.data.frame()
 rownames(input_mat)<-bin_data$probe
@@ -392,6 +397,7 @@ input_mat_cor<-cor(t(input_mat),method=isolate(input$cor_method))
 } else {
   input_mat_cor<-cor(t(input_mat),method="spearman")-cor(t(input_mat),method="pearson")
 }
+  #browser()
 #wide to long
 input_mat_cor_flat<-input_mat_cor %>% reshape2::melt()
 #grab ggplotmatrix and add correlation values.
@@ -404,7 +410,7 @@ colnames(ggplotmatrix_joined) <- ggplotmatrix_joined %>% colnames() %>%
   gsub(pattern = "value.x",replacement = "linregval") %>%
   gsub(pattern = "value.y",replacement = "correlation")
 #convert the negative log p-values to p-values and apply two kinds of FDR correction.
-
+#browser()
 ggplotmatrix_joined$pvalue<-exp(-(abs(ggplotmatrix_joined$orig_value)))
 ggplotmatrix_joined$adjpvaluechr<-p.adjust(p = ggplotmatrix_joined$pvalue,method = "fdr")
 ggplotmatrix_joined$adjpvaluegenome<-p.adjust(p = ggplotmatrix_joined$pvalue,method = "fdr",
@@ -419,6 +425,7 @@ if(isolate(input$fdr_correction)=="chromosome_pair"){
 ggplotmatrix_joined$adjpvalue<-ggplotmatrix_joined$adjpvaluegenome  
 }
 }
+#browser()
 ggplotmatrix_joined<<-ggplotmatrix_joined
 if(isolate(input$visval)=="Correlation") {
   ggplotmatrix_joined$visval<-ggplotmatrix_joined$correlation
@@ -437,6 +444,7 @@ if(!isolate(input$genes_toggle)){
 } else {
   ggplotmatrix_joined$genes_text<-ggplotmatrix_joined$value1
 }
+#browser()
     #as.integer(as.character(reshape2::colsplit(ggplotmatrix$Var2,"_",c("chr2","start2","end2"))$start2))
     p <- ggplot(data = ggplotmatrix_joined ) + #geom_tile() + theme_void()
       geom_tile(aes(x =      as.numeric(start2),
@@ -452,7 +460,7 @@ if(!isolate(input$genes_toggle)){
   } else {
     ggplotmatrix$genes_text<-ggplotmatrix$value1
   }
-  
+#browser()  
   ggplotmatrix$pvalue<-exp(-(abs(ggplotmatrix$value)))
   ggplotmatrix$adjpvaluechr<-p.adjust(p = ggplotmatrix$pvalue,method = "fdr")
   ggplotmatrix$adjpvaluegenome<-p.adjust(p = ggplotmatrix$pvalue,method = "fdr",
@@ -466,7 +474,7 @@ if(!isolate(input$genes_toggle)){
     scale_y_continuous(breaks = reshape2::colsplit(block_index_labels_row,"_",c("chr","start","end"))$start,labels = block_index_labels_row) + theme(axis.text.x = element_text(angle=60, hjust=1)) +  
     ggplot2::scale_fill_gradient2(low = "blue", high = "red", midpoint = 0.5, limits = c(0, 1)) +  theme(legend.position="bottom",axis.title = element_blank())
 } #end instructions done IF correlation is specified.
-
+#browser()
     #+ geom_contour(binwidth = .395,aes(z=value))
 ###    browser()
     #+ coord_flip() #+ scale_y_reverse(breaks=block_indices)
@@ -476,11 +484,11 @@ if(!isolate(input$genes_toggle)){
     {
       if(exists("osteofn"))
       {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(osteofn,"breakpoint_gint_LCC240/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords.rds" )),error = function(e) NULL) 
-        tryCatch(lumpy_summarized_counts<-readRDS(paste0(osteofn,"lumpy_sv_LCC240/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" )),error = function(e) NULL)    
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(osteofn,"breakpoint_gint_lcc236/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" )),error = function(e) NULL) 
+        tryCatch(lumpy_summarized_counts<-readRDS(paste0(osteofn,"lumpy_sv_236/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" )),error = function(e) NULL)    
       }else {
-        tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"breakpoint_gint_LCC240/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" ))),error = function(e) NULL) 
-        tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"lumpy_sv_LCC240/",gsub("_","",isolate(input$chrom1)),gsub("_","",isolate(input$chrom2)),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" ))),error = function(e) NULL)   
+        tryCatch(SVs_data_in_submatrix_coords<-readRDS(url(paste0(baseurl,"breakpoint_gint_lcc236/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords.rds" ))),error = function(e) NULL) 
+        tryCatch(lumpy_summarized_counts<-readRDS(url(paste0(baseurl,"lumpy_sv_236/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror.rds" ))),error = function(e) NULL)   
       }
       
     }
@@ -488,6 +496,7 @@ if(!isolate(input$genes_toggle)){
     {
       if(exists("basefn"))
       {
+        #browser()
         tryCatch(SVs_data_in_submatrix_coords<-readRDS(paste0(basefn,"breakpoint_gint/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_common_coords.rds" )),error = function(e) NULL)
         tryCatch(lumpy_summarized_counts<-readRDS(paste0(basefn,"lumpy_sv/TCGA_low_pass/",isolate(input$chrom1),isolate(input$chrom2),"SVs_data_in_submatrix_coords_lumpy_mirror_TCGA_common_coords.rds" )),error = function(e) NULL)
         tcga_type<<-gsub("_low_pass","",gsub("TCGA_","",isolate(input$data_source)))
@@ -695,6 +704,7 @@ if(!isolate(input$genes_toggle)){
   })
   outputOptions(output,"plotlyChromosomalHeatmap",suspendWhenHidden=F)
   output$whole_genome_image<-renderImage({
+  #output$whole_genome_image<-renderUI({
     #https://community.rstudio.com/t/shinydashboard-render-only-the-clicked-tab/36493
     input$whole_genome_max_cap
     input$goButton
@@ -723,8 +733,11 @@ if(!isolate(input$genes_toggle)){
     #          alt = "whole genome png")
     # 
     #browser()
-   return( list(src=paste0(pngfn,"whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png")))
-  },deleteFile = F) 
+    #tags$image(src=paste0(pngfn,"whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"),width="100%")
+    #browser()
+   return( list(src=paste0(pngfn,"whole_genome_pngs/",data_prefix,"_whole_genome_full_no_downsample_no_labels_rescaled_max_cap_",isolate(input$whole_genome_max_cap),".png"))) #,width="25%" 
+  },deleteFile = F
+  ) 
   
   
   # output$freq_table<-renderDataTable({
