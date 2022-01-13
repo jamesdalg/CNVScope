@@ -3,6 +3,8 @@ CNVScope
 ================
 James Dalgleish
 January 13, 2021
+
+
 NOTE: cnvscope.nci.nih.gov still does function, but the digicert certificate has expired. The complex process of getting this approved through my institute takes time, but in the meantime, feel free to ignore the warnings and "proceed anyway" with chrome or use a different browser that will let you through.
 
 -   [Installation](#installation)
