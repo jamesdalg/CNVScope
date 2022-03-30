@@ -1,7 +1,10 @@
+
 CNVScope
 ================
 James Dalgleish
-November 26, 2018
+
+January 24, 2021
+Certificate updated today! Message me if any have trouble accessing the server.
 
 -   [Installation](#installation)
 -   [App](#app)
