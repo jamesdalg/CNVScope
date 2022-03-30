@@ -204,6 +204,7 @@ visval <- if(exists("visval")){get("visval")} else {NULL}
       # load( url(paste0(paste0(baseurl,"matrix/linreg/unrescaled/",
       #                             chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
       #                             "melted_downsampled_linreg_unrescaled.RData"))))
+      
       load(paste0(paste0(osteofn,"linreg236/unrescaled/downsample/",
                          chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom1))))],chromosomes[as.integer(gsub("_","",gsub("chr","",isolate(input$chrom2))))],
                          "melted_downsampled_linreg_max_cap_75.RData")))

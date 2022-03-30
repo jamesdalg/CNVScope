@@ -5,7 +5,8 @@
 #' For a simple installation, please use the runCNVScopeLocal function.
 #' @name runCNVScopeShiny
 #' @keywords CNV heatmap shiny plotly
-#' @import  ggplot2 magrittr GenomicInteractions
+#' @rawNamespace import(GenomicInteractions, except = c(start,end))
+#' @import  ggplot2 magrittr
 #' @rawNamespace import(RCurl, except = reset)
 #' @rawNamespace import(shiny, except = c(runExample,renderDataTable))
 #' @rawNamespace import(data.table, except = c(melt, dcast))

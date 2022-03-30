@@ -4,7 +4,7 @@
 #'
 #' @name importBreakpointBed
 #' @keywords bed
-#' @import GenomicInteractions
+#' @rawNamespace import(GenomicInteractions, except = c(start,end))
 #' @importFrom rtracklayer import.bed
 #' @importFrom reshape2 colsplit
 #' @param breakpoint_fn the filename of the breakpoint bed file

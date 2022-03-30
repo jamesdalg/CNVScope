@@ -36,10 +36,10 @@ writeMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,f
   downsample_factor<-NULL
   desired_range<-IRanges::IRanges(desired_range_start,desired_range_end)
   downsample_factor_row<-NULL
-  downsample_outcomes_row<-as.data.frame(cbind(numbers::divisors(nrow(submatrix)),nrow(submatrix)/numbers::divisors(nrow(submatrix))))
+  downsample_outcomes_row<-as.data.frame(cbind(divisors(nrow(submatrix)),nrow(submatrix)/divisors(nrow(submatrix))))
   colnames(downsample_outcomes_row)<-c("factor","downsampled_size")
   downsample_factor_col<-NULL
-  downsample_outcomes_col<-as.data.frame(cbind(numbers::divisors(ncol(submatrix)),ncol(submatrix)/numbers::divisors(ncol(submatrix))))
+  downsample_outcomes_col<-as.data.frame(cbind(divisors(ncol(submatrix)),ncol(submatrix)/divisors(ncol(submatrix))))
   colnames(downsample_outcomes_col)<-c("factor","downsampled_size")
   while(length(intersect(downsample_factor_col,downsample_factor_row))==0 & (nrow(submatrix)>desired_range_start & ncol(submatrix)>desired_range_start))
   {
@@ -49,10 +49,10 @@ writeMeltedChromosomalMatrixToDisk<-function(whole_genome_matrix,chrom1,chrom2,f
     downsample_outcomes<-NULL
     while(length(downsample_factor_col)==0)
     {
-      downsample_outcomes_row<-as.data.frame(cbind(numbers::divisors(nrow(submatrix)),nrow(submatrix)/numbers::divisors(nrow(submatrix))))
+      downsample_outcomes_row<-as.data.frame(cbind(divisors(nrow(submatrix)),nrow(submatrix)/divisors(nrow(submatrix))))
       colnames(downsample_outcomes_row)<-c("factor","downsampled_size")
       downsample_factor_row<-downsample_outcomes_row[downsample_outcomes_row$downsampled_size>=desired_range@start & downsample_outcomes_row$downsampled_size<=(desired_range@start+desired_range@width),"factor"]
-      downsample_outcomes_col<-as.data.frame(cbind(numbers::divisors(ncol(submatrix)),ncol(submatrix)/numbers::divisors(ncol(submatrix))))
+      downsample_outcomes_col<-as.data.frame(cbind(divisors(ncol(submatrix)),ncol(submatrix)/divisors(ncol(submatrix))))
       colnames(downsample_outcomes_col)<-c("factor","downsampled_size")
       downsample_factor_col<-downsample_outcomes_col[downsample_outcomes_col$downsampled_size>=desired_range@start & downsample_outcomes_col$downsampled_size<=(desired_range@start+desired_range@width),"factor"]
       submatrix_temp<-submatrix
@@ -84,10 +84,10 @@ if(debug){    print(paste0("col factors:",downsample_factor_col))
     print(paste0("current submatrix dimensions:",paste0(dim(submatrix)))) }
     while(length(downsample_factor_row)==0)
     {
-      downsample_outcomes_col<-as.data.frame(cbind(numbers::divisors(ncol(submatrix)),ncol(submatrix)/numbers::divisors(ncol(submatrix))))
+      downsample_outcomes_col<-as.data.frame(cbind(divisors(ncol(submatrix)),ncol(submatrix)/divisors(ncol(submatrix))))
       colnames(downsample_outcomes_col)<-c("factor","downsampled_size")
       downsample_factor_col<-downsample_outcomes_col[downsample_outcomes_col$downsampled_size>=desired_range@start & downsample_outcomes_col$downsampled_size<=(desired_range@start+desired_range@width),"factor"]
-      downsample_outcomes_row<-as.data.frame(cbind(numbers::divisors(nrow(submatrix)),nrow(submatrix)/numbers::divisors(nrow(submatrix))))
+      downsample_outcomes_row<-as.data.frame(cbind(divisors(nrow(submatrix)),nrow(submatrix)/divisors(nrow(submatrix))))
       colnames(downsample_outcomes_row)<-c("factor","downsampled_size")
       downsample_factor_row<-downsample_outcomes_row[downsample_outcomes_row$downsampled_size>=desired_range@start & downsample_outcomes_row$downsampled_size<=(desired_range@start+desired_range@width),"factor"]
       submatrix_temp<-submatrix
@@ -113,10 +113,10 @@ if(debug){    print(paste0("col factors:",downsample_factor_col))
     #downsample_outcomes_row<-downsample_outcomes
     #downsample_factor_row<-downsample_factor
     #browser()
-    downsample_outcomes_col<-as.data.frame(cbind(numbers::divisors(ncol(submatrix)),ncol(submatrix)/numbers::divisors(ncol(submatrix))))
+    downsample_outcomes_col<-as.data.frame(cbind(divisors(ncol(submatrix)),ncol(submatrix)/divisors(ncol(submatrix))))
     colnames(downsample_outcomes_col)<-c("factor","downsampled_size")
     downsample_factor_col<-downsample_outcomes_col[downsample_outcomes_col$downsampled_size>=desired_range@start & downsample_outcomes_col$downsampled_size<=(desired_range@start+desired_range@width),"factor"]
-    downsample_outcomes_row<-as.data.frame(cbind(numbers::divisors(nrow(submatrix)),nrow(submatrix)/numbers::divisors(nrow(submatrix))))
+    downsample_outcomes_row<-as.data.frame(cbind(divisors(nrow(submatrix)),nrow(submatrix)/divisors(nrow(submatrix))))
     colnames(downsample_outcomes_row)<-c("factor","downsampled_size")
     downsample_factor_row<-downsample_outcomes_row[downsample_outcomes_row$downsampled_size>=desired_range@start & downsample_outcomes_row$downsampled_size<=(desired_range@start+desired_range@width),"factor"]
     submatrix_temp<-submatrix

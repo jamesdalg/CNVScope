@@ -12,7 +12,8 @@ calcVecLMs(
   n_nodes = NULL,
   cpus_on_each_node = 2,
   memory_per_node = "2g",
-  walltime = "4:00:00"
+  walltime = "4:00:00",
+  partitions = "ccr,quick"
 )
 }
 \arguments{
@@ -31,6 +32,9 @@ calcVecLMs(
 \item{memory_per_node}{the amount of ram per node (e.g. "32g" or "2g")}
 
 \item{walltime}{Time for job to be completed for SLURM scheduler in hh:mm:ss format. Defaults to 4h.}
+
+\item{partitions}{the partitions to which the jobs are to be scheduled, in
+order of priority.}
 }
 \value{
 The output matrix, or if using slurm, the slurm job object (which should be saved as an rds file and reloaded when creating the output matrix).

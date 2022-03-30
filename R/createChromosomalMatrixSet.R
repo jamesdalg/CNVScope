@@ -2,7 +2,8 @@
 #'
 #' Takes a linear regression matrix and sets infinites to a finite value, and changes the sign to match the sign of the correlation for each value.
 #' @keywords Interaction matrix
-#' @import GenomicInteractions reshape2 magrittr foreach doParallel
+#' @rawNamespace import(GenomicInteractions, except = c(start,end))
+#' @import  reshape2 magrittr foreach doParallel
 #' @importFrom biomaRt useMart getBM
 #' @importFrom reshape2 colsplit
 #' @param whole_genome_mat The matrix containing all of the data, from which the individual matrices will be split.
