@@ -1,3 +1,7 @@
+CNVScope v3.7.3 (Release Date 2022-08-12)
+==============
+*Updated NCI Policies on Server UI
+
 CNVScope v3.6.1 (Release Date 2021-06-17)
 ==============
 *Minor change to ensure compatibility with multiple datasets.

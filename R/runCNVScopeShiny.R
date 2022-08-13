@@ -130,6 +130,9 @@ CNVScopeui<-fluidPage(theme=shinythemes::shinytheme("flatly"), #shinythemes::the
                    # Application title
                    titlePanel("CNVScope Interchromosomal Heatmaps"),
                    uiOutput("privpol"),
+                   uiOutput("accesspol"),
+                   uiOutput("foiapol"),
+                   uiOutput("vulnpol"),
                    # Sidebar with a slider input for number of bins 
                    tabsetPanel(id = "tabs",tabPanel("Controls",fluidRow(column(width=2,offset = 0,
                                                                                #sidebarPanel(position="right",
