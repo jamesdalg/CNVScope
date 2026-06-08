@@ -6,7 +6,7 @@
 \usage{
 getAsymmetricBlockIndices(
   genomicmatrix = NULL,
-  algorithm = "HiCseg",
+  algorithm = "jointSeg",
   nb_change_max = 100,
   distrib = "G",
   model = "D",

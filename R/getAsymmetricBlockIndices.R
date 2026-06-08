@@ -81,8 +81,17 @@
 #'  random_wide_test_copy_with_transpose$t_breakpoints_col)
 #' }
 #' @export
-getAsymmetricBlockIndices<-function(genomicmatrix=NULL,algorithm="HiCseg",nb_change_max=100,distrib = "G",model = "D",MI_strategy="average",transpose=T)
+getAsymmetricBlockIndices<-function(genomicmatrix=NULL,algorithm="jointSeg",nb_change_max=100,distrib = "G",model = "D",MI_strategy="average",transpose=T)
 {
+  run_hicseg<-function(size_mat,nb_change_max,distrib,mat_data,model){
+    pkg<-"HiCseg"
+    if(!nzchar(system.file(package=pkg))) {
+      stop("algorithm = \"HiCseg\" requires the HiCseg package, which was archived from CRAN. ",
+           "Install it from the CRAN archive, or use algorithm = \"jointSeg\".",call.=F)
+    }
+    getExportedValue(pkg,"HiCseg_linkC_R")(size_mat=size_mat,nb_change_max=nb_change_max,
+      distrib=distrib,mat_data=mat_data,model=model)
+  }
 #  if(Sys.info()["sysname"]=="Darwin"){algorithm="jointSeg"}
   if(algorithm=="jointSeg"){
     breakpoints_col<-jointseg::jointSeg(genomicmatrix,K=nb_change_max)$bestBkp
@@ -96,7 +105,7 @@ getAsymmetricBlockIndices<-function(genomicmatrix=NULL,algorithm="HiCseg",nb_cha
     return(output_list)}
   if(nrow(genomicmatrix)==ncol(genomicmatrix))
   { 
-    hicsegresults<-HiCseg::HiCseg_linkC_R(size_mat=dim(genomicmatrix)[1],nb_change_max = nb_change_max,distrib = distrib,mat_data = as.matrix(genomicmatrix),model = model)
+    hicsegresults<-run_hicseg(size_mat=dim(genomicmatrix)[1],nb_change_max = nb_change_max,distrib = distrib,mat_data = as.matrix(genomicmatrix),model = model)
     indices<-c(hicsegresults$t_hat)
     zerosremoved<-indices[!indices == 0]
     #truncating the block indicies for the shorter dimension
@@ -133,13 +142,13 @@ getAsymmetricBlockIndices<-function(genomicmatrix=NULL,algorithm="HiCseg",nb_cha
       }
     }
     if(transpose){
-    t_hicsegresults<-HiCseg::HiCseg_linkC_R(size_mat=dim(t_extended_matrix)[1],nb_change_max = nb_change_max,distrib = distrib,mat_data = as.matrix(t_extended_matrix),model = model)
+    t_hicsegresults<-run_hicseg(size_mat=dim(t_extended_matrix)[1],nb_change_max = nb_change_max,distrib = distrib,mat_data = as.matrix(t_extended_matrix),model = model)
     t_indices<-c(t_hicsegresults$t_hat)
     t_zerosremoved<-t_indices[!t_indices == 0]
     t_breakpoints_col<-t_zerosremoved[t_zerosremoved < ncol(t(genomicmatrix))]
     t_breakpoints_row<-t_zerosremoved[t_zerosremoved < nrow(t(genomicmatrix))]
     }
-      hicsegresults<-HiCseg::HiCseg_linkC_R(size_mat=dim(extended_matrix)[1],nb_change_max = nb_change_max,distrib = distrib,mat_data = as.matrix(extended_matrix),model = model)
+      hicsegresults<-run_hicseg(size_mat=dim(extended_matrix)[1],nb_change_max = nb_change_max,distrib = distrib,mat_data = as.matrix(extended_matrix),model = model)
   }
   indices<-c(hicsegresults$t_hat)
   zerosremoved<-indices[!indices == 0]
