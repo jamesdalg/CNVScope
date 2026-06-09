@@ -715,7 +715,7 @@ if(!isolate(input$genes_toggle)){
   outputOptions(output,"plotlyChromosomalHeatmap",suspendWhenHidden=F)
   output$whole_genome_image<-renderImage({
   #output$whole_genome_image<-renderUI({
-    #https://community.rstudio.com/t/shinydashboard-render-only-the-clicked-tab/36493
+    #https://forum.posit.co/t/shinydashboard-render-only-the-clicked-tab/36493
     input$whole_genome_max_cap
     input$goButton
     #browser()
