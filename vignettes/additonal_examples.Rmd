@@ -33,10 +33,10 @@ library(magrittr)
 ```
 This vignette was created to showcase additional cancers and also to highlight additional, less-known features of the package.
 Additional examples:
-[TCGA-BLCA](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TCGA-BLCA%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
-[TARGET-AML](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TARGET-AML%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
-[TARGET-SKCM](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TCGA-SKCM%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
-[TCGA-PRAD](https://portal.gdc.cancer.gov/legacy-archive/search/f?filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.data_category%22,%22value%22:%5B%22Copy%20number%20variation%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.experimental_strategy%22,%22value%22:%5B%22WGS%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22files.access%22,%22value%22:%5B%22open%22%5D%7D%7D,%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.project_id%22,%22value%22:%5B%22TCGA-PRAD%22%5D%7D%7D%5D%7D&pagination=%7B%22files%22:%7B%22from%22:0,%22size%22:100,%22sort%22:%22cases.project.project_id:asc%22%7D%7D)
+TCGA-BLCA
+TARGET-AML
+TARGET-SKCM
+TCGA-PRAD
 
 #Acute Myeloid Leukemia (AML)
 There are fewer TARGET datasets available than TCGA. We'll do AML first. We've named our downloaded archive gdc_download_aml.tar.gz.
@@ -115,7 +115,7 @@ js_breakpoint_labels<-colnames(chr_7_mat)[js_breakpoints]
 ```
 We'll notice that using this combination of techniques, we've managed to pick up an AML driver between domain endpoints, in a large region where the association is less than expected (as determined by the calcCNVprobdist function). Within the region of 115 and 120Mb lies the MET gene, where an LOH was detected in the paper. It's a pretty obvious signature, perhaps the most obvious in the whole plot.
 
- Further, we suggest that there is an minor signal off the diagonal in the region of this and the location of BRAF (chr7:140419127-140624564, another recurrent CNV in the paper), associated with the border of a region near 16-24Mb.Within this area are the PMS(a tumor suppressor), RAC1 (oncogene), and ETV1 (oncogene). PMS2 alteration has been implicated in AML previously (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3734905/).
+ Further, we suggest that there is an minor signal off the diagonal in the region of this and the location of BRAF (chr7:140419127-140624564, another recurrent CNV in the paper), associated with the border of a region near 16-24Mb.Within this area are the PMS(a tumor suppressor), RAC1 (oncogene), and ETV1 (oncogene). PMS2 alteration has been implicated in AML previously (https://doi.org/10.1177/2040620713498161).
 
 We don't suggest that this tool is perfect and will rapidly make clear all cancer drivers associated with CNVs, but we suggest that it can, with other tools, add to your investigative toolbox to substantiate known drivers and to elucidate new ones.
 ```{r plot_probdist}
@@ -167,7 +167,7 @@ print(tcga_files_blca)
 sample_aggregated_segvals_blca<-formSampleMatrixFromRawGDCData(tcga_files = tcga_files_blca,format = "TCGA",parallel=T)
 saveRDS(sample_aggregated_segvals_blca,"blca_sample_matched_input_matrix.rds")
 ```
-For bladder cancer (BLCA), we'll look at ERBB2, mentioned in [this article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3962515/) as having amplifications in up to 5% of samples. We may not be able to detect it in our sample, but we can prove that our method did indeed process the TCGA data format.
+For bladder cancer (BLCA), we'll look at ERBB2, mentioned in [this article](https://doi.org/10.1038/nature12965) as having amplifications in up to 5% of samples. We may not be able to detect it in our sample, but we can prove that our method did indeed process the TCGA data format.
 ```{r blca_plots, eval=T,echo=T}
 sample_aggregated_segvals_blca<-readRDS("blca_sample_matched_input_matrix.rds")
 invariant_bins<-which((sample_aggregated_segvals_blca[stringr::str_detect(rownames(sample_aggregated_segvals_blca),"chr17"),] %>% t() %>% as.data.frame() %>% sapply(sd))==0)
@@ -262,7 +262,7 @@ breakpoint_plot_corr_diff
 
 
 
-For an interactive plot of the bladder cancer interactome (in contour and 3D), try the following.  WebGL is required for this exercise. Enable it under the general->advanced RStudio options if you have not already (see https://community.rstudio.com/t/webgl-is-not-supported-by-your-browser-plotly/13962/7).
+For an interactive plot of the bladder cancer interactome (in contour and 3D), try the following.  WebGL is required for this exercise. Enable it under the general->advanced RStudio options if you have not already (see https://forum.posit.co/t/webgl-is-not-supported-by-your-browser-plotly/13962/7).
 ```{r plotly_blca,eval=F}
 library(plotly)
 breakpoint_plot %>% plotly::ggplotly()
