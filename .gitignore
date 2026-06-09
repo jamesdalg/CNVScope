@@ -2,3 +2,5 @@ Meta
 hicnv.Rproj
 doc
 .*
+*.tar.gz
+*.Rcheck
