@@ -28,15 +28,17 @@ It also addresses the issues reported for the previous version (3.7.2) at
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 notes
 
-* The note reports the new maintainer address:
+`R CMD check --as-cran` passes cleanly in all test environments above.
 
-  ```
-  New maintainer:
-    James Dalgleish <jamesdalg@gmail.com>
-  Old maintainer(s):
-    James Dalgleish <james.dalgleish@nih.gov>
-  ```
+CRAN's incoming checks are expected to flag the maintainer address change:
 
-  This is the intended change and the reason for this resubmission.
+```
+New maintainer:
+  James Dalgleish <jamesdalg@gmail.com>
+Old maintainer(s):
+  James Dalgleish <james.dalgleish@nih.gov>
+```
+
+This is the intended change and the reason for this resubmission.
