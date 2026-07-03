@@ -3,8 +3,7 @@ CNVScope
 ================
 James Dalgleish
 
-January 24, 2021
-Certificate updated today! Message me if any have trouble accessing the server.
+[![CRAN checks](https://badges.cranchecks.info/summary/CNVScope.svg)](https://cran.r-project.org/web/checks/check_results_CNVScope.html)
 
 -   [Installation](#installation)
 -   [App](#app)
