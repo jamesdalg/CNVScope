@@ -3,6 +3,7 @@ CNVScope
 ================
 James Dalgleish
 
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![CRAN checks](https://badges.cranchecks.info/summary/CNVScope.svg)](https://cran.r-project.org/web/checks/check_results_CNVScope.html)
 [![Linux R-devel](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jamesdalg/CNVScope/badges/check-linux-devel.json)](https://github.com/jamesdalg/CNVScope/actions/workflows/check-linux-devel.yaml)
 [![Linux R-release](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jamesdalg/CNVScope/badges/check-linux-release.json)](https://github.com/jamesdalg/CNVScope/actions/workflows/check-linux-release.yaml)
