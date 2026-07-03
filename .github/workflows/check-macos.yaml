@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   check:
@@ -48,3 +48,36 @@ jobs:
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
           error-on: '"warning"'
           upload-snapshots: true
+
+      - name: Publish status badge
+        if: ${{ !cancelled() }}
+        shell: bash
+        env:
+          BADGE_NAME: check-macos
+          JOB_STATUS: ${{ job.status }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "$JOB_STATUS" = "success" ]; then
+            message="passing"; color="brightgreen"
+          else
+            message="failing"; color="red"
+          fi
+          repo_url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          rm -rf badges-branch
+          git clone --branch badges "$repo_url" badges-branch
+          cd badges-branch
+          printf '{"schemaVersion":1,"label":"%s","message":"%s","color":"%s"}\n' "$BADGE_NAME" "$message" "$color" > "${BADGE_NAME}.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "${BADGE_NAME}.json"
+          if git diff --cached --quiet; then
+            echo "No badge change."; exit 0
+          fi
+          git commit -m "Update ${BADGE_NAME} badge: ${message}"
+          for attempt in 1 2 3 4 5; do
+            if git push origin badges; then exit 0; fi
+            echo "Push race (attempt ${attempt}); rebasing."
+            git pull --rebase origin badges
+          done
+          echo "Failed to push badge after retries." >&2
+          exit 1
