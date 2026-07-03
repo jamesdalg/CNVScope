@@ -1,10 +1,11 @@
 Package: CNVScope
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
-Version: 3.7.4
-Date: 2026-06-09
+Version: 3.7.5
+Date: 2026-07-03
 Authors@R: c(person(given = "James", family = "Dalgleish",
-                    role = c("aut", "cre"), email = "james.dalgleish@keble.ox.ac.uk"),
+                    role = c("aut", "cre"), email = "jamesdalg@gmail.com",
+                    comment = c("Alternate contact: james.dalgleish@keble.ox.ac.uk")),
              person(given = "Yonghong", family = "Wang", role = "aut"),
              person(given = "Jack", family = "Zhu", role = "aut"),
              person(given = "Paul", family = "Meltzer", role = c("aut","sad") ))

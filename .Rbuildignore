@@ -11,3 +11,6 @@
 docs
 \docs
 ^CRAN-RELEASE$
+^dev$
+^CNVScope\.Rcheck$
+^.*\.tar\.gz$

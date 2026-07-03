@@ -1,0 +1,55 @@
+# Submit the package to win-builder (win-builder.r-project.org) via devtools.
+#
+# win-builder builds and checks the package on Windows against R-devel,
+# R-release, and R-oldrelease, then EMAILS the results to the maintainer
+# address in DESCRIPTION (currently jamesdalg@gmail.com). It does not return a
+# pass/fail to GitHub, so this workflow only confirms the upload succeeded --
+# check your inbox for the actual check reports.
+#
+# Triggered manually (workflow_dispatch) or when a Release is published, since
+# it should be run deliberately just before a CRAN submission.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+name: win-builder
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  win-builder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::devtools
+          needs: check
+
+      # Upload to win-builder R-devel and R-release. check_win_* build the
+      # tarball and submit it; results are emailed to the DESCRIPTION maintainer.
+      - name: Submit to win-builder (devel + release)
+        run: |
+          devtools::check_win_devel(email = NULL, quiet = FALSE)
+          devtools::check_win_release(email = NULL, quiet = FALSE)
+        shell: Rscript {0}
