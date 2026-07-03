@@ -10,7 +10,7 @@
 #' @param colnames_mat The column names of the whole_genome_matrix in chr_start_end format.
 #' @param method Method to rebin with-- can use overlap and nearest methods.Default: nearest.
 #' @keywords GenomicInteractions bin matrix colnames rownames binning bin
-#' @import GenomicInteractions
+#' @rawNamespace import(GenomicInteractions, except = c(start,end))
 #' @importFrom GenomicInteractions anchorOne anchorTwo
 #' @import foreach doParallel
 #' @examples
