@@ -4,6 +4,11 @@ CNVScope
 James Dalgleish
 
 [![CRAN checks](https://badges.cranchecks.info/summary/CNVScope.svg)](https://cran.r-project.org/web/checks/check_results_CNVScope.html)
+[![Linux R-devel](https://github.com/jamesdalg/CNVScope/actions/workflows/check-linux-devel.yaml/badge.svg)](https://github.com/jamesdalg/CNVScope/actions/workflows/check-linux-devel.yaml)
+[![Linux R-release](https://github.com/jamesdalg/CNVScope/actions/workflows/check-linux-release.yaml/badge.svg)](https://github.com/jamesdalg/CNVScope/actions/workflows/check-linux-release.yaml)
+[![Linux R-oldrel](https://github.com/jamesdalg/CNVScope/actions/workflows/check-linux-oldrel.yaml/badge.svg)](https://github.com/jamesdalg/CNVScope/actions/workflows/check-linux-oldrel.yaml)
+[![macOS R-release](https://github.com/jamesdalg/CNVScope/actions/workflows/check-macos.yaml/badge.svg)](https://github.com/jamesdalg/CNVScope/actions/workflows/check-macos.yaml)
+[![Windows R-release](https://github.com/jamesdalg/CNVScope/actions/workflows/check-windows.yaml/badge.svg)](https://github.com/jamesdalg/CNVScope/actions/workflows/check-windows.yaml)
 
 -   [Installation](#installation)
 -   [App](#app)
