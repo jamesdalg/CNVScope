@@ -3,7 +3,6 @@
 #' This function requires a matrix with genomic coordinates in the row and column names, and produces a heatmap with a tooltip
 #' @name getInterchromosomalInteractivePlot
 #' @keywords CNV heatmap HTML widget data.table readr
-#' @importFrom biomaRt getBM useMart
 #' @importFrom ggplot2 scale_fill_gradient2
 #' @param whole_matrix the large, whole genomic matrix from which the submatrix is taken (rows)
 #' @param chrom1 The first chromsome used for the map (columns).
@@ -20,6 +19,9 @@
 globalVariables(c('chromosomes'))
 getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
 {
+  if (!requireNamespace("biomaRt", quietly = TRUE)) {
+    return("Please install biomaRt to use this function.")
+  }
   #importFrom GenomicRanges GRanges seqnames mcols
   #importFrom IRanges subsetByOverlaps
   #importFrom heatmaply heatmaply

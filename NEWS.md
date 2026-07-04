@@ -1,3 +1,12 @@
+CNVScope v3.7.6 (Release Date 2026-07-04)
+==============
+*Moved biomaRt and GenomicInteractions from Imports to Suggests, with
+requireNamespace() guards at their points of use. This removes the
+BiocFileCache dependency chain (RSQLite, dbplyr) from the package's strong
+dependencies, fixing the intermittent Windows install failures ("there is no
+package called 'RSQLite'" / "'dbplyr'") caused when those transitive
+dependencies were unavailable on a CRAN build machine.
+
 CNVScope v3.7.5 (Release Date 2026-07-03)
 ==============
 *Updated the maintainer email address to a working contact, as requested by CRAN.

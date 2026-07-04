@@ -1,21 +1,23 @@
 ## Resubmission
 
-This submission updates the maintainer email address to a working one, as
-requested by CRAN (email to the previous address bounced). The version number
-has been bumped accordingly.
+This submission fixes the Windows installation failure reported for version
+3.7.5 at <https://cran.r-project.org/web/checks/check_results_CNVScope.html>:
 
-It also addresses the issues reported for the previous version (3.7.2) at
-<https://cran.r-project.org/web/checks/check_results_CNVScope.html>:
+```
+Error in loadNamespace(i, ...) : there is no package called 'RSQLite'
+ERROR: lazy loading failed for package 'CNVScope'
+```
 
-* Windows installation now succeeds. The earlier "lazy loading failed ...
-  there is no package called 'dbplyr'" error came from a transitive
-  dependency load and no longer reproduces; the package installs and checks
-  cleanly on Windows (verified on win-builder and on the Windows R-release
-  GitHub Actions runner).
-* The "Namespace in Imports field not imported from: 'Hmisc'" NOTE is
-  resolved; 'Hmisc' is no longer declared in Imports.
-* DESCRIPTION now provides an `Authors@R` field (the previous version had
-  none).
+The RSQLite dependency was pulled in transitively (biomaRt -> BiocFileCache ->
+RSQLite, and via GenomicInteractions), so CNVScope's own lazy loading failed
+whenever that chain was unavailable on a build machine. This is the same class
+of failure previously seen as "there is no package called 'dbplyr'".
+
+To fix it durably, biomaRt and GenomicInteractions have been moved from
+Imports to Suggests and are now used behind `requireNamespace()` guards at
+their points of use. This removes the entire BiocFileCache chain (RSQLite,
+dbplyr) from the package's strong dependencies, so installation no longer
+depends on those packages being present.
 
 ## Test environments
 
@@ -28,17 +30,13 @@ It also addresses the issues reported for the previous version (3.7.2) at
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 2 notes
 
-`R CMD check --as-cran` passes cleanly in all test environments above.
+`R CMD check --as-cran` reports two NOTEs, both benign:
 
-CRAN's incoming checks are expected to flag the maintainer address change:
-
-```
-New maintainer:
-  James Dalgleish <jamesdalg@gmail.com>
-Old maintainer(s):
-  James Dalgleish <james.dalgleish@nih.gov>
-```
-
-This is the intended change and the reason for this resubmission.
+* "Days since last update: 1". This is a fast resubmission because 3.7.5 fails
+  to install on r-oldrel-windows (the RSQLite/lazy-loading error above). This
+  submission is solely to fix that installation failure.
+* One example (`importBreakpointBed`) occasionally exceeds 5s elapsed on a
+  loaded machine (~6.5s locally). It is a small, self-contained example with
+  no external resources.

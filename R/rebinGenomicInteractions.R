@@ -10,8 +10,6 @@
 #' @param colnames_mat The column names of the whole_genome_matrix in chr_start_end format.
 #' @param method Method to rebin with-- can use overlap and nearest methods.Default: nearest.
 #' @keywords GenomicInteractions bin matrix colnames rownames binning bin
-#' @rawNamespace import(GenomicInteractions, except = c(start,end))
-#' @importFrom GenomicInteractions anchorOne anchorTwo
 #' @import foreach doParallel
 #' @examples
 #' foreach::registerDoSEQ()
@@ -34,6 +32,9 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
   #importFrom S4Vectors mcols mcols<-
   if (!requireNamespace('InteractionSet', quietly = TRUE)) {
     return("Please install InteractionSet to use this function")
+  }
+  if (!requireNamespace('GenomicInteractions', quietly = TRUE)) {
+    return("Please install GenomicInteractions to use this function")
   }
   i <- if(exists("i")){get("i")} else {NULL}
   if(is.null(gint)){return("No GenomicInteractions to rebin!")}

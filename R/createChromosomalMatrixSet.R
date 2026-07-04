@@ -2,9 +2,7 @@
 #'
 #' Takes a linear regression matrix and sets infinites to a finite value, and changes the sign to match the sign of the correlation for each value.
 #' @keywords Interaction matrix
-#' @rawNamespace import(GenomicInteractions, except = c(start,end))
 #' @import  reshape2 magrittr foreach doParallel
-#' @importFrom biomaRt useMart getBM
 #' @importFrom reshape2 colsplit
 #' @param whole_genome_mat The matrix containing all of the data, from which the individual matrices will be split.
 #' @param output_dir the folder where the matrices in RData format, will be written.
@@ -20,6 +18,9 @@
 #' @export
 createChromosomalMatrixSet<-function(whole_genome_mat,output_dir=NULL,prefix="nbl_")
 {
+  if (!requireNamespace("biomaRt", quietly = TRUE)) {
+    return("Please install biomaRt to use this function.")
+  }
   original_dir<-getwd()
   if(is.null(output_dir)){output_dir<-getwd()}
   if(!dir.exists(output_dir)){dir.create(output_dir)}
