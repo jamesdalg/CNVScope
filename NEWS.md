@@ -1,4 +1,4 @@
-CNVScope v3.7.6 (Release Date 2026-07-04)
+CNVScope v3.7.7 (Release Date 2026-07-04)
 ==============
 *Moved biomaRt and GenomicInteractions from Imports to Suggests, with
 requireNamespace() guards at their points of use. This removes the

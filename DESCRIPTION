@@ -1,7 +1,7 @@
 Package: CNVScope
 Type: Package
 Title: A Versatile Toolkit for Copy Number Variation Relationship Data Analysis and Visualization
-Version: 3.7.6
+Version: 3.7.7
 Date: 2026-07-04
 Authors@R: c(person(given = "James", family = "Dalgleish",
                     role = c("aut", "cre"), email = "jamesdalg@gmail.com",
