@@ -31,11 +31,12 @@ There are no user-visible changes to any function's behaviour.
 ## Test environments
 
 * Local: Ubuntu Linux, R 4.6.1
+* win-builder: R-devel and R-release
 
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
 
-`R CMD check --as-cran` is clean locally. CRAN's incoming checks may add the
-usual "Days since last update" NOTE; this submission is solely to clear the
-r-devel Rd NOTE above.
+`R CMD check --as-cran` is clean. One example (`importBreakpointBed`) runs
+around 7s elapsed on a loaded machine; it is small and self-contained, with no
+external resources.
