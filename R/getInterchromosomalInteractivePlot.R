@@ -1,3 +1,4 @@
+globalVariables(c('chromosomes'))
 #' Create an HTML widget for use in shiny or webshot for a given pair of chromosomes.
 #'
 #' This function requires a matrix with genomic coordinates in the row and column names, and produces a heatmap with a tooltip
@@ -16,7 +17,6 @@
 #' }
 #' @export
 
-globalVariables(c('chromosomes'))
 getInterchromosomalInteractivePlot<-function(whole_matrix,chrom1,chrom2)
 {
   if (!requireNamespace("biomaRt", quietly = TRUE)) {

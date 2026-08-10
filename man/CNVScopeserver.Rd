@@ -3,6 +3,9 @@
 \name{CNVScopeserver}
 \alias{CNVScopeserver}
 \title{Server component of the CNVScope plotly shiny application.}
+\usage{
+CNVScopeserver(session, input, output, debug = F)
+}
 \arguments{
 \item{session}{The shiny session object for the application.}
 

@@ -1,3 +1,6 @@
+#lines to disable spurrious CRAN notes below. i is obviously not global.
+globalVariables("i")
+dontCheck('i')
 #' Rescale positive and negative data, preserving sign information.
 #'
 #' Downsamples a matrix by a specified factor.
@@ -14,9 +17,6 @@
 #' downsample_genomic_matrix(whole_matrix=nbl_result_matrix_sign_small,
 #' downsamplefactor=5,singlechromosome=TRUE)
 #' @export
-#lines to disable spurrious CRAN notes below. i is obviously not global.
-globalVariables("i")
-dontCheck('i')
 downsample_genomic_matrix<-function(whole_matrix,downsamplefactor,singlechromosome=T)
 {
   i <- if(exists("i")){get("i")} else {NULL}
@@ -47,7 +47,4 @@ downsample_genomic_matrix<-function(whole_matrix,downsamplefactor,singlechromoso
     return("multi-chromosome not yet implemented")
   }
   }
-test_mat<-matrix(runif(81),nrow=9)
-colnames(test_mat)<-paste0("chr1_",1:ncol(test_mat))
-rownames(test_mat)<-paste0("chr1_",1:nrow(test_mat))
-downsample_genomic_matrix(whole_matrix=test_mat,downsamplefactor=3,singlechromosome=T)
+

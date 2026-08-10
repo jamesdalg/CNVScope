@@ -1,4 +1,20 @@
-CNVScope v3.7.7 (Release Date 2026-07-04)
+CNVScope v3.7.7 (Release Date 2026-08-10)
+==============
+*Fixed the "Rd files without \usage" NOTE reported by CRAN on
+r-devel-linux-x86_64-debian-clang and -gcc. Eight roxygen blocks were
+separated from the functions they document by an intervening top-level
+globalVariables()/dontCheck() call, so roxygen2 attached the block to that
+call and emitted no \usage section. Those calls now precede their roxygen
+blocks, and the affected topics (CNVScopeserver, calcCNVKernelProbDist,
+downsample_genomic_matrix, formSampleMatrixFromRawGDCData,
+getBlockAverageMatrixFromBreakpoints, getInterchromosomalInteractivePlot,
+importBreakpointBed, rebinGenomicInteractions) document their usage again.
+*Documented the previously undocumented `parallel` and `cnlabel` arguments of
+formSampleMatrixFromRawGDCData(), which the restored \usage sections revealed.
+*Removed stray top-level test code from R/downsample_genomic_matrix.R that ran
+at package build time.
+
+CNVScope v3.7.6 (Release Date 2026-07-04)
 ==============
 *Moved biomaRt and GenomicInteractions from Imports to Suggests, with
 requireNamespace() guards at their points of use. This removes the

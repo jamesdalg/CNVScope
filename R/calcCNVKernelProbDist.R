@@ -1,3 +1,4 @@
+globalVariables(c("x","y"))
 #' Calculate the probability distribution of CNV concordance events with a fast kernel
 #'
 #' This function produces several matrices, including a Z-score matrix
@@ -18,7 +19,6 @@
 #' mat_prob_dist<-calcCNVKernelProbDist(nbl_result_matrix_sign_small,parallel=FALSE)
 #' mat_prob_dist
 #' @export
-globalVariables(c("x","y"))
 calcCNVKernelProbDist<-function(submatrix=NULL,win=5,debug=F,parallel=T,mcmcores=1)
 {
   x <- if(exists("x")){get("x")} else {NULL}

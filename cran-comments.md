@@ -1,42 +1,41 @@
-## Resubmission
+## Submission
 
-This submission fixes the Windows installation failure reported for version
-3.7.5 at <https://cran.r-project.org/web/checks/check_results_CNVScope.html>:
+This submission fixes the NOTE reported for version 3.7.6 at
+<https://cran.r-project.org/web/checks/check_results_CNVScope.html> on
+r-devel-linux-x86_64-debian-clang and r-devel-linux-x86_64-debian-gcc:
 
 ```
-Error in loadNamespace(i, ...) : there is no package called 'RSQLite'
-ERROR: lazy loading failed for package 'CNVScope'
+Rd files without \usage:
+  'CNVScopeserver.Rd' 'calcCNVKernelProbDist.Rd'
+  'downsample_genomic_matrix.Rd' 'formSampleMatrixFromRawGDCData.Rd'
+  'getBlockAverageMatrixFromBreakpoints.Rd'
+  'getInterchromosomalInteractivePlot.Rd' 'importBreakpointBed.Rd'
+  'rebinGenomicInteractions.Rd'
+\arguments should not be documented without \usage.
 ```
 
-The RSQLite dependency was pulled in transitively (biomaRt -> BiocFileCache ->
-RSQLite, and via GenomicInteractions), so CNVScope's own lazy loading failed
-whenever that chain was unavailable on a build machine. This is the same class
-of failure previously seen as "there is no package called 'dbplyr'".
+In each of the eight affected sources, a top-level `globalVariables()` (or
+`dontCheck()`) call sat between the roxygen block and the function it
+documents. roxygen2 therefore attached the block to that call rather than to
+the function and emitted no `\usage` section, leaving `\arguments` documented
+without `\usage`. Those calls now precede their roxygen blocks, and the
+documentation has been regenerated; all eight topics have `\usage` again.
 
-To fix it durably, biomaRt and GenomicInteractions have been moved from
-Imports to Suggests and are now used behind `requireNamespace()` guards at
-their points of use. This removes the entire BiocFileCache chain (RSQLite,
-dbplyr) from the package's strong dependencies, so installation no longer
-depends on those packages being present.
+Restoring `\usage` surfaced two arguments of `formSampleMatrixFromRawGDCData()`
+(`parallel` and `cnlabel`) that had never been documented; both are now
+documented. Stray top-level test code that ran at package build time was also
+removed from `R/downsample_genomic_matrix.R`.
+
+There are no user-visible changes to any function's behaviour.
 
 ## Test environments
 
 * Local: Ubuntu Linux, R 4.6.1
-* GitHub Actions:
-  * Ubuntu Linux, R-release, R-devel, R-oldrel-1
-  * macOS, R-release
-  * Windows, R-release
-* win-builder: R-devel and R-release
 
 ## R CMD check results
 
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 0 notes
 
-`R CMD check --as-cran` reports two NOTEs, both benign:
-
-* "Days since last update: 1". This is a fast resubmission because 3.7.5 fails
-  to install on r-oldrel-windows (the RSQLite/lazy-loading error above). This
-  submission is solely to fix that installation failure.
-* One example (`importBreakpointBed`) occasionally exceeds 5s elapsed on a
-  loaded machine (~6.5s locally). It is a small, self-contained example with
-  no external resources.
+`R CMD check --as-cran` is clean locally. CRAN's incoming checks may add the
+usual "Days since last update" NOTE; this submission is solely to clear the
+r-devel Rd NOTE above.

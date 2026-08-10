@@ -1,3 +1,4 @@
+globalVariables(c("mcols","mcols<-"))
 #' Import a breakpoint BED file.
 #'
 #' Imports a BED file with breakpoints or other interactions, in a dual position format.
@@ -12,7 +13,6 @@
 #' importBreakpointBed(breakpoint_fn = system.file("extdata",
 #' "sample_breakpoints.bed",package = "CNVScope"))
 #' @export
-globalVariables(c("mcols","mcols<-"))
   importBreakpointBed<-function(breakpoint_fn)
   {
     if (!requireNamespace("GenomicInteractions", quietly = TRUE)) {

@@ -1,3 +1,4 @@
+globalVariables(c('begin','s',".","pos",'....relativeCvg','....sample','current_gr.....Segment_Mean','....uuid'),add=F)
 #' Form sample matrix from GDC copy number data files.
 #'
 #' Reads a GDC segmetnation files, adds sample information, and forms a data matrix of samples and bins of a specified size.
@@ -14,6 +15,8 @@
 #' @param format file format, TCGA or TARGET.
 #' @param binsize the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.
 #' @param freadskip the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.
+#' @param parallel Register a parallel 'doParallel' backend for the aggregation
+#'   loops. If FALSE (the default), a sequential 'foreach' backend is registered.
 #' @param debug debug mode enable (allows specific breakpoints to be checked).
 #' @param chromosomes A vector of chromosomes to be used. Defaults to chr1-chrX,
 #'  but others can be added e.g. chrY or chrM for Y chromosome or mitochondrial DNA.
@@ -24,6 +27,7 @@
 #' @param chrlabel The name of the chromosome column (for custom format input).
 #' @param startlabel The name of the start column (for custom format input).
 #' @param endlabel The name of the end column (for custom format input).
+#' @param cnlabel The name of the copy number column (for custom format input).
 #' @return  A dataframe containing the aggregated copy number values,
 #'  based on the parameters provided.
 #' @examples 
@@ -31,7 +35,6 @@
 #' #please see browseVignettes("CNVScope") for a demonstration.
 #' 
 #' @export
-globalVariables(c('begin','s',".","pos",'....relativeCvg','....sample','current_gr.....Segment_Mean','....uuid'),add=F)
 
 formSampleMatrixFromRawGDCData<-function(tcga_files=NULL,format="TARGET",binsize=1e6,
 freadskip=NULL, parallel = F,debug=F,

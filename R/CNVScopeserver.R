@@ -1,3 +1,4 @@
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 #' Server component of the CNVScope plotly shiny application.
 #'
 #'  Server function of the CNVScope shiny application. run with runCNVScopeShiny
@@ -24,7 +25,6 @@
 #                  'genev','delete.isolates','freq_data'),add = F)
 #rawNamespace import(GenomicFeatures ,except = show)
 
-if(getRversion() >= "2.15.1")  utils::globalVariables(c("."), add=F)
 CNVScopeserver<-function(session,input, output, debug=F) {
 #  if(requireNamespace("plotly",quietly = T)){
     #

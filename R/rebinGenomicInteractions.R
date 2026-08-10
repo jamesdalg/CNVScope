@@ -1,3 +1,4 @@
+globalVariables("mcols")
 #' Assign GenomicInteractions to a predefined series of bins for row and column, corresponding to a genomic matrix.
 #'
 #' This function allows the user to assign a set of genomicinteractions to a pre-existing matrix with known dimensions and column/row names. It finds the row/column index of each point and produces a merged dataframe with the original annotation columns that correspond to each bin in the matrix, with appropriate labels & indexes.
@@ -24,7 +25,6 @@
 #' method="nearest")
 #' @export
 
-globalVariables("mcols")
 rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_gr=NULL,colnames_gr=NULL,rownames_mat=NULL,colnames_mat=NULL,method="nearest")
 {
   #importFrom GenomicRanges nearest GRanges

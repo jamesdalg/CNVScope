@@ -3,6 +3,9 @@
 \name{importBreakpointBed}
 \alias{importBreakpointBed}
 \title{Import a breakpoint BED file.}
+\usage{
+importBreakpointBed(breakpoint_fn)
+}
 \arguments{
 \item{breakpoint_fn}{the filename of the breakpoint bed file}
 }

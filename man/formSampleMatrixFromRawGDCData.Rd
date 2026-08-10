@@ -3,6 +3,23 @@
 \name{formSampleMatrixFromRawGDCData}
 \alias{formSampleMatrixFromRawGDCData}
 \title{Form sample matrix from GDC copy number data files.}
+\usage{
+formSampleMatrixFromRawGDCData(
+  tcga_files = NULL,
+  format = "TARGET",
+  binsize = 1e+06,
+  freadskip = NULL,
+  parallel = F,
+  debug = F,
+  chromosomes = paste0("chr", c(seq(1:22), "X"), "_"),
+  sample_pat = "",
+  sample_col = "sample",
+  chrlabel = ">chr",
+  startlabel = "begin",
+  endlabel = "end",
+  cnlabel = "log2"
+)
+}
 \arguments{
 \item{tcga_files}{GDC files to be read}
 
@@ -11,6 +28,9 @@
 \item{binsize}{the binsize, in base pairs (default 1Mb or 1e6).  This value provides a good balance of resolution and speed with memory sensitive applications.}
 
 \item{freadskip}{the number of lines to skip in the GDC files, typically 14 (the first 13 lines are metadata and the first is a blank line in NBL data). Adjust as needed.}
+
+\item{parallel}{Register a parallel 'doParallel' backend for the aggregation
+loops. If FALSE (the default), a sequential 'foreach' backend is registered.}
 
 \item{debug}{debug mode enable (allows specific breakpoints to be checked).}
 
@@ -28,6 +48,8 @@ Use "" to use the filename.}
 \item{startlabel}{The name of the start column (for custom format input).}
 
 \item{endlabel}{The name of the end column (for custom format input).}
+
+\item{cnlabel}{The name of the copy number column (for custom format input).}
 }
 \value{
 A dataframe containing the aggregated copy number values,

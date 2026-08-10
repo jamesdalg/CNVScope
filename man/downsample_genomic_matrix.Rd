@@ -3,6 +3,9 @@
 \name{downsample_genomic_matrix}
 \alias{downsample_genomic_matrix}
 \title{Rescale positive and negative data, preserving sign information.}
+\usage{
+downsample_genomic_matrix(whole_matrix, downsamplefactor, singlechromosome = T)
+}
 \arguments{
 \item{whole_matrix}{A matrix to be downsampled, on a single chromosome}
 

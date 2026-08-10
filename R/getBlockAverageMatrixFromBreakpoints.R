@@ -1,3 +1,4 @@
+globalVariables(c("j"))
 #' Calculate block averages and areas in a matrix given breakpoints.
 #'
 #' This function produces several matrix outputs of averages and areas of matrix blocks, given a pair of vectors for breakpoints.
@@ -59,7 +60,6 @@
 #' }
 #' @export
 
-globalVariables(c("j"))
 getBlockAverageMatrixFromBreakpoints<-function(whole_matrix,breakpoints_col,breakpoints_row,outputs=c("blockaverages_reformatted_by_index","blockaverages_reformatted_by_label","blockaverages_matrix_idx_area","blockaverages_matrix_idx_avg","blockaverages_matrix_label_avg","blockaverages_matrix_label_area"))
 {
   i <- if(exists("i")){get("i")} else {NULL}
