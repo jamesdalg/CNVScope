@@ -1,3 +1,9 @@
+CNVScope v3.7.8 (Release Date 2026-09-10)
+==============
+*Resubmission of 3.7.7, which was superseded in the CRAN queue before release.
+The package code is identical; only the version number and the submission
+comments differ.
+
 CNVScope v3.7.7 (Release Date 2026-09-10)
 ==============
 *Fixed the "Rd files without \usage" NOTE reported by CRAN on

@@ -1,5 +1,9 @@
 ## Submission
 
+This supersedes the 3.7.7 submission currently in the queue -- please discard
+it. The package is unchanged apart from the version number; only these comments
+differ.
+
 This fixes the NOTE reported for 3.7.6 on r-devel-linux-x86_64-debian-clang and
 r-devel-linux-x86_64-debian-gcc:
 
