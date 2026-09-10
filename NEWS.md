@@ -1,4 +1,4 @@
-CNVScope v3.7.7 (Release Date 2026-08-10)
+CNVScope v3.7.7 (Release Date 2026-09-10)
 ==============
 *Fixed the "Rd files without \usage" NOTE reported by CRAN on
 r-devel-linux-x86_64-debian-clang and -gcc. Eight roxygen blocks were

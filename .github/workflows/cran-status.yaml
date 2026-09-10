@@ -1,0 +1,204 @@
+# Watch the CRAN check results for this package and alert when they stop being OK.
+#
+# CRAN re-runs its checks on every flavor roughly daily. A NOTE, WARN or ERROR
+# is not emailed to the maintainer until CRAN decides it needs action, so a
+# regression can sit on the check page unnoticed for weeks. This workflow polls
+# the published results and opens (or updates) a GitHub issue as soon as any
+# flavor reports something other than OK -- the issue notification is the alert.
+#
+# Data source is CRAN's own machine-readable table of every flavor's status:
+#   https://cran.r-project.org/web/checks/check_results.rds
+# The human-readable per-package page supplies the actual NOTE/WARNING text:
+#   https://cran.r-project.org/web/checks/check_results_CNVScope.html
+# Both are read with base R, so this job installs no packages and runs in ~1 min.
+#
+# The job itself succeeds whether or not CRAN is happy; the issue and the badge
+# carry the signal. That keeps a long-lived NOTE from mailing a failure every
+# single day.
+
+on:
+  schedule:
+    # 07:20 UTC daily. CRAN's check pages are typically refreshed overnight.
+    - cron: '20 7 * * *'
+  workflow_dispatch:
+
+name: cran-status
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  cran-status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PKG: CNVScope
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+          use-public-rspm: true
+
+      - name: Query CRAN check results
+        id: cran
+        shell: Rscript {0}
+        run: |
+          pkg <- Sys.getenv("PKG")
+
+          # Statuses for every flavor, from CRAN's machine-readable table.
+          f <- tempfile()
+          download.file("https://cran.r-project.org/web/checks/check_results.rds",
+                        f, quiet = TRUE, mode = "wb")
+          res <- readRDS(f)
+          res <- res[res$Package == pkg, c("Flavor", "Version", "Status")]
+          res$Status <- trimws(as.character(res$Status))
+          res$Status[!nzchar(res$Status) | is.na(res$Status)] <- "unknown"
+
+          if (nrow(res) == 0L) {
+            # Package absent from the table (archived, or brand-new submission).
+            state <- "absent"; summary <- "not currently listed in CRAN check results"
+            table <- ""; details <- ""; version <- ""
+          } else {
+            bad <- res[res$Status != "OK", , drop = FALSE]
+            bad <- bad[order(bad$Status, bad$Flavor), , drop = FALSE]
+            version <- paste(unique(res$Version), collapse = ", ")
+            state <- if (nrow(bad) == 0L) "ok" else "problem"
+            summary <- if (nrow(bad) == 0L) {
+              sprintf("OK on all %d flavors", nrow(res))
+            } else {
+              tb <- table(bad$Status)
+              paste(sprintf("%d %s", as.integer(tb), names(tb)), collapse = ", ")
+            }
+            rows <- if (nrow(bad) == 0L) res else bad
+            table <- paste0(
+              "| Flavor | Version | Status |\n|---|---|---|\n",
+              paste(sprintf("| `%s` | %s | **%s** |", rows$Flavor, rows$Version, rows$Status),
+                    collapse = "\n"))
+
+            # The status table says *that* a flavor is unhappy, not why. Pull the
+            # Check Details prose off the per-package page for the issue body.
+            details <- ""
+            if (state == "problem") {
+              details <- tryCatch({
+                url <- sprintf("https://cran.r-project.org/web/checks/check_results_%s.html", pkg)
+                h <- paste(readLines(url, warn = FALSE), collapse = "\n")
+                if (!grepl("<h3>Check Details</h3>", h, fixed = TRUE)) "" else {
+                  d <- sub(".*<h3>Check Details</h3>", "", h)
+                  d <- gsub("<[^>]+>", "", d)
+                  d <- gsub("&lt;", "<", gsub("&gt;", ">", gsub("&amp;", "&", d)))
+                  d <- trimws(unlist(strsplit(d, "\n")))
+                  paste(d[nzchar(d)], collapse = "\n")
+                }
+              }, error = function(e) "")
+            }
+          }
+
+          # Fingerprint of the exact state, so an unchanged problem does not
+          # re-notify and a changed one does.
+          fpfile <- tempfile()
+          writeLines(c(state, version, summary, table), fpfile)
+          fp <- substr(unname(tools::md5sum(fpfile)), 1, 12)
+
+          body <- c(
+            sprintf("CRAN check results for **%s** (version %s): **%s**.", pkg, version, summary),
+            "", table, "")
+          if (nzchar(details)) body <- c(body, "<details><summary>Check Details from CRAN</summary>", "", "```", details, "```", "", "</details>", "")
+          body <- c(body,
+            sprintf("Full page: https://cran.r-project.org/web/checks/check_results_%s.html", pkg),
+            "", sprintf("<!-- cran-status-fingerprint: %s -->", fp),
+            sprintf("_Checked %s by the `cran-status` workflow._", format(Sys.time(), "%Y-%m-%d %H:%M UTC", tz = "UTC")))
+
+          writeLines(body, "cran-status-body.md")
+          gho <- Sys.getenv("GITHUB_OUTPUT")
+          cat(sprintf("state=%s\n", state), file = gho, append = TRUE)
+          cat(sprintf("summary=%s\n", summary), file = gho, append = TRUE)
+          cat(sprintf("version=%s\n", version), file = gho, append = TRUE)
+          cat(sprintf("fingerprint=%s\n", fp), file = gho, append = TRUE)
+          cat(sprintf("CRAN status: %s (%s)\n", state, summary))
+
+      - name: Open, update or close the alert issue
+        if: ${{ steps.cran.outputs.state != 'absent' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STATE: ${{ steps.cran.outputs.state }}
+          SUMMARY: ${{ steps.cran.outputs.summary }}
+          VERSION: ${{ steps.cran.outputs.version }}
+          FP: ${{ steps.cran.outputs.fingerprint }}
+        run: |
+          set -euo pipefail
+          gh label create cran-status --color FBCA04 \
+            --description "Automated CRAN check-result alerts" 2>/dev/null || true
+
+          existing=$(gh issue list --label cran-status --state open \
+            --json number,body --jq '.[0] // empty')
+          number=$(printf '%s' "$existing" | jq -r '.number // empty')
+
+          if [ "$STATE" = "problem" ]; then
+            title="CRAN checks: $SUMMARY on $VERSION"
+            if [ -z "$number" ]; then
+              gh issue create --title "$title" --label cran-status \
+                --body-file cran-status-body.md
+              echo "Opened a new cran-status issue."
+            else
+              # Only re-notify when the reported state actually changed.
+              if printf '%s' "$existing" | jq -r '.body' | grep -qF "cran-status-fingerprint: $FP"; then
+                echo "Issue #$number already reports this exact state; not commenting."
+              else
+                gh issue edit "$number" --title "$title" --body-file cran-status-body.md
+                gh issue comment "$number" --body-file cran-status-body.md
+                echo "Updated issue #$number with the changed state."
+              fi
+            fi
+          else
+            if [ -n "$number" ]; then
+              gh issue comment "$number" --body \
+                "CRAN checks are back to **$SUMMARY** on $VERSION. Closing."
+              gh issue close "$number"
+              echo "Closed issue #$number -- CRAN is OK again."
+            else
+              echo "CRAN is OK and no alert issue is open. Nothing to do."
+            fi
+          fi
+
+      - name: Publish status badge
+        if: ${{ !cancelled() }}
+        shell: bash
+        env:
+          BADGE_NAME: cran-status
+          STATE: ${{ steps.cran.outputs.state }}
+          SUMMARY: ${{ steps.cran.outputs.summary }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          case "$STATE" in
+            ok)      message="OK"; color="brightgreen" ;;
+            problem) message="$SUMMARY"; color="orange" ;;
+            *)       message="unknown"; color="lightgrey" ;;
+          esac
+          repo_url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          rm -rf badges-branch
+          git clone --branch badges "$repo_url" badges-branch
+          cd badges-branch
+          printf '{"schemaVersion":1,"label":"CRAN checks","message":"%s","color":"%s"}\n' \
+            "$message" "$color" > "${BADGE_NAME}.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "${BADGE_NAME}.json"
+          if git diff --cached --quiet; then
+            echo "No badge change."; exit 0
+          fi
+          git commit -m "Update ${BADGE_NAME} badge: ${message}"
+          for attempt in 1 2 3 4 5; do
+            if git push origin badges; then exit 0; fi
+            echo "Push race (attempt ${attempt}); rebasing."
+            git pull --rebase origin badges
+          done
+          echo "Failed to push badge after retries." >&2
+          exit 1

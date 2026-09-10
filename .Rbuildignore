@@ -16,3 +16,4 @@ docs
 ^.*\.tar\.gz$
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
+^\.Rproj\.user$

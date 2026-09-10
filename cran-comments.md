@@ -35,8 +35,22 @@ There are no user-visible changes to any function's behaviour.
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note (local only)
 
-`R CMD check --as-cran` is clean. One example (`importBreakpointBed`) runs
-around 7s elapsed on a loaded machine; it is small and self-contained, with no
-external resources.
+The note is the elapsed-time one, and only on the local machine:
+
+```
+* checking examples ... [52s/52s] NOTE
+Examples with CPU (user + system) or elapsed time > 5s
+                     user system elapsed
+importBreakpointBed 6.076  0.362    6.44
+```
+
+Nearly all of that is loading the `GenomicInteractions` namespace, not the
+package's own work: the example's input is a 6-line, 306-byte BED file shipped
+in `inst/extdata`, and the `importBreakpointBed()` call itself takes about 1.5s
+once the namespace is attached. The example uses no external resources.
+
+None of CRAN's own flavors reported this note for 3.7.6 -- the only note there
+was the `Rd files without \usage` one this submission fixes -- so the example is
+unchanged from the version currently on CRAN.
