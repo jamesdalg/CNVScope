@@ -30,8 +30,8 @@ There are no user-visible changes to any function's behaviour.
 
 ## Test environments
 
-* Local: Ubuntu Linux, R 4.6.1
-* win-builder: R-devel and R-release
+* Local: Ubuntu Linux, R 4.6.1 -- 0 errors, 0 warnings, 1 note (see below)
+* win-builder: R-devel and R-release -- 0 errors, 0 warnings, 0 notes
 
 ## R CMD check results
 
