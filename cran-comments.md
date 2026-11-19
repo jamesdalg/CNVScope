@@ -20,10 +20,25 @@ identical to before.
 
 ## Test environments
 
-* Local Ubuntu Linux, R 4.6.2
-* Ubuntu Linux, R-devel, R-release, R-oldrel (GitHub Actions)
+* Ubuntu Linux, R-devel with Bioconductor devel (S4Vectors 0.51.10,
+  InteractionSet 1.41.0, GenomicRanges 1.65.4), R-release, R-oldrel
+  (GitHub Actions)
 * macOS and Windows, R-release (GitHub Actions)
+* Local Ubuntu Linux, R 4.6.2, `R CMD check --as-cran`
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 0 notes on all GitHub Actions environments.
+
+The local `--as-cran` check gave 1 NOTE:
+
+```
+Examples with CPU (user + system) or elapsed time > 5s
+                     user system elapsed
+importBreakpointBed 6.621  0.538   7.161
+```
+
+This time is taken up by loading the GenomicInteractions and InteractionSet
+namespaces (Suggests), which this is the first example to use. The example
+itself reads a six-line BED file. The same timing appeared in the checks of
+3.7.7.
