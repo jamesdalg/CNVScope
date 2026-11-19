@@ -1,4 +1,27 @@
-## Submission
+## Resubmission
+
+This is a resubmission of 3.7.9, whose incoming pretest gave one NOTE on
+r-devel-linux-x86_64-debian-gcc:
+
+```
+Examples with CPU (user + system) or elapsed time > 5s
+                     user system elapsed
+importBreakpointBed 6.024  0.208   6.236
+```
+
+Most of that time was loading the GenomicInteractions namespace (Suggests),
+which pulls in about 50 further Bioconductor namespaces and takes about 5
+seconds on its own. The rest was a closeAllConnections() call inside
+importBreakpointBed(), which should not have been there. In this version:
+
+* importBreakpointBed() no longer calls closeAllConnections(). The connection
+  that rtracklayer::import.bed() opens is already closed by rtracklayer.
+* The examples of importBreakpointBed() and rebinGenomicInteractions(), the
+  only two that load GenomicInteractions, are wrapped in \donttest{}.
+
+The 3.7.9 fix for the r-devel ERROR is unchanged. It is described below.
+
+## Original submission (3.7.9)
 
 This fixes the examples ERROR reported for 3.7.7 on
 r-devel-linux-x86_64-debian-gcc and r-devel-linux-x86_64-fedora-gcc:
@@ -20,25 +43,13 @@ identical to before.
 
 ## Test environments
 
+* Local Ubuntu Linux, R 4.6.2, `R CMD check --as-cran` (3.7.10)
+* CRAN incoming pretest of 3.7.9: r-devel-windows-x86_64 OK;
+  r-devel-linux-x86_64-debian-gcc 1 NOTE (the example timing addressed above)
 * Ubuntu Linux, R-devel with Bioconductor devel (S4Vectors 0.51.10,
-  InteractionSet 1.41.0, GenomicRanges 1.65.4), R-release, R-oldrel
-  (GitHub Actions)
-* macOS and Windows, R-release (GitHub Actions)
-* Local Ubuntu Linux, R 4.6.2, `R CMD check --as-cran`
+  InteractionSet 1.41.0, GenomicRanges 1.65.4), R-release, R-oldrel; macOS and
+  Windows, R-release (GitHub Actions, 3.7.9)
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes on all GitHub Actions environments.
-
-The local `--as-cran` check gave 1 NOTE:
-
-```
-Examples with CPU (user + system) or elapsed time > 5s
-                     user system elapsed
-importBreakpointBed 6.621  0.538   7.161
-```
-
-This time is taken up by loading the GenomicInteractions and InteractionSet
-namespaces (Suggests), which this is the first example to use. The example
-itself reads a six-line BED file. The same timing appeared in the checks of
-3.7.7.
+0 errors | 0 warnings | 0 notes

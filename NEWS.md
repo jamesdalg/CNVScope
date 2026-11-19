@@ -1,3 +1,13 @@
+CNVScope v3.7.10 (Release Date 2026-11-19)
+==============
+*importBreakpointBed() no longer calls closeAllConnections(), which closed
+every open connection in the user's session (not just its own) and forced a
+full garbage collection taking over a second per call. rtracklayer's
+import.bed() already closes the connection it opens.
+*The importBreakpointBed() and rebinGenomicInteractions() examples are now in
+\donttest{}. Whichever runs first loads the GenomicInteractions namespace,
+which takes about 5 seconds.
+
 CNVScope v3.7.9 (Release Date 2026-11-19)
 ==============
 *Fixed the rebinGenomicInteractions() example error reported by CRAN on

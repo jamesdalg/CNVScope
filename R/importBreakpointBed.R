@@ -9,9 +9,11 @@ globalVariables(c("mcols","mcols<-"))
 #' @importFrom reshape2 colsplit
 #' @param breakpoint_fn the filename of the breakpoint bed file
 #' @return a Genomic Interactions Object
-#' @examples 
+#' @examples
+#' \donttest{
 #' importBreakpointBed(breakpoint_fn = system.file("extdata",
 #' "sample_breakpoints.bed",package = "CNVScope"))
+#' }
 #' @export
   importBreakpointBed<-function(breakpoint_fn)
   {
@@ -25,8 +27,7 @@ globalVariables(c("mcols","mcols<-"))
     gint<-GenomicInteractions::GenomicInteractions(imported_bed,colsplit_locations_gr,... = colsplit_id)
     colsplit_bed<-reshape2::colsplit(string = GenomicRanges::mcols(imported_bed)$name,pattern = "_",names=c("otherdata","id_containing"))[,1]
     S4Vectors::mcols(gint)$id<-colsplit_id
-    S4Vectors::mcols(gint)$bed<-colsplit_bed 
-    closeAllConnections()
+    S4Vectors::mcols(gint)$bed<-colsplit_bed
     rm(imported_bed)
     return(gint)
   }

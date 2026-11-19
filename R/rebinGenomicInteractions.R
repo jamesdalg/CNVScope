@@ -13,16 +13,18 @@ globalVariables("mcols")
 #' @keywords GenomicInteractions bin matrix colnames rownames binning bin
 #' @import foreach doParallel
 #' @examples
+#' \donttest{
 #' foreach::registerDoSEQ()
 #' gint_small_chr1<-importBreakpointBed(breakpoint_fn = system.file("extdata",
 #' "sample_breakpoints_chr1.bed",package = "CNVScope"))
-#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope")) 
+#' load(system.file("extdata","nbl_result_matrix_sign_small.rda",package = "CNVScope"))
 #' rebinGenomicInteractions(gint=gint_small_chr1,whole_genome_matrix=NULL,
 #' rownames_gr=underscored_pos_to_GRanges(rownames(nbl_result_matrix_sign_small)),
 #' colnames_gr=underscored_pos_to_GRanges(colnames(nbl_result_matrix_sign_small)),
 #' rownames_mat = rownames(nbl_result_matrix_sign_small),
 #' colnames_mat = colnames(nbl_result_matrix_sign_small),
 #' method="nearest")
+#' }
 #' @export
 
 rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_gr=NULL,colnames_gr=NULL,rownames_mat=NULL,colnames_mat=NULL,method="nearest")

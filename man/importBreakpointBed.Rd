@@ -16,7 +16,9 @@ a Genomic Interactions Object
 Imports a BED file with breakpoints or other interactions, in a dual position format.
 }
 \examples{
+\donttest{
 importBreakpointBed(breakpoint_fn = system.file("extdata",
 "sample_breakpoints.bed",package = "CNVScope"))
+}
 }
 \keyword{bed}
