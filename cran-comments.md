@@ -1,37 +1,28 @@
 ## Submission
 
-This supersedes the 3.7.7 submission currently in the queue -- please discard
-it. The package is unchanged apart from the version number; only these comments
-differ.
-
-This fixes the NOTE reported for 3.7.6 on r-devel-linux-x86_64-debian-clang and
-r-devel-linux-x86_64-debian-gcc:
+This fixes the examples ERROR reported for 3.7.7 on
+r-devel-linux-x86_64-debian-gcc and r-devel-linux-x86_64-fedora-gcc:
 
 ```
-Rd files without \usage:
-  'CNVScopeserver.Rd' 'calcCNVKernelProbDist.Rd'
-  'downsample_genomic_matrix.Rd' 'formSampleMatrixFromRawGDCData.Rd'
-  'getBlockAverageMatrixFromBreakpoints.Rd'
-  'getInterchromosomalInteractivePlot.Rd' 'importBreakpointBed.Rd'
-  'rebinGenomicInteractions.Rd'
-\arguments should not be documented without \usage.
+> rebinGenomicInteractions(gint=gint_small_chr1, ...)
+Error in as.vector(x) : no method for coercing this S4 class to a vector
+Calls: rebinGenomicInteractions ... as.data.frame.Vector -> .as.data.frame.Vector -> as.vector
 ```
 
-In each of the eight sources a top-level `globalVariables()` or `dontCheck()`
-call sat between the roxygen block and the function it documents, so roxygen2
-attached the block to that call and emitted no `\usage`. Those calls now precede
-their roxygen blocks and the documentation has been regenerated; all eight
-topics have `\usage` again.
-
-This also surfaced two arguments of `formSampleMatrixFromRawGDCData()`
-(`parallel`, `cnlabel`) that had never been documented; both are now documented.
-No function's behaviour changes.
+S4Vectors 0.51 (Bioconductor devel) changed the S3 method
+`as.data.frame.Vector()` so that it no longer re-dispatches to the S4
+`as.data.frame()` generic. `rebinGenomicInteractions()` called base
+`as.data.frame()` on a GenomicInteractions object, which therefore no longer
+reached the GInteractions method from InteractionSet. The function now calls
+the S4 generic, `S4Vectors::as.data.frame()`, directly. S4Vectors was already
+in Suggests, so the dependencies are unchanged, and the function's output is
+identical to before.
 
 ## Test environments
 
+* Local Ubuntu Linux, R 4.6.2
 * Ubuntu Linux, R-devel, R-release, R-oldrel (GitHub Actions)
-* Windows, R-devel and R-release (win-builder)
-* macOS, R-release (GitHub Actions)
+* macOS and Windows, R-release (GitHub Actions)
 
 ## R CMD check results
 

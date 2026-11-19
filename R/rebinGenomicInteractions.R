@@ -30,6 +30,9 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
   #importFrom GenomicRanges nearest GRanges
   #importFrom InteractionSet findOverlaps
   #importFrom S4Vectors mcols mcols<-
+  #S4Vectors::as.data.frame() is the S4 generic, so it reaches the GInteractions and
+  #GRanges methods. Base as.data.frame() can fall through to the S3
+  #as.data.frame.Vector(), which no longer re-dispatches to S4 (S4Vectors >= 0.51).
   if (!requireNamespace('InteractionSet', quietly = TRUE)) {
     return("Please install InteractionSet to use this function")
   }
@@ -45,7 +48,7 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
   output<-foreach(i=1:length(gint),.inorder = T,.combine="rbind",.errorhandling = "pass",.export = ls()) %dopar% #length(breakpoint_gint_full)length(breakpoint_gint_full)
   {
     #current_int_df<-as.data.table(gint[i]) #
-    current_int_df<-as.data.frame(cbind(as.data.frame(GenomicInteractions::anchorOne(gint)[i]),as.data.frame(GenomicInteractions::anchorTwo(gint)[i]),as.data.frame(S4Vectors::mcols(gint[i]))))
+    current_int_df<-as.data.frame(cbind(S4Vectors::as.data.frame(GenomicInteractions::anchorOne(gint)[i]),S4Vectors::as.data.frame(GenomicInteractions::anchorTwo(gint)[i]),S4Vectors::as.data.frame(S4Vectors::mcols(gint[i]))))
     print(paste0(i/length(gint)*100,"%"))
     if(method=="overlap")
     {
@@ -75,7 +78,7 @@ rebinGenomicInteractions<-function(gint=NULL,whole_genome_matrix=NULL,rownames_g
     } else {
     print("arrived in else condition")
   output_df<-as.data.frame(matrix(as.character(output),nrow=nrow(output)))
-  colnames(output_df)<-c("row_bin_index","col_bin_index","row_bin_label","col_bin_label",as.character(colnames(as.data.frame(gint[1]))))
+  colnames(output_df)<-c("row_bin_index","col_bin_index","row_bin_label","col_bin_label",as.character(colnames(S4Vectors::as.data.frame(gint[1]))))
   }
   
   return(output_df)
